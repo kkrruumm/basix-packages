@@ -1,0 +1,26 @@
+pkg_name=musl
+version=1.2.6
+revision=1
+build_style=configure
+short_desc="musl libc"
+home_page="https://musl.libc.org"
+license="MIT"
+dist_files="https://musl.libc.org/releases/musl-${version}.tar.gz"
+checksum="260127b07a6cb72b70264fceafbc509e7da0cfde8e701a1fb44247859bc489a5c6"
+configure_args="--syslibdir=/usr/lib"
+
+post_install() {
+    # ldd is a symlink to the dynamic linker
+    bln /usr/lib/ld-musl-x86_64.so.1 /usr/bin/ldd
+    # upstreams own symlink points at the wrong name
+    bln libc.so /usr/lib/ld-musl-x86_64.so.1
+
+    for h in cdefs.h queue.h tree.h; do
+        binstall "$FILESDIR/$h" 0644 /usr/include/sys
+    done
+
+    $CC "$FILESDIR/getconf.c" -o getconf && bbin getconf
+    $CC "$FILESDIR/getent.c" -o getent  && bbin getent
+
+    blicense COPYRIGHT
+}

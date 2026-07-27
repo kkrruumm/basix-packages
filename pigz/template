@@ -1,0 +1,24 @@
+pkg_name=pigz
+version=2.8
+revision=1
+build_style=custom
+short_desc="Parallel gzip"
+home_page="https://zlib.net/pigz/"
+license="Zlib"
+dist_files="https://zlib.net/pigz/pigz-${version}.tar.gz"
+checksum="fa165f414a12851806d9d54920879dd989917b9aa410aec671c602b18773b23638"
+make_depends="zlib"
+
+do_build() {
+    for f in pigz yarn try; do
+        $CC -c -o "$f.o" "$f.c" ${CPPFLAGS:-} -DNOZOPFLI $CFLAGS
+    done
+    $CC -static -o pigz pigz.o yarn.o try.o ${CPPFLAGS:-} $CFLAGS -lz $LDFLAGS
+}
+
+do_install() {
+    bbin pigz
+    bman pigz.1
+    bln pigz /usr/bin/gzip
+    bln pigz.1 /usr/share/man/man1/gzip.1
+}

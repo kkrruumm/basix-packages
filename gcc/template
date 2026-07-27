@@ -1,0 +1,76 @@
+pkg_name=gcc
+version=16.1.0
+revision=1
+build_style=gnu-configure
+short_desc="GNU compiler collection"
+home_page="https://gcc.gnu.org"
+license="GPL-3.0-or-later"
+dist_files="https://gcc.gnu.org/pub/gcc/releases/gcc-${version}/gcc-${version}.tar.xz"
+checksum="5f001609f662143ce9285cd740bd0acfeeaf7f13731b46fd1d9ebe620c5c340d0d"
+depends="binutils gmp libmpc mpfr zlib"
+make_depends="bison flex"
+
+use_flags="nls bootstrap cxx"
+use_default="-nls +cxx"
+
+build_wrk_src="gcc-build"
+configure_script="../configure"
+
+configure_args="
+    libat_cv_have_ifunc=no
+    --libexecdir=/usr/lib
+    --infodir=/usr/share/info
+    --disable-multilib
+    --disable-symvers
+    --disable-libmpx
+    --disable-libmudflap
+    --disable-libsanitizer
+    --disable-werror
+    --disable-fixed-point
+    --disable-libstdcxx-pch
+    $(use_enable nls)
+    --enable-checking=release
+    --enable-__cxa_atexit
+    --enable-default-pie
+    --enable-default-ssp
+    --enable-shared
+    --enable-threads
+    --enable-tls
+    --enable-initfini-array
+    --enable-languages=$(use_if cxx c,c++ c)
+    --without-included-gettext
+    --with-zstd=no
+    --with-system-zlib
+    --build=x86_64-pc-linux-musl"
+
+pre_configure() {
+    # use lib, not lib64
+    bsed '/m64=/s/lib64/lib/' ../gcc/config/i386/t-linux64
+    bsed 's/lib64/lib/'       ../gcc/config/i386/linux64.h
+
+    # a full bootstrap is only needed when the host compiler is a
+    # different major version
+    if use bootstrap; then
+        configure_args="$configure_args --enable-bootstrap"
+    else
+        _hostver=$(gcc -dumpfullversion 2>/dev/null) || _hostver=null
+        case $version in
+            "${_hostver%%.*}"*)
+                sub "host gcc is ${_hostver}, disabling bootstrap"
+                configure_args="$configure_args --disable-bootstrap" ;;
+            *)  configure_args="$configure_args --enable-bootstrap" ;;
+        esac
+    fi
+}
+
+post_install() {
+    for a in libgtkpeer.a libgjsmalsa.a libgij.a; do
+        find "$DESTDIR" -name "$a" -exec rm -f {} + 2>/dev/null || :
+    done
+
+    bln gcc /usr/bin/cc
+    bbin "$FILESDIR/c99"
+
+    bln "/usr/lib/gcc/x86_64-pc-linux-musl/$version/liblto_plugin.so" \
+        /usr/lib/bfd-plugins/liblto_plugin.so
+}

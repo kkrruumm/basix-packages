@@ -1,0 +1,52 @@
+diff --git a/util-linux/lsusb.c b/util-linux/lsusb.c
+index f7d0de3..70615d0 100644
+--- a/util-linux/lsusb.c
++++ b/util-linux/lsusb.c
+@@ -15,6 +15,16 @@
+ //config:
+ //config:    This version uses sysfs (/sys/bus/usb/devices) only.
+ 
++//config:
++//config:config FEATURE_LSUSB_STRINGS
++//config:    bool "Print vendor and product strings if they exist"
++//config:    default y
++//config:    depends on LSUSB
++//config:    help
++//config:    lsusb is a utility for displaying information about USB busses in the
++//config:    system and devices connected to them. This option prints out the
++//config:    vendor and product strings if they are available. This option
++//config:    replicates a simpler version of util-linux lsusb output.
+ //applet:IF_LSUSB(APPLET_NOEXEC(lsusb, lsusb, BB_DIR_USR_BIN, BB_SUID_DROP, lsusb))
+ 
+ //kbuild:lib-$(CONFIG_LSUSB) += lsusb.o
+@@ -52,6 +62,15 @@ static int FAST_FUNC fileAction(struct recursive_state *state UNUSED_PARAM,
+     int product_vid = 0, product_did = 0;
+     char *uevent_filename = concat_path_file(fileName, "uevent");
+ 
++#if ENABLE_FEATURE_LSUSB_STRINGS
++    ssize_t vlen, plen;
++    // max length standard allows, any longer and someones being naughty
++    char vendor[256] = { 0 }, product[256] = { 0 };
++    vlen = open_read_close(concat_path_file(fileName, "/manufacturer"), vendor, sizeof(vendor));
++    vendor[vlen - 1] = '\0';
++    plen = open_read_close(concat_path_file(fileName, "/product"), product, sizeof(product));
++    product[plen - 1] = '\0';
++#endif
+     parser = config_open2(uevent_filename, fopen_for_read);
+     free(uevent_filename);
+ 
+@@ -86,8 +105,13 @@ static int FAST_FUNC fileAction(struct recursive_state *state UNUSED_PARAM,
+             p = stpcpy(p, " ");
+         add_sysfs_prop(fileName, "/product", p, name + sizeof(name) - p);
+ 
+-        printf("Bus %s Device %s: ID %04x:%04x %s\n", busnum, devnum,
++        printf("Bus %s Device %s: ID %04x:%04x %s", busnum, devnum,
+                product_vid, product_did, name);
++#if ENABLE_FEATURE_LSUSB_STRINGS
++        if(vlen) printf(" %s", vendor);
++        if(plen) printf(" %s", product);
++#endif
++        printf("\n");
+         free(busnum);
+         free(devnum);
+     }

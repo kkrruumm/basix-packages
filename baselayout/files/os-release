@@ -1,0 +1,8 @@
+NAME="Basix Linux"
+PRETTY_NAME="Basix Linux"
+ID=basix
+BUILD_ID=rolling
+HOME_URL="https://basixlinux.org"
+DOCUMENTATION_URL="https://wiki.basixlinux.org"
+SUPPORT_URL="https://github.com/kkrruumm/basix-packages"
+BUG_REPORT_URL="https://github.com/kkrruumm/basix-packages"

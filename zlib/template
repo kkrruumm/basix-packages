@@ -1,0 +1,15 @@
+pkg_name=zlib
+version=1.3.2
+revision=1
+build_style=configure
+short_desc="Compression library"
+home_page="https://zlib.net"
+license="Zlib"
+dist_files="https://zlib.net/fossils/zlib-${version}.tar.gz"
+checksum="ea79f8ae7c98d38ea360b70449fbb0052da4ff4a7201f03387113e5dab85437935"
+
+pre_configure() {
+    CFLAGS="$CFLAGS -fPIC"
+    LDFLAGS="$LDFLAGS -Wl,--undefined-version"
+    export CFLAGS LDFLAGS
+}

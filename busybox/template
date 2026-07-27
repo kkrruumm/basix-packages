@@ -1,0 +1,53 @@
+pkg_name=busybox
+version=1.38.0
+revision=1
+build_style=custom
+short_desc="Swiss army knife of embedded Linux"
+home_page="https://busybox.net"
+license="GPL-2.0-only"
+dist_files="https://busybox.net/downloads/busybox-${version}.tar.bz2"
+checksum="04de7affa61579a9f495eb84d35305ba7f9d21760d717a8fabdee3749bf653e902"
+make_depends="linux-headers"
+
+use_flags="suid services"
+use_default="+suid +services"
+
+do_build() {
+    # drop the hardcoded gcc so the build works on gccless systems (this is super unsupported tho)
+    bsed "s#= g[c+][c+]#= $CC#g;s#\(\$(CROSS_COMPILE)\)gcc#\1$CC#g" Makefile
+
+    cp -f "$FILESDIR/.config" .config
+    $make_cmd $make_jobs HOSTCC="$CC"
+    cp -f busybox busybox-nosuid
+
+    if use suid; then
+        cp -f "$FILESDIR/.config-suid" .config
+        $make_cmd $make_jobs HOSTCC="$CC"
+        cp -f busybox busybox-suid
+    fi
+}
+
+do_install() {
+    bbin busybox-nosuid busybox
+    ./busybox-nosuid --list | while read -r b; do
+        bln busybox "/usr/bin/$b"
+    done
+
+    if use suid; then
+        binstall busybox-suid 4755 /usr/bin
+        ./busybox-suid --list | while read -r b; do
+            bln busybox-suid "/usr/bin/$b"
+        done
+    fi
+
+    # acpid will not create this itself
+    bmkdir /etc/acpi
+
+    if use services; then
+        for s in acpid crond syslogd mdev ntpd; do
+            binstall "$FILESDIR/$s.run" 0755 "/etc/sv/$s" run
+            bln "/run/runit/supervise.$s" "/etc/sv/$s/supervise"
+        done
+    fi
+    bconf "$FILESDIR/mdev.conf"
+}

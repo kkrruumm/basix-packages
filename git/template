@@ -1,0 +1,56 @@
+pkg_name=git
+version=2.55.0
+revision=1
+build_style=gnu-configure
+short_desc="Distributed version control system"
+home_page="https://git-scm.com"
+license="GPL-2.0-only"
+dist_files="https://mirrors.edge.kernel.org/pub/software/scm/git/git-${version}.tar.xz https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-${version}.tar.xz"
+checksum="99cf418d6426cd615c2818986002f3d4619c707bceea9c624414cc2362c1ff5ed4 be976a5146ce71cf94793c93a9947879efe59a2d3948bf12872ff75d0551db063b"
+make_depends="curl zlib"
+
+use_flags="man perl python"
+use_default="+man -perl -python"
+
+configure_args="
+    --libexecdir=/usr/lib
+    ac_cv_lib_curl_curl_global_init=yes
+    ac_cv_snprintf_returns_bogus=no
+    ac_cv_fread_reads_directories=yes"
+
+do_extract() {
+    bextract "git-$version.tar.xz"
+    # the manual pages ship as a separate archive with no leading
+    # directory of their own
+    use man && bextract "git-manpages-$version.tar.xz" "git-$version/man"
+    :
+}
+
+pre_configure() {
+    LDFLAGS="$LDFLAGS -static"
+    export LDFLAGS
+
+    {
+        printf 'NO_GETTEXT=YesPlease\n'
+        printf 'NO_SVN_TESTS=YesPlease\n'
+        printf 'NO_TCLTK=YesPlease\n'
+        printf 'NO_EXPAT=YesPlease\n'
+        printf 'NO_NSEC=YesPlease\n'
+        use python || printf 'NO_PYTHON=YesPlease\n'
+        use perl || printf 'NO_PERL=YesPlease\n'
+        printf 'NO_SYS_POLL_H=1\n'
+        printf 'NO_CROSS_DIRECTORY_HARDLINKS=1\n'
+        printf 'NO_INSTALL_HARDLINKS=1\n'
+        printf 'NO_OPENSSL=YesPlease\n'
+        printf 'NO_RUST=YesPlease\n'
+    } > config.mak
+}
+
+do_build() {
+    $make_cmd $make_jobs LIBS="$(curl-config --static-libs) libgit.a -lz"
+}
+
+post_install() {
+    use man || return 0
+    bcopy man/. /usr/share/man
+}

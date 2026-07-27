@@ -1,0 +1,28 @@
+pkg_name=bzip2
+version=1.0.8
+revision=1
+build_style=custom
+short_desc="Block sorting compressor"
+home_page="https://sourceware.org/bzip2/"
+license="BSD-4-Clause"
+dist_files="https://sourceware.org/pub/bzip2/bzip2-${version}.tar.gz"
+checksum="97af3f520629c65fe41292f77e6ca798fe594d7987bfb2aebe7c6fcdc7ab5ed25e"
+
+do_build() {
+    $make_cmd CC="$CC $CFLAGS -fPIC $LDFLAGS" -f Makefile-libbz2_so
+    $make_cmd CC="$CC $CFLAGS -static -fPIC $LDFLAGS" bzip2
+}
+
+do_install() {
+    for b in bzip2 bzdiff bzgrep bzmore; do bbin "$b"; done
+    blib libbz2.so.${version}
+    blib libbz2.a
+    bman bzip2.1
+    binclude bzlib.h
+
+    bln libbz2.so.${version} /usr/lib/libbz2.so
+    bln libbz2.so.${version} /usr/lib/libbz2.so.1
+    bln libbz2.so.${version} /usr/lib/libbz2.so.1.0
+    bln bzip2 /usr/bin/bunzip2
+    bln bzip2 /usr/bin/bzcat
+}

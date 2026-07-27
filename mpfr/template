@@ -1,0 +1,12 @@
+pkg_name=mpfr
+version=4.2.2
+revision=1
+build_style=gnu-configure
+short_desc="Multiple precision floating point library"
+home_page="https://www.mpfr.org"
+license="LGPL-3.0-or-later"
+dist_files="https://www.mpfr.org/mpfr-${version}/mpfr-${version}.tar.xz"
+checksum="11d59d061ef8db588650bc7dc5172594a6e5aad013994801c6f63011a62b191dd9"
+depends="gmp"
+
+configure_args="--enable-shared --enable-thread-safe"

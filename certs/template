@@ -1,0 +1,15 @@
+pkg_name=certs
+version=2026-05-14
+revision=1
+build_style=custom
+short_desc="CA certificate bundle"
+home_page="https://curl.se/docs/caextract.html"
+license="MPL-2.0"
+dist_files="https://curl.se/ca/cacert-${version}.pem"
+checksum="2b49b17ae05fa7bf9120268dbdb9f10228bb220e792406fc5f664b7a3009d93313"
+
+do_build() { :; }
+
+do_install() {
+    binstall "cacert-$version.pem" 0644 /etc/ssl cert.pem
+}

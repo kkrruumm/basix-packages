@@ -1,0 +1,27 @@
+pkg_name=bison
+version=3.8.2
+revision=1
+build_style=gnu-configure
+short_desc="GNU parser generator"
+home_page="https://www.gnu.org/software/bison/"
+license="GPL-3.0-or-later"
+dist_files="https://ftp.gnu.org/gnu/bison/bison-${version}.tar.xz"
+checksum="9dd90be8df4d0474b941e2ca14ac76d11b7ccb46edb26344b60d866178bbcc9872"
+depends="m4"
+
+use_flags="nls"
+use_default="-nls"
+
+configure_args="$(use_enable nls) --without-libtextstyle-prefix"
+
+do_install() {
+    $make_cmd DESTDIR="$DESTDIR" \
+        install-libLIBRARIES \
+        install-binPROGRAMS \
+        install-nodist_binSCRIPTS \
+        install-dist_m4sugarDATA \
+        install-dist_skeletonsDATA \
+        install-dist_pkgdataDATA \
+        install-aclocalDATA \
+        install-man1
+}

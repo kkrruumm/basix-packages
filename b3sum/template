@@ -1,0 +1,17 @@
+pkg_name=b3sum
+version=1.3.1
+revision=1
+build_style=gnu-makefile
+short_desc="BLAKE3 checksum utility"
+home_page="https://git.sr.ht/~mcf/b3sum"
+license="CC0-1.0"
+dist_files="https://git.sr.ht/~mcf/b3sum/archive/cb4111ccc8061039b014fbb657c72f78984f1069.tar.gz"
+checksum="3a78d3bbb0e553359035da0c5ce9a2eaadcc658d412dc12f9075caa1bbd74c5e2a"
+wrk_src="b3sum-cb4111ccc8061039b014fbb657c72f78984f1069"
+use_flags="static"
+use_default="+static"
+
+pre_build() {
+    use static && LDFLAGS="$LDFLAGS -static"
+    export LDFLAGS
+}

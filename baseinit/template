@@ -1,0 +1,25 @@
+pkg_name=baseinit
+version=1.0.3
+revision=1
+build_style=custom
+short_desc="Init scripts and helpers"
+home_page="https://github.com/kisslinux/init"
+license="MIT"
+dist_files="https://github.com/kisslinux/init/archive/${version}.tar.gz"
+checksum="a3d9b1aa9c67ca36c92cf880d336af56cec33522de127902d08cc3d66d0277c0c3"
+wrk_src="init-${version}"
+
+do_build() {
+    for b in kpow kall; do
+        $CC -o "$b" "bin/$b.c" $CFLAGS -static
+    done
+}
+
+do_install() {
+    bcopy etc/. /etc
+    bcopy lib/. /usr/lib
+    for b in kpow kall; do
+        bbin "$b"
+        binstall "bin/$b.c" 0644 /usr/share/doc/kiss/init
+    done
+}

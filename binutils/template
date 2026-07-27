@@ -1,0 +1,47 @@
+pkg_name=binutils
+version=2.46.1
+revision=1
+build_style=gnu-configure
+short_desc="GNU binary utilities"
+home_page="https://www.gnu.org/software/binutils/"
+license="GPL-3.0-or-later"
+dist_files="https://ftp.gnu.org/gnu/binutils/binutils-${version}.tar.xz"
+checksum="c66598f95e9225638db6b31ff75ad1c8905d584e65952df05d0fda0add368a558a"
+depends="flex zlib"
+
+use_flags="nls gold lto"
+use_default="-nls +gold +lto"
+
+configure_args="
+    --with-lib-path=/usr/lib:/usr/local/lib
+    --enable-targets=x86_64-pep
+    --enable-deterministic-archives
+    $(use_enable gold)
+    $(use_enable lto)
+    --enable-ld=default
+    --enable-plugins
+    --disable-multilib
+    --disable-werror
+    --disable-gdb
+    $(use_enable nls)
+    --disable-readline
+    --disable-gprof
+    --disable-gprofng
+    --with-mmap
+    --with-system-zlib
+    --without-zstd"
+
+make_build_args="tooldir=/usr"
+make_install_args="tooldir=/usr"
+
+pre_configure() {
+    # configure insists on makeinfo, a stub satisfies the version check
+    printf '#!/bin/sh\nprintf %s\n' "'makeinfo (GNU texinfo) 5.2\\n'" > makeinfo
+    chmod +x makeinfo
+    PATH="$PATH:$PWD"
+    export PATH
+}
+
+pre_build() { $make_cmd configure-host; }
+
+post_install() { bln ld.bfd /usr/bin/ld; }

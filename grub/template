@@ -1,0 +1,83 @@
+pkg_name=grub
+version=2.12
+revision=1
+build_style=custom
+short_desc="GRUB2 bootloader"
+home_page="https://www.gnu.org/software/grub/"
+license="GPL-3.0-or-later"
+dist_files="https://ftp.gnu.org/gnu/grub/grub-${version}.tar.xz https://ftp.gnu.org/gnu/grub/grub-${version}.tar.xz"
+checksum="13c48453f9becf4a6e49618749dc7cb83a2c4a0d7600eeeadc6c7c2772c0b87784 13c48453f9becf4a6e49618749dc7cb83a2c4a0d7600eeeadc6c7c2772c0b87784"
+depends="xz"
+make_depends="binutils bison flex linux-headers m4"
+
+use_flags="pc efi nls"
+use_default="+pc +efi -nls"
+
+# the same tarball is configured and built once per platform, so the
+# source tree is duplicated rather than extracted twice
+do_extract() {
+    bextract "grub-$version.tar.xz"
+    use pc && cp -R "$build_dir/grub-$version" "$build_dir/grub-pc"
+    use efi && cp -R "$build_dir/grub-$version" "$build_dir/grub-efi"
+    :
+}
+
+do_build() {
+    # grub asks for python but never needs it
+    PYTHON=/bin/true
+    export PYTHON
+
+    # advised by upstream, -march breaks the build on some hardware and
+    # grub cannot be linked by mold, lld or gold
+    CFLAGS=$(printf %s "$CFLAGS" | sed 's/-march=[^ ]*//g')
+    case $CFLAGS in *mold*)
+        CFLAGS=$(printf %s "$CFLAGS" | sed 's/-B[^ ]*//g;s/--ld-path=[^ ]*//g') ;;
+    esac
+    export CFLAGS
+
+    mkdir -p .bin
+    ln -sf "$(command -v ld.bfd)" .bin/ld
+    PATH="$PWD/.bin:$PATH"
+    export PATH
+
+    use pc && grub_build grub-pc  --with-platform=pc
+    use efi && grub_build grub-efi --with-platform=efi --disable-efiemu
+    :
+}
+
+grub_build() (
+    _d=$1; shift
+    cd "$_d"
+
+    patch -Np1 -i "$FILESDIR/no-asorti.patch"
+
+    # missing from the release tarball
+    touch grub-core/extra_deps.lst
+
+    for f in ./*/Makefile.in; do
+        sed 's/mv $@.new $@/:/g' "$f" > _ && mv -f _ "$f"
+    done
+
+    ./configure \
+        HELP2MAN="$FILESDIR/help2man" \
+        --prefix=/usr \
+        --sbindir=/usr/bin \
+        --sysconfdir=/etc \
+        --disable-werror \
+        --disable-nls \
+        --disable-grub-mkfont \
+        --disable-grub-mount \
+        "$@"
+
+    make
+    make DESTDIR="$DESTDIR" install
+)
+
+do_install() {
+    binstall "$FILESDIR/grub.default" 0644 /etc/default grub
+
+    # gdb helper files are not wanted in a package
+    ( cd "$DESTDIR/usr/lib" 2>/dev/null || exit 0
+      rm -f grub/*/*.module grub/*/*.image grub/*/kernel.exec \
+            grub/*/gdb_grub grub/*/gmodule.pl )
+}

@@ -1,0 +1,39 @@
+pkg_name=baselayout
+version=1
+revision=1
+build_style=custom
+short_desc="Base filesystem layout and /etc defaults"
+home_page=""
+license=""
+
+do_install() {
+    for d in boot dev etc home mnt opt run usr usr/bin usr/include usr/lib \
+             usr/share var/cache var/local var/opt var/log var/log/old \
+             var/lib var/lib/misc var/empty var/service var/spool; do
+        bmkdir -m 0755 "/$d"
+    done
+    for d in 1 2 3 4 5 6 7 8; do bmkdir -m 0755 "/usr/share/man/man$d"; done
+
+    bmkdir -m 0555 /proc /sys
+    bmkdir -m 0750 /root
+    bmkdir -m 1777 /tmp /var/tmp /var/spool/mail
+
+    bln usr/bin /bin
+    bln usr/bin /sbin
+    bln bin     /usr/sbin
+    bln usr/lib /lib
+    bln usr/lib /lib64
+    bln lib     /usr/lib64
+
+    bln spool/mail        /var/mail
+    bln ../run            /var/run
+    bln ../run/lock       /var/lock
+    bln /proc/self/mounts /etc/mtab
+
+    for f in "$FILESDIR"/*; do
+        bconf "$f"
+    done
+    # these two carry credentials and must not be world readable
+    binstall "$FILESDIR/crypttab" 0600 /etc
+    binstall "$FILESDIR/shadow"   0600 /etc
+}

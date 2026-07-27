@@ -1,0 +1,51 @@
+pkg_name=bpm
+version=0.1.0
+revision=1
+build_style=custom
+short_desc="basix package manager"
+home_page="https://github.com/kkrruumm/bpm"
+license="MIT"
+dist_files="file:///var/db/bpm/src/bpm-${version}.tar.gz" # no repo up yet
+checksum="48e204714126327653b81c48415fd8abf7c8e20ce33de676b1f478110e1b5d76"
+wrk_src="bpm"
+
+depends="b3sum busybox curl git xz"
+
+do_build() { :; }
+
+do_install() {
+    if [ -f lib/common.sh ]; then
+        :
+    elif [ -f bpm/lib/common.sh ]; then
+        cd bpm
+    else
+        die "no lib/common.sh in $PWD"
+    fi
+
+    bbin bpm
+
+    for f in lib/common.sh lib/pkg.sh lib/build.sh; do
+        binstall "$f" 0644 /usr/lib/bpm
+    done
+    for f in lib/style/*.sh; do
+        binstall "$f" 0644 /usr/lib/bpm/style
+    done
+
+    for f in etc/bpm.conf etc/repos.conf etc/package.use; do
+        if [ -f "$f" ]; then binstall "$f" 0644 /etc/bpm; fi
+    done
+
+    for d in pre-install post-install pre-remove post-remove; do
+        bmkdir "/etc/bpm/hooks/$d"
+    done
+    if [ -f etc/hooks/post-install/00-ldconfig ]; then
+        binstall etc/hooks/post-install/00-ldconfig 0755 /etc/bpm/hooks/post-install
+    fi
+
+    bmkdir /var/db/bpm/repos /var/cache/bpm
+
+    bsed "s/^BPM_PROGVER=.*/BPM_PROGVER=$version/" "$DESTDIR/usr/bin/bpm"
+    if [ -f "$DESTDIR/etc/bpm/bpm.conf" ]; then
+        bsed 's/BPM_COMPRESS:=zst/BPM_COMPRESS:=xz/' "$DESTDIR/etc/bpm/bpm.conf"
+    fi
+}

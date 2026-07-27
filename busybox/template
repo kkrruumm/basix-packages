@@ -17,12 +17,12 @@ do_build() {
     bsed "s#= g[c+][c+]#= $CC#g;s#\(\$(CROSS_COMPILE)\)gcc#\1$CC#g" Makefile
 
     cp -f "$FILESDIR/.config" .config
-    $make_cmd $make_jobs HOSTCC="$CC"
+    $make_cmd $make_jobs HOSTCC="$CC" localver=
     cp -f busybox busybox-nosuid
 
     if use suid; then
         cp -f "$FILESDIR/.config-suid" .config
-        $make_cmd $make_jobs HOSTCC="$CC"
+        $make_cmd $make_jobs HOSTCC="$CC" localver=
         cp -f busybox busybox-suid
     fi
 }

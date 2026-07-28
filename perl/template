@@ -1,0 +1,64 @@
+pkg_name=perl
+version=5.42.2
+revision=1
+build_style=custom
+short_desc="Practical Extraction and Report Language"
+home_page="https://www.perl.org"
+license="Artistic-1.0-Perl, GPL-1.0-or-later"
+dist_files="https://www.cpan.org/src/5.0/perl-${version}.tar.xz"
+checksum="d8a9988b0fd5305204c74ac3cca7a19e47625ca65ad10723dfff129abaa4981a36"
+
+depends="bzip2 zlib"
+
+do_configure() {
+    # configure asks for these by name and bpm does not export them
+    : "${AR:=ar}" "${NM:=nm}" "${RANLIB:=ranlib}"
+
+    # link against the system libraries rather than the bundled copies
+    export BUILD_ZLIB=0 BUILD_BZIP2=0
+    export LDFLAGS="$LDFLAGS -pthread"
+    export CFLAGS="$CFLAGS -DNO_POSIX_2008_LOCALE -D_GNU_SOURCE"
+
+    ./Configure \
+        -des \
+        -Dprefix=/usr \
+        -Dvendorprefix=/usr \
+        -Dusevendorprefix \
+        -Duseshrplib \
+        -Dusesoname \
+        -Dusethreads \
+        -Dinc_version_list=none \
+        -Dd_sockaddr_in6=define \
+        -Dcccdlflags=-fPIC \
+        -Dccflags="$CFLAGS" \
+        -Dlddlflags="-shared $LDFLAGS" \
+        -Dldflags="$LDFLAGS" \
+        -Doptimize="-Wall $CFLAGS" \
+        -Dcc="$CC" \
+        -Dar="$AR" \
+        -Dnm="$NM" \
+        -Dranlib="$RANLIB" \
+        -Dman1dir=/usr/share/man/man1 \
+        -Dman3dir=/usr/share/man/man3 \
+        -Dinstallman1dir=/usr/share/man/man1 \
+        -Dinstallman3dir=/usr/share/man/man3 \
+        -Dman1ext=1 \
+        -Dman3ext=3pm \
+        -Dperl_static_inline="static __inline__" \
+        -Dd_static_inline
+}
+
+# serial on purpose, perls miniperl bootstrap races under -j
+do_build() { $make_cmd; }
+
+do_install() {
+    $make_cmd DESTDIR="$DESTDIR" install
+
+    # documentation and build leftovers that do not belong in a package
+    for n in '*.pod' '.packlist' 'README*' 'TODO*' 'Change*' '*.bs'; do
+        find "$DESTDIR" -name "$n" -exec rm -f {} + 2>/dev/null || :
+    done
+    find "$DESTDIR" -name '*.0' -type f -exec rm -f {} + 2>/dev/null || :
+
+    find "$DESTDIR/usr/lib" -type f -exec chmod 644 {} + 2>/dev/null || :
+}

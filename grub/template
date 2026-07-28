@@ -5,61 +5,73 @@ build_style=custom
 short_desc="GRUB2 bootloader"
 home_page="https://www.gnu.org/software/grub/"
 license="GPL-3.0-or-later"
-dist_files="https://ftp.gnu.org/gnu/grub/grub-${version}.tar.xz https://ftp.gnu.org/gnu/grub/grub-${version}.tar.xz"
-checksum="13c48453f9becf4a6e49618749dc7cb83a2c4a0d7600eeeadc6c7c2772c0b87784 13c48453f9becf4a6e49618749dc7cb83a2c4a0d7600eeeadc6c7c2772c0b87784"
+dist_files="https://ftp.gnu.org/gnu/grub/grub-${version}.tar.xz"
+checksum="13c48453f9becf4a6e49618749dc7cb83a2c4a0d7600eeeadc6c7c2772c0b87784"
+
 depends="xz"
 make_depends="binutils bison flex linux-headers m4"
 
 use_flags="pc efi nls"
 use_default="+pc +efi -nls"
 
-# the same tarball is configured and built once per platform, so the
-# source tree is duplicated rather than extracted twice
 do_extract() {
-    bextract "grub-$version.tar.xz"
-    use pc && cp -R "$build_dir/grub-$version" "$build_dir/grub-pc"
-    use efi && cp -R "$build_dir/grub-$version" "$build_dir/grub-efi"
-    :
+    if use pc; then
+        bextract "grub-$version.tar.xz"
+        mv "$build_dir/grub-$version" "$build_dir/grub-pc"
+    fi
+    if use efi; then
+        bextract "grub-$version.tar.xz"
+        mv "$build_dir/grub-$version" "$build_dir/grub-efi"
+    fi
+
+    cp -f "$FILESDIR/help2man" "$build_dir/help2man"
+    cp -f "$FILESDIR/grub.default" "$build_dir/grub.default"
+    cp -f "$FILESDIR/no-asorti.patch" "$build_dir/no-asorti.patch"
+    chmod 0755 "$build_dir/help2man"
 }
 
 do_build() {
+    cd "$build_dir"
+
     # grub asks for python but never needs it
-    PYTHON=/bin/true
-    export PYTHON
+    export PYTHON=/bin/true
 
-    # advised by upstream, -march breaks the build on some hardware and
-    # grub cannot be linked by mold, lld or gold
-    CFLAGS=$(printf %s "$CFLAGS" | sed 's/-march=[^ ]*//g')
-    case $CFLAGS in *mold*)
-        CFLAGS=$(printf %s "$CFLAGS" | sed 's/-B[^ ]*//g;s/--ld-path=[^ ]*//g') ;;
-    esac
+    for f in ./*/Makefile.in; do
+        sed 's/mv $@.new $@/:/g' "$f" > _
+        mv -f _ "$f"
+    done
+
+    # strip '-march' from 'CFLAGS' as per advice from upstream
     export CFLAGS
+    CFLAGS=$(printf %s "$CFLAGS" | sed 's/-march=[^ ]*//g;s/-fcf-protection//g')
 
-    mkdir -p .bin
-    ln -sf "$(command -v ld.bfd)" .bin/ld
-    PATH="$PWD/.bin:$PATH"
-    export PATH
+    # force bfd linker to fix issues with alternative linkers
+    {
+        mkdir -p .bin
+        bfd_path=$(command -v ld.bfd)
+        ln -s "${bfd_path:?}" .bin/ld
+        export PATH="$PWD/.bin:$PATH"
 
-    use pc && grub_build grub-pc  --with-platform=pc
-    use efi && grub_build grub-efi --with-platform=efi --disable-efiemu
-    :
+        # strip '-B<path>mold' and '--ld-path=<path>mold' from CFLAGS
+        case $CFLAGS in *mold*)
+            CFLAGS=$(printf %s "$CFLAGS" | sed 's/-B[^ ]*//g;s/--ld-path=[^ ]*//g')
+        esac
+    }
+
+    if use pc; then build_grub --with-platform=pc; fi
+    if use efi; then build_grub --with-platform=efi --disable-efiemu; fi
 }
 
-grub_build() (
-    _d=$1; shift
-    cd "$_d"
+build_grub() (
+    cd "grub-${1##*=}"
 
-    patch -Np1 -i "$FILESDIR/no-asorti.patch"
+    patch -p1 < ../no-asorti.patch
 
     # missing from the release tarball
     touch grub-core/extra_deps.lst
 
-    for f in ./*/Makefile.in; do
-        sed 's/mv $@.new $@/:/g' "$f" > _ && mv -f _ "$f"
-    done
-
     ./configure \
-        HELP2MAN="$FILESDIR/help2man" \
+        HELP2MAN="$OLDPWD/help2man" \
         --prefix=/usr \
         --sbindir=/usr/bin \
         --sysconfdir=/etc \
@@ -74,10 +86,13 @@ grub_build() (
 )
 
 do_install() {
-    binstall "$FILESDIR/grub.default" 0644 /etc/default grub
+    binstall "$build_dir/grub.default" 0644 /etc/default grub
 
     # gdb helper files are not wanted in a package
     ( cd "$DESTDIR/usr/lib" 2>/dev/null || exit 0
-      rm -f grub/*/*.module grub/*/*.image grub/*/kernel.exec \
-            grub/*/gdb_grub grub/*/gmodule.pl )
+      rm -f grub/*/*.module
+      rm -f grub/*/*.image
+      rm -f grub/*/kernel.exec
+      rm -f grub/*/gdb_grub
+      rm -f grub/*/gmodule.pl )
 }

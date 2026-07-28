@@ -1,0 +1,30 @@
+pkg_name=gtar
+version=1.35
+revision=1
+build_style=gnu-configure
+short_desc="GNU tar archiving utility"
+home_page="https://www.gnu.org/software/tar/"
+license="GPL-3.0-or-later"
+dist_files="https://ftp.gnu.org/gnu/tar/tar-${version}.tar.xz"
+checksum="55e3853752c56a607ae5dbc9e9190fe5d3f7599b76bb80abe0edba36d712c36bb6"
+wrk_src="tar-$version"
+
+use_flags="static tar_symlink"
+use_default="+static -tar_symlink"
+
+# installed as gtar so it doesn't collide with busybox tar
+configure_args="--program-prefix=g"
+
+pre_configure() {
+    if use static; then CFLAGS="$CFLAGS -static"; fi
+    export CFLAGS
+}
+
+post_install() {
+    # busybox already owns /usr/bin/tar on a stock system, so this is off by default
+    # enabling it will fail the conflict check until busyboxs
+    # symlink is gone
+    if use tar_symlink; then
+        bln /usr/bin/gtar /usr/bin/tar
+    fi
+}

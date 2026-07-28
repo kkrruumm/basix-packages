@@ -23,3 +23,8 @@ do_install() {
         binstall "bin/$b.c" 0644 /usr/share/doc/kiss/init
     done
 }
+
+post_install() {
+    bsed 's/Welcome to KISS!/Welcome to basix!/' "$DESTDIR/usr/lib/init/rc.boot"
+    bsed 's/${hostname:-KISS}/${hostname:-basix}/' "$DESTDIR/usr/lib/init/rc.boot"
+}

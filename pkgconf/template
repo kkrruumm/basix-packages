@@ -1,0 +1,19 @@
+pkg_name=pkgconf
+version=3.0.3
+revision=1
+build_style=gnu-configure
+short_desc="Compiler and linker flag database for libraries"
+home_page="https://gitea.treehouse.systems/ariadne/pkgconf"
+license="ISC"
+dist_files="https://distfiles.ariadne.space/pkgconf/pkgconf-${version}.tar.xz"
+checksum="bc8e23fe42489c649fc192706acc746b968a9f03f053045c61a758aa3185eb606a"
+
+use_flags="pkg_config_symlink"
+use_default="+pkg_config_symlink"
+
+post_install() {
+    if use pkg_config_symlink; then
+        bln pkgconf /usr/bin/pkg-config
+    fi
+    brm /usr/share/doc
+}

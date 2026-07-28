@@ -1,0 +1,39 @@
+pkg_name=openssh
+version=10.4p1
+revision=1
+build_style=gnu-configure
+short_desc="OpenBSD secure shell, portable release"
+home_page="https://www.openssh.com"
+license="BSD-2-Clause, ISC, MIT"
+dist_files="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${version}.tar.gz"
+checksum="0534deadf94e03b8ed6f1ab8a4e22600f20e2042bdb40be61d2289eac7d25d737a"
+
+depends="openssl zlib"
+
+use_flags="security_key utmp services"
+use_default="-security_key -utmp +services"
+
+configure_args="
+    --datadir=/usr/share/openssh
+    --sysconfdir=/etc/ssh
+    --libexecdir=/usr/lib/openssh
+    --without-selinux
+    --without-zlib-version-check
+    --with-privsep-user=nobody
+    --with-mantype=doc
+    --without-rpath
+    --disable-strip
+    --with-pid-dir=/run
+    $(use_enable utmp)
+    $(use_enable utmp wtmp)
+    $(use_enable security_key security-key)"
+
+post_install() {
+    bbin contrib/ssh-copy-id
+    bman contrib/ssh-copy-id.1
+
+    if use services; then
+        binstall "$FILESDIR/sshd.run" 0755 /etc/sv/sshd run
+        bln /run/runit/supervise.sshd /etc/sv/sshd/supervise
+    fi
+}

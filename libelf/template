@@ -1,0 +1,35 @@
+pkg_name=libelf
+version=0.195
+revision=1
+build_style=gnu-configure
+short_desc="ELF object file access library from elfutils"
+home_page="https://sourceware.org/elfutils/"
+license="LGPL-3.0-or-later"
+dist_files="https://sourceware.org/elfutils/ftp/${version}/elfutils-${version}.tar.bz2"
+checksum="f397be2a59cbbc375cdbb28f7947a9345a8d126fadc6a2bb40b49c1dbe38787c4a"
+wrk_src="elfutils-${version}"
+
+depends="zlib"
+make_depends="m4 pkgconf"
+
+configure_args="
+    --disable-symbol-versioning
+    --disable-debuginfod
+    --disable-libdebuginfod
+    --disable-nls
+    ac_cv_c99=yes"
+
+pre_configure() {
+    LDFLAGS="$LDFLAGS -Wl,--undefined-version"
+    export LDFLAGS
+}
+
+pre_build() {
+    # argp and fts do not exist on musl, neither file is needed for the
+    # library itself, only for utilities this package does not install
+    : > libdwfl/argp-std.c
+    : > libdwfl/linux-kernel-modules.c
+
+    # we only want the library, the command line tools need argp
+    printf '%s\n' "all:" "install:" > src/Makefile
+}

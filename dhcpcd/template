@@ -1,0 +1,30 @@
+pkg_name=dhcpcd
+version=10.3.2
+revision=1
+build_style=configure
+short_desc="DHCP and IPv6 router advertisement client"
+home_page="https://github.com/NetworkConfiguration/dhcpcd"
+license="BSD-2-Clause"
+dist_files="https://github.com/NetworkConfiguration/dhcpcd/archive/refs/tags/v${version}.tar.gz>dhcpcd-${version}.tar.gz"
+checksum="21d5910f751b18cde5d4674b61ca2d53bf7afa74206f07155bfd2f56b1c4d55514"
+
+make_depends="linux-headers"
+
+use_flags="udev services"
+use_default="-udev +services"
+
+configure_args="
+    --sbindir=/usr/bin
+    --sysconfdir=/etc
+    --rundir=/run
+    --libexecdir=/usr/lib/dhcpcd
+    $(use_if udev --with-udev --without-udev)"
+
+make_install_args="BINMODE=755"
+
+post_install() {
+    if use services; then
+        binstall "$FILESDIR/dhcpcd.run" 0755 /etc/sv/dhcpcd run
+        bln /run/runit/supervise.dhcpcd /etc/sv/dhcpcd/supervise
+    fi
+}

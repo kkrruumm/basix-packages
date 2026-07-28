@@ -1,0 +1,55 @@
+# place your kernel configuration at files/dotconfig
+# this is run through 'make olddefconfig' so a config from an older
+# release is probably chill
+pkg_name=linux
+version=6.18.40
+revision=1
+build_style=custom
+short_desc="The Linux kernel"
+home_page="https://kernel.org"
+license="GPL-2.0-only"
+dist_files="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${version}.tar.xz"
+checksum="5872889203a682796f960f6217e5e7cdc9c60bf81daad1934cbfd12e581af2bb"
+
+# bison and flex build kconfig, libelf builds objtool, openssl signs modules
+# and builds the trusted keyring, perl is used by several scripts for whatever fuckin reason
+make_depends="bison flex libelf openssl perl"
+
+use_flags="modules"
+use_default="+modules"
+
+# vmlinuz is a compressed image and modules carry relocations, stripping
+# either of them produces something that does not boot or does not load
+no_strip=yes
+
+do_configure() {
+    [ -f "$FILESDIR/dotconfig" ] || die "no kernel config at files/dotconfig"
+    cp -f "$FILESDIR/dotconfig" .config
+
+    # accept defaults for anything the config predates without prompting
+    $make_cmd olddefconfig
+}
+
+do_build() {
+    $make_cmd $make_jobs
+    if use modules; then
+        $make_cmd $make_jobs modules
+    fi
+}
+
+do_install() {
+    # the module directory is named after the full release, which includes
+    # CONFIG_LOCALVERSION, so check rather than assuming $version
+    _rel=$($make_cmd -s kernelrelease)
+
+    binstall arch/x86/boot/bzImage 0644 /boot "vmlinuz-$_rel"
+    binstall System.map            0644 /boot "System.map-$_rel"
+    binstall .config               0644 /boot "config-$_rel"
+
+    if use modules; then
+        $make_cmd INSTALL_MOD_PATH="$DESTDIR/usr" modules_install
+        # These point into the build tree, which will not exist.
+        rm -f "$DESTDIR/usr/lib/modules/$_rel/build" \
+              "$DESTDIR/usr/lib/modules/$_rel/source"
+    fi
+}

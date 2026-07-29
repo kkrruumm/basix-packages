@@ -1,0 +1,52 @@
+pkg_name=lvm2
+version=2.03.41
+revision=1
+build_style=custom
+short_desc="Logical volume manager and device mapper"
+home_page="https://sourceware.org/lvm2/"
+license="GPL-2.0-only, LGPL-2.1-only"
+dist_files="https://mirrors.kernel.org/sourceware/lvm2/releases/LVM2.${version}.tgz"
+checksum="09640e7576f521b96c2eda202d43984c9e999949fa4b2d28d93f96d3873cc2438d"
+depends="libaio util-linux"
+wrk_src="LVM2.${version}"
+
+use_flags="udev selinux"
+use_default="-udev -selinux"
+
+do_configure() {
+    LDFLAGS="$LDFLAGS -Wl,--undefined-version"
+    export LDFLAGS
+
+    export CONFIG_SHELL=/bin/sh
+
+    # libudev-zero doesn't work with lvm2 apparently
+    _udev=$(use_if udev enable disable)
+
+    ./configure \
+        --prefix=/usr \
+        --with-libexecdir=/usr/lib \
+        --sbindir=/usr/bin \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        $(use_enable selinux) \
+        --enable-pkgconfig \
+        --enable-fsadm \
+        --enable-dmeventd \
+        --enable-cmdlib \
+        --enable-static_link \
+        --with-default-dm-run-dir=/run \
+        --with-default-locking-dir=/run/lock/lvm \
+        --with-default-pid-dir=/run \
+        --with-default-run-dir=/run/lvm \
+        "--$_udev-udev_sync" \
+        "--$_udev-udev_rules"
+}
+
+do_build() { :; }
+
+do_install() {
+    $make_cmd DESTDIR="$DESTDIR" install
+
+    chmod -R u+w "$DESTDIR/usr/lib/" "$DESTDIR/usr/bin/"
+    if [ -d "$DESTDIR/usr/sbin" ]; then chmod -R u+w "$DESTDIR/usr/sbin/"; fi
+}

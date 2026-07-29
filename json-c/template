@@ -1,0 +1,17 @@
+pkg_name=json-c
+version=0.19
+revision=1
+build_style=cmake
+short_desc="JSON implementation in C"
+home_page="https://github.com/json-c/json-c"
+license="MIT"
+dist_files="https://s3.amazonaws.com/json-c_releases/releases/json-c-${version}.tar.gz"
+checksum="5893eab1734fbe30ea7bbc31a51fe3e58755c25f42655a9ed375bd867ac641d521"
+
+make_depends="cmake"
+
+configure_args="-DDISABLE_EXTRA_LIBS=ON -DBUILD_TESTING=OFF"
+
+pre_configure() {
+    bsed 's/VERSION 2.8/VERSION 3.9...3.12/' apps/CMakeLists.txt
+}

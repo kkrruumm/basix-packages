@@ -1,0 +1,39 @@
+pkg_name=util-linux
+version=2.42.2
+revision=1
+build_style=gnu-configure
+short_desc="Miscellaneous Linux system utilities"
+home_page="https://github.com/util-linux/util-linux"
+license="GPL-2.0-only, LGPL-2.1-or-later, BSD-3-Clause"
+dist_files="https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.42/util-linux-${version}.tar.xz"
+checksum="3d24d2f45130c76da3d0e68c1beb641568780f555b150d99daccf09bb6b1c06c26"
+
+depends="zlib"
+make_depends="linux-headers"
+
+use_flags="udev python systemd nls"
+use_default="-udev -python -systemd -nls"
+
+configure_args="
+    --enable-libuuid
+    --enable-libblkid
+    --enable-fsck
+    --enable-chfn-chsh
+    --disable-chfn-chsh-password
+    --disable-liblastlog2
+    --disable-makeinstall-chown
+    --disable-rpath
+    $(use_enable nls)
+    $(use_with udev)
+    $(use_with python)
+    $(use_with systemd)"
+
+post_install() {
+    if [ -d "$DESTDIR/usr/sbin" ]; then
+        mv -f "$DESTDIR/usr/sbin/"* "$DESTDIR/usr/bin"
+        rmdir "$DESTDIR/usr/sbin"
+    fi
+
+    brm /usr/share/doc
+    brm /usr/share/bash-completion
+}

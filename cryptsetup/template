@@ -1,0 +1,33 @@
+pkg_name=cryptsetup
+version=2.8.6
+revision=1
+build_style=gnu-configure
+short_desc="Setup virtual encryption devices under Linux dm-crypt"
+home_page="https://gitlab.com/cryptsetup/cryptsetup"
+license="GPL-2.0-or-later"
+dist_files="https://www.kernel.org/pub/linux/utils/cryptsetup/v2.8/cryptsetup-${version}.tar.xz"
+checksum="a922e6ef93df6ebc89b0a8a136b54a80995622a28dcd95a7ee68806415be2dd2"
+depends="json-c openssl util-linux lvm2"
+make_depends="popt"
+
+use_flags="static asciidoc external_tokens nls ssh_token udev"
+use_default="+static -asciidoc -external_tokens -ssh_token -udev -nls"
+
+configure_args="
+    $(use_enable static static-cryptsetup)
+    $(use_enable asciidoc)
+    $(use_enable external_tokens external-tokens)
+    $(use_enable nls)
+    $(use_enable ssh_token ssh-token)
+    $(use_enable udev)
+    --with-crypto_backend=openssl"
+
+pre_build() {
+    bsed '/^SUBDIRS = /s/tests//' Makefile # skip tests
+}
+
+post_install() {
+    for _b in "$DESTDIR/usr/bin/"*.static; do
+        if [ -f "$_b" ]; then mv -f "$_b" "${_b%.static}"; fi
+    done
+}

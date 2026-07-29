@@ -1,0 +1,57 @@
+pkg_name=cmake
+version=4.4.0
+revision=1
+build_style=custom
+short_desc="Cross platform build system generator"
+home_page="https://cmake.org"
+license="BSD-3-Clause"
+dist_files="https://cmake.org/files/v4.4/cmake-${version}.tar.gz"
+checksum="df6de9b7df9831d212d0b16868ba9e1596dc100a7013fd2e9bdcdd17034d29d960"
+depends="bzip2 curl expat zlib"
+make_depends="linux-headers"
+
+use_flags="curses"
+use_default="-curses"
+
+do_build() {
+    if command -v cmake >/dev/null 2>&1; then
+        _bootstrapped=no
+
+        cmake -B build \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_USE_SYSTEM_CURL=True \
+            -DCMAKE_USE_SYSTEM_EXPAT=True \
+            -DCMAKE_USE_SYSTEM_ZLIB=True \
+            -DCMAKE_USE_SYSTEM_BZIP2=True \
+            -DBUILD_CursesDialog=$(use_if curses ON OFF) \
+            -DBUILD_TESTING=OFF
+
+        cmake --build build --parallel "$BPM_JOBS"
+    else
+        _bootstrapped=yes
+
+        ./configure \
+            --prefix=/usr \
+            --system-curl \
+            --system-expat \
+            --system-zlib \
+            --system-bzip2 \
+            --parallel="$BPM_JOBS" -- \
+            -DBUILD_CursesDialog=$(use_if curses ON OFF)
+
+        $make_cmd $make_jobs
+    fi
+}
+
+do_install() {
+    if [ "$_bootstrapped" = no ]; then
+        DESTDIR="$DESTDIR" cmake --install build
+    else
+        $make_cmd DESTDIR="$DESTDIR" install
+    fi
+
+    rm -Rf "$DESTDIR"/usr/doc \
+        "$DESTDIR"/usr/share/cmake*/Help \
+        "$DESTDIR"/usr/share/bash-completion
+}

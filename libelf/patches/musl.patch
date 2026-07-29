@@ -35,24 +35,23 @@ index d015ff8..72cd8b1 100644
 +++ b/lib/Makefile.in
 @@ -121,7 +121,7 @@ libeu_a_LIBADD =
  am_libeu_a_OBJECTS = xasprintf.$(OBJEXT) xstrdup.$(OBJEXT) \
-     xstrndup.$(OBJEXT) xmalloc.$(OBJEXT) next_prime.$(OBJEXT) \
-     crc32.$(OBJEXT) crc32_file.$(OBJEXT) eu-search.$(OBJEXT) \
--    color.$(OBJEXT) error.$(OBJEXT) printversion.$(OBJEXT)
-+    error.$(OBJEXT)
+ 	xstrndup.$(OBJEXT) xmalloc.$(OBJEXT) next_prime.$(OBJEXT) \
+ 	crc32.$(OBJEXT) crc32_file.$(OBJEXT) eu-search.$(OBJEXT) \
+-	color.$(OBJEXT) error.$(OBJEXT) printversion.$(OBJEXT)
++	error.$(OBJEXT)
  libeu_a_OBJECTS = $(am_libeu_a_OBJECTS)
  AM_V_P = $(am__v_P_@AM_V@)
  am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 @@ -427,10 +427,10 @@ textrel_check = if $(READELF) -d $@ | grep -F -q TEXTREL; then $(textrel_found);
  noinst_LIBRARIES = libeu.a
  libeu_a_SOURCES = xasprintf.c xstrdup.c xstrndup.c xmalloc.c next_prime.c \
-           crc32.c crc32_file.c eu-search.c \
--          color.c error.c printversion.c
-+          error.c
+ 		  crc32.c crc32_file.c eu-search.c \
+-		  color.c error.c printversion.c
++		  error.c
  
  noinst_HEADERS = fixedsizehash.h libeu.h system.h dynamicsizehash.h list.h \
--         eu-config.h color.h printversion.h bpf.h \
-+         eu-config.h bpf.h \
-          dynamicsizehash_concurrent.h \
-          eu-search.h locks.h
- 
+-		 eu-config.h color.h printversion.h bpf.h \
++		 eu-config.h bpf.h \
+ 		 dynamicsizehash_concurrent.h \
+ 		 eu-search.h locks.h
 

@@ -1,6 +1,6 @@
 pkg_name=libelf
 version=0.195
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="ELF object file access library from elfutils"
 home_page="https://sourceware.org/elfutils/"

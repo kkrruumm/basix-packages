@@ -1,0 +1,86 @@
+pkg_name=go-bootstrap
+version=1.24.6
+revision=1
+build_style=custom
+short_desc="Bootstrap Go toolchain, built from C without a prebuilt binary"
+home_page="https://go.dev"
+license="BSD-3-Clause"
+dist_files="https://go.dev/dl/go${version}.src.tar.gz
+ https://go.dev/dl/go1.22.6.src.tar.gz
+ https://go.dev/dl/go1.20.6.src.tar.gz
+ https://go.dev/dl/go1.17.13.src.tar.gz
+ https://dl.google.com/go/go1.4-bootstrap-20171003.tar.gz"
+checksum="7d63eb234fd69a8675343096aa0ae61bfb09b3caedf67856c9bae93e6f300749f3 66f84c3d1cc58997d51cd868203d92f0952063f48b8cabf9bf72da1345530a52b6 fb555f6674734d4f36e88594f29aede488ff75a36f659b4eee08217183905f1a12 fab34f540e4ad83908f3c897053cb0d5529452f81fce530cec916aa7b9c6948b69 e38b036986f4969980664342af2e0b14c503bf4222b980f2bfdcb32fd62fde146d"
+
+# go embeds a build id in every binary and checks it at link time, strip
+# invalidates it and the toolchain then refuses to reuse anything
+no_strip=yes
+
+do_extract() {
+    # each tarball unpacks as a plain "go/", so rename every one to the stage
+    # it provides, these names are what patches/ expects, don't change one
+    # without the other
+    for _s in go1.4-bootstrap:go1.4-bootstrap-20171003.tar.gz \
+              go1.17.13:go1.17.13.src.tar.gz \
+              go1.20.6:go1.20.6.src.tar.gz \
+              go1.22.6:go1.22.6.src.tar.gz \
+              "go$version:go$version.src.tar.gz"
+    do
+        bextract "${_s#*:}"
+        mv "$build_dir/go" "$build_dir/${_s%%:*}"
+    done
+}
+
+do_build() {
+    export CC="${CC:-cc}"
+    export CFLAGS="$CFLAGS -std=gnu17"
+    export CGO_FLAGS="$CFLAGS"
+    export CGO_LDFLAGS="$LDFLAGS"
+    export GO_LDFLAGS="-w -s"
+
+    # no network in the sandbox so a go.mod asking for a newer toolchain has to be an error
+    export GOTOOLCHAIN=local
+    export GOENV=off
+    export GOFLAGS=
+    export GOPATH="$build_dir/.gopath"
+    export GOCACHE="$build_dir/.gocache"
+    export GOMODCACHE="$build_dir/.gomodcache"
+
+    # GOARCH and GOHOSTARCH are deliberately left unset
+
+    _prev=
+    for _s in go1.4-bootstrap go1.17.13 go1.20.6 go1.22.6 "go$version"; do
+        sub "bootstrap stage $_s"
+        (
+            cd "$build_dir/$_s/src"
+            GOROOT="$build_dir/$_s"
+            export GOROOT
+            # go1.4 builds its compiler from C and wants no bootstrap root,
+            # every stage after it chains onto the previous tree in place
+            if [ -n "$_prev" ]; then
+                GOROOT_BOOTSTRAP="$build_dir/$_prev"
+                export GOROOT_BOOTSTRAP
+            fi
+            ./make.bash
+        )
+        _prev=$_s
+    done
+}
+
+do_install() {
+    # only the last stage gets packaged, and under a versioned goroot so this
+    # can sit alongside a real go install without owning /usr/bin/go
+    bmkdir "/usr/lib/go$version"
+
+    # -p because the go command decides staleness on mtimes, -P because the
+    # tree contains symlinks that shouldnt be flattened
+    cp -pPR \
+        "$build_dir/go$version/bin" \
+        "$build_dir/go$version/pkg" \
+        "$build_dir/go$version/src" \
+        "$build_dir/go$version/go.env" \
+        "$DESTDIR/usr/lib/go$version"
+
+    # make.bash leftovers, nothing reads these once the toolchain is built
+    brm "/usr/lib/go$version/pkg/bootstrap" "/usr/lib/go$version/pkg/obj"
+}

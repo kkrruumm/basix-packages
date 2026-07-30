@@ -1,0 +1,86 @@
+pkg_name=go
+version=1.26.5
+revision=1
+build_style=custom
+short_desc="Go programming language toolchain"
+home_page="https://go.dev"
+license="BSD-3-Clause"
+dist_files="https://go.dev/dl/go${version}.src.tar.gz"
+checksum="4647bddc3b15cc2adc587492d0346262c65007bf6cd00e486c53e7d4f7a4be8c12"
+wrk_src="go"
+depends="gcc"
+make_depends="go-bootstrap"
+
+# go embeds a build id in every binary and checks it at link time, strip
+# invalidates it and the toolchain then refuses to reuse anything
+no_strip=yes
+
+use_flags="tests toolchain_auto"
+use_default="-tests -toolchain_auto"
+
+do_build() {
+    # keep this in line with go-bootstraps version, it installs its goroot
+    # under /usr/lib/go<version>
+    _bootver=1.24.6
+
+    _boot=/usr/lib/go$_bootver
+    if [ ! -x "$_boot/bin/go" ]; then
+        _boot=$BPM_CACHE/dest/go-bootstrap/usr/lib/go$_bootver
+    fi
+    [ -x "$_boot/bin/go" ] || \
+        die "no go$_bootver bootstrap toolchain, run: bpm install go-bootstrap"
+
+    export GOROOT_BOOTSTRAP="$_boot"
+    export GOROOT="$build_dir/$wrk_src"
+
+    export CC="${CC:-cc}"
+    export CGO_CFLAGS="$CFLAGS"
+    export CGO_LDFLAGS="$LDFLAGS"
+    export GO_LDFLAGS="-w -s"
+
+    # no network in the sandbox so a go.mod asking for a newer toolchain has to be an error
+    export GOTOOLCHAIN=local
+    export GOENV=off
+    export GOFLAGS=
+    export GOPATH="$build_dir/.gopath"
+    export GOCACHE="$build_dir/.gocache"
+    export GOMODCACHE="$build_dir/.gomodcache"
+
+    # GOARCH and GOHOSTARCH are deliberately left unset
+    ( cd src && ./make.bash -v )
+}
+
+do_install() {
+    bmkdir /usr/lib/go
+
+    # relative targets so the tree survives being staged under a $BPM_ROOT
+    bln ../lib/go/bin/go /usr/bin/go
+    bln ../lib/go/bin/gofmt /usr/bin/gofmt
+
+    # -p because the go command decides staleness on mtimes, -P because the
+    # tree contains symlinks that shouldnt be flattened
+    cp -pPR misc bin pkg src lib go.env "$DESTDIR/usr/lib/go"
+
+    # make.bash leftovers plus the api checker, which is a build time tool
+    brm /usr/lib/go/pkg/bootstrap /usr/lib/go/pkg/obj
+    rm -f "$DESTDIR/usr/lib/go/pkg/tool/"*/api
+
+    if ! use tests; then
+        # a couple hundred megabytes of fixtures that only `go test std` and
+        # the windows build scripts ever look at
+        find "$DESTDIR/usr/lib/go/src" "$DESTDIR/usr/lib/go/misc" -type f \
+            \( -name '*_test.go' -o -name '*.bash' -o -name '*.bat' \
+               -o -name '*.rc' \) -exec rm -f {} +
+        find "$DESTDIR/usr/lib/go" -type d -name testdata -exec rm -rf {} +
+    fi
+    :
+}
+
+post_install() {
+    use toolchain_auto && return 0
+
+    # upstream ships GOTOOLCHAIN=auto, which makes `go build` fetch a whole
+    # second toolchain over the network the first time a go.mod asks for a
+    # newer release, this should build its own
+    bsed 's/^GOTOOLCHAIN=.*/GOTOOLCHAIN=local/' "$DESTDIR/usr/lib/go/go.env"
+}

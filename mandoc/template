@@ -1,0 +1,40 @@
+pkg_name=mandoc
+version=1.14.6
+revision=1
+build_style=custom
+short_desc="Manpage compiler and the man, apropos, whatis, and makewhatis tools"
+home_page="https://mandoc.bsd.lv"
+license="ISC"
+dist_files="https://mandoc.bsd.lv/snapshots/mandoc-${version}.tar.gz"
+checksum="0e1e812610cea4d9a254d161599466abccd3688568f19baeff1c2ed0dae586e483"
+depends="zlib"
+
+use_flags="static"
+use_default="+static"
+
+do_configure() {
+    _ldflags=$LDFLAGS
+    if use static; then
+        _ldflags="$_ldflags -static"
+    fi
+
+    cat > configure.local <<EOF
+PREFIX=/usr
+MANDIR=/usr/share/man
+LIBDIR=/usr/lib
+BINDIR=/usr/bin
+SBINDIR=/usr/bin
+LN="ln -sf"
+BINM_PAGER=less
+EOF
+
+    sh ./configure
+}
+
+do_build() {
+    $make_cmd $make_jobs
+}
+
+do_install() {
+    $make_cmd -j1 DESTDIR="$DESTDIR" base-install
+}

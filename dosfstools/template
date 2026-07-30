@@ -1,0 +1,26 @@
+pkg_name=dosfstools
+version=4.2
+revision=1
+build_style=gnu-configure
+short_desc="Utilities for creating and checking FAT filesystems"
+home_page="https://github.com/dosfstools/dosfstools"
+license="GPL-3.0-or-later"
+dist_files="https://github.com/dosfstools/dosfstools/releases/download/v${version}/dosfstools-${version}.tar.gz"
+checksum="29996284e862ae2a12988fc0cc8f02304f9aaebe583a8c51c8d0a1140100161179"
+
+use_flags="static"
+use_default="+static"
+
+# mkdosfs, dosfsck and dosfslabel, the pre-4.0 names for mkfs.fat and stuff
+configure_args="--enable-compat-symlinks"
+
+pre_configure() {
+    use static || return 0
+    LDFLAGS="$LDFLAGS -static"
+    export LDFLAGS
+}
+
+post_install() {
+    # a changelog and four announce files, pointless
+    brm /usr/share/doc
+}

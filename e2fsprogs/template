@@ -1,0 +1,59 @@
+pkg_name=e2fsprogs
+version=1.47.4
+revision=1
+build_style=gnu-configure
+short_desc="Utilities for the ext2, ext3 and ext4 filesystems"
+home_page="https://e2fsprogs.sourceforge.net"
+license="GPL-2.0-only"
+dist_files="https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v${version}/e2fsprogs-${version}.tar.xz"
+checksum="c0fbe968ae75041dd0294cbf88c367e3032f523ada38bc106ee4f8edea4ce5b3e1"
+make_depends="linux-headers"
+
+use_flags="nls static"
+use_default="-nls +static"
+
+# libuuid and libblkid get built but never installed, they exist only so these
+# tools link their own copies
+
+# fsck and stuff are left to their util-linux, busybox, whatever else implementations
+
+configure_args="
+    --enable-symlink-install
+    --enable-libuuid
+    --enable-libblkid
+    --disable-elf-shlibs
+    --disable-fuse2fs
+    --disable-uuidd
+    --disable-fsck
+    $(use_enable nls)
+    --with-udev-rules-dir=no
+    --with-crond-dir=no
+    --with-systemd-unit-dir=no"
+
+pre_configure() {
+    # pointless where off_t is already 64 bit, but keeps the lseek64 path available
+    # if this is ever built for a 32 bit target
+    CPPFLAGS="${CPPFLAGS:-} -DHAVE_LSEEK64"
+    export CPPFLAGS
+
+    use static || return 0
+    LDFLAGS="$LDFLAGS -static"
+    export LDFLAGS
+}
+
+# only the directories worth packaging are installed, leftover names are emptied out
+do_install() {
+    set -- \
+        DESTDIR="$DESTDIR" \
+        MKDIR_P="mkdir -p" \
+        BLKID_MAN="" \
+        BLKID_PROG="" \
+        FINDFS_LINK="" \
+        FINDFS_MAN="" \
+        UPROGS="chattr lsattr" \
+        UMANPAGES="chattr.1 lsattr.1"
+
+    for _d in debugfs e2fsck lib/e2p lib/et lib/ext2fs lib/ss misc resize scrub; do
+        $make_cmd -C "$_d" "$@" install
+    done
+}

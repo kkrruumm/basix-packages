@@ -1,0 +1,24 @@
+pkg_name=tree
+version=2.3.2
+revision=1
+build_style=gnu-makefile
+short_desc="Recursive directory listing as an indented tree"
+home_page="https://oldmanprogrammer.net/source.php?dir=projects/tree"
+license="GPL-2.0-or-later"
+dist_files="https://gitlab.com/OldManProgrammer/unix-tree/-/archive/${version}/unix-tree-${version}.tar.gz"
+checksum="30d5cb4a25bb7c3c0c21eea5ee54fabc481382cd4b20650c80a575c15ff8dba9"
+wrk_src="unix-tree-${version}"
+
+use_flags="static"
+use_default="+static"
+
+pre_build() {
+    use static || return 0
+    LDFLAGS="$LDFLAGS -static"
+    export LDFLAGS
+}
+
+do_install() {
+    bbin tree
+    bman doc/tree.1
+}

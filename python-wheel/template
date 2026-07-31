@@ -1,0 +1,12 @@
+pkg_name=python-wheel
+version=0.47.0
+revision=1
+build_style=python3-pep517
+short_desc="Reference implementation of the python wheel format"
+home_page="https://wheel.readthedocs.io"
+license="MIT"
+dist_files="https://files.pythonhosted.org/packages/source/w/wheel/wheel-${version}.tar.gz"
+checksum="7f4b1c6fa60e31805d2e4461463159eb7bc75db8c124c344e000ef01ca7232c3f8"
+wrk_src="wheel-$version"
+depends="python python-packaging"
+make_depends="python python-build python-flit-core python-installer"

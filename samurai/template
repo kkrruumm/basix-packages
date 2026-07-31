@@ -1,0 +1,15 @@
+pkg_name=samurai
+version=1.3
+revision=1
+build_style=gnu-makefile
+short_desc="Small C implementation of the ninja build tool"
+home_page="https://github.com/michaelforney/samurai"
+license="ISC, Apache-2.0"
+dist_files="https://github.com/michaelforney/samurai/archive/${version}.tar.gz>samurai-${version}.tar.gz"
+checksum="4444d206d7c502396cfe446492e48432dbeb8fd2f0939948ffe38213af395f1030"
+
+post_install() {
+    # meson and etc look for the name 'ninja' 
+    bln samu /usr/bin/ninja
+    bln samu.1 /usr/share/man/man1/ninja.1
+}

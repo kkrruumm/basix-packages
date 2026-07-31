@@ -1,0 +1,22 @@
+pkg_name=python-installer
+version=1.0.1
+revision=1
+build_style=custom
+short_desc="Low level library for installing from a python wheel"
+home_page="https://installer.readthedocs.io"
+license="MIT"
+dist_files="https://github.com/pypa/installer/archive/${version}.tar.gz>installer-${version}.tar.gz"
+checksum="7530b093847aaeed392bc8078e6590c45585d69e6bc696fd6a45e18919b3ec1d4b"
+wrk_src="installer-$version"
+depends="python"
+make_depends="python python-flit-core"
+
+do_build() {
+    python3 -m flit_core.wheel
+}
+
+do_install() {
+    PYTHONPATH="./src${PYTHONPATH:+:$PYTHONPATH}" python3 -m installer \
+        --destdir "$DESTDIR" --prefix /usr \
+        "dist/installer-${version}-py3-none-any.whl"
+}

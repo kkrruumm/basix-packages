@@ -1,0 +1,16 @@
+pkg_name=python-pyproject-hooks
+version=1.2.0
+revision=1
+build_style=python3-pep517
+short_desc="Low level wrappers for PEP 517 build backends"
+home_page="https://pyproject-hooks.readthedocs.io"
+license="MIT"
+dist_files="https://github.com/pypa/pyproject-hooks/archive/v${version}.tar.gz>pyproject-hooks-${version}.tar.gz"
+checksum="f859182e2e587ad219a1f7be2fb1dc3ecbc28c64450c5e1ff163ad1436e366da3c"
+wrk_src="pyproject-hooks-$version"
+depends="python"
+make_depends="python python-flit-core python-installer"
+
+do_build() {
+    python3 -c 'import os, flit_core.buildapi as b; os.makedirs("dist", exist_ok=True); b.build_wheel("dist")'
+}

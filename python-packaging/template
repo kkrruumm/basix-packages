@@ -1,0 +1,16 @@
+pkg_name=python-packaging
+version=26.2
+revision=1
+build_style=python3-pep517
+short_desc="Core utilities for python package handling"
+home_page="https://packaging.pypa.io"
+license="Apache-2.0 OR BSD-2-Clause"
+dist_files="https://files.pythonhosted.org/packages/source/p/packaging/packaging-${version}.tar.gz"
+checksum="307ff0d49ed5b822882726180f9cdd29030c66b44a2c700405baa74b41effd9334"
+wrk_src="packaging-$version"
+depends="python"
+make_depends="python python-flit-core python-installer"
+
+do_build() {
+    python3 -c 'import os, flit_core.buildapi as b; os.makedirs("dist", exist_ok=True); b.build_wheel("dist")'
+}

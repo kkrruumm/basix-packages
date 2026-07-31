@@ -1,0 +1,44 @@
+pkg_name=python
+version=3.14.6
+revision=1
+build_style=gnu-configure
+short_desc="Python programming language interpreter"
+home_page="https://www.python.org"
+license="Python-2.0"
+dist_files="https://www.python.org/ftp/python/${version}/Python-${version}.tar.xz"
+checksum="5380441c1be9eb181266b6b8e89d8d2e0db658d0eebdf8131a1d8bbdcb63ec83b6"
+wrk_src="Python-$version"
+depends="bzip2 expat libffi openssl zlib"
+
+configure_args="
+    --enable-shared
+    --with-system-expat
+    --with-ensurepip=yes"
+
+pre_configure() {
+    # _uuid would pull in util-linux
+cat >> Modules/Setup <<EOF
+*disabled*
+_uuid nis ossaudiodev
+EOF
+
+    # see upstreams PythonNoSemanticInterposition notes
+    CFLAGS="$CFLAGS -fno-semantic-interposition"
+    LDFLAGS="$LDFLAGS -fno-semantic-interposition"
+    export CFLAGS LDFLAGS
+}
+
+do_build() {
+    $make_cmd $make_jobs EXTRA_CFLAGS="$CFLAGS -DTHREAD_STACK_SIZE=0x100000"
+}
+
+post_install() {
+    bln python3 /usr/bin/python
+    bln pip3 /usr/bin/pip
+
+    # cpythons test stuff
+    for _d in "$DESTDIR"/usr/lib/python3*/; do
+        rm -rf "$_d"test "$_d"*/test "$_d"*/tests "$_d"idlelib "$_d"turtle*
+    done
+    rm -f "$DESTDIR"/usr/bin/idle*
+}

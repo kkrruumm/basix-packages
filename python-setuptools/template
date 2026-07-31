@@ -1,0 +1,12 @@
+pkg_name=python-setuptools
+version=83.0.0
+revision=1
+build_style=python3-pep517
+short_desc="Library for packaging and distributing python projects"
+home_page="https://setuptools.pypa.io"
+license="MIT"
+dist_files="https://files.pythonhosted.org/packages/source/s/setuptools/setuptools-${version}.tar.gz"
+checksum="128f7d76a6f244cdc93bb77c9d96250658cd1b9cf12a1e6019cd023c5b15a2257f"
+wrk_src="setuptools-$version"
+depends="python python-packaging"
+make_depends="python python-build python-installer"

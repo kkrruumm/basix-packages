@@ -1,0 +1,21 @@
+pkg_name=python-flit-core
+version=3.12.0
+revision=1
+build_style=custom
+short_desc="Simplified packaging of python modules, PEP 517 build backend"
+home_page="https://flit.pypa.io"
+license="BSD-3-Clause"
+dist_files="https://files.pythonhosted.org/packages/source/f/flit_core/flit_core-${version}.tar.gz"
+checksum="2291118823fa351abbb592a8c414e2c5a5a1642bd4f0bbcc24599ab300f6aaa611"
+wrk_src="flit_core-$version"
+depends="python"
+make_depends="python"
+
+do_build() {
+    python3 -m flit_core.wheel
+}
+
+do_install() {
+    python3 bootstrap_install.py --install-root "$DESTDIR" \
+        "dist/flit_core-${version}-py3-none-any.whl"
+}

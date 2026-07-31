@@ -1,12 +1,12 @@
 pkg_name=bpm
-version=0.3
+version=0.4
 revision=1
 build_style=custom
 short_desc="basix package manager"
 home_page="https://github.com/kkrruumm/bpm"
 license="MIT"
 dist_files="https://github.com/kkrruumm/bpm/archive/refs/tags/${version}.tar.gz"
-checksum="59591744c11c78a2e3717de51afabbeb349e7556c7e795d8b305b9823f2b42ab35"
+checksum="94d49c42b6ead3479cb489c4a492bac5e847ab7cbf0e94c8738a42aa31dee0de"
 
 depends="b3sum busybox curl git xz"
 
@@ -23,7 +23,7 @@ do_install() {
 
     bbin bpm
 
-    for f in lib/common.sh lib/pkg.sh lib/build.sh; do
+    for f in lib/common.sh lib/pkg.sh lib/build.sh lib/account.sh; do
         binstall "$f" 0644 /usr/lib/bpm
     done
     for f in lib/style/*.sh; do

@@ -9,6 +9,7 @@ dist_files="https://www.cpan.org/src/5.0/perl-${version}.tar.xz"
 checksum="d8a9988b0fd5305204c74ac3cca7a19e47625ca65ad10723dfff129abaa4981a36"
 
 depends="bzip2 zlib"
+make_depends="bzip2 zlib"
 
 do_configure() {
     # configure asks for these by name and bpm does not export them

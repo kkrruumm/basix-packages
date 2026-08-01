@@ -10,7 +10,8 @@ checksum="f397be2a59cbbc375cdbb28f7947a9345a8d126fadc6a2bb40b49c1dbe38787c4a"
 wrk_src="elfutils-${version}"
 
 depends="zlib"
-make_depends="m4 pkgconf"
+make_depends="zlib"
+host_make_depends="m4 pkgconf"
 
 configure_args="
     --disable-symbol-versioning

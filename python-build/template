@@ -9,7 +9,7 @@ dist_files="https://files.pythonhosted.org/packages/source/b/build/build-${versi
 checksum="1ce28c89ca2cbdc505385c3e24b4342fe6e61396e81a9a324699fb4048cd8c2241"
 wrk_src="build-$version"
 depends="python python-packaging python-pyproject-hooks"
-make_depends="python python-flit-core python-installer"
+host_make_depends="python python-flit-core python-installer"
 
 do_build() {
     python3 -c 'import os, flit_core.buildapi as b; os.makedirs("dist", exist_ok=True); b.build_wheel("dist")'

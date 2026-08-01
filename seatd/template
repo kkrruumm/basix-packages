@@ -8,7 +8,7 @@ license="MIT"
 dist_files="https://git.sr.ht/~kennylevinsen/seatd/archive/${version}.tar.gz>seatd-${version}.tar.gz"
 checksum="c1653dc2766e90c1fa606869f527085d939e13a84369bfad0f6762deeada152c04"
 wrk_src="seatd-$version"
-make_depends="meson pkgconf"
+host_make_depends="meson pkgconf"
 
 use_flags="services"
 use_default="+services"

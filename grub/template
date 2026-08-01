@@ -9,7 +9,8 @@ dist_files="https://ftp.gnu.org/gnu/grub/grub-${version}.tar.xz"
 checksum="13c48453f9becf4a6e49618749dc7cb83a2c4a0d7600eeeadc6c7c2772c0b87784"
 
 depends="xz"
-make_depends="binutils bison flex linux-headers m4"
+make_depends="linux-headers xz"
+host_make_depends="binutils bison flex m4"
 
 use_flags="pc efi nls"
 use_default="+pc +efi -nls"

@@ -8,6 +8,7 @@ license="LGPL-3.0-or-later"
 dist_files="https://ftp.gnu.org/gnu/mpc/mpc-${version}.tar.gz"
 checksum="86d083c43c08e98d4470c006a01e0df727c8ff56ddd2956b170566ba8c9a46de74"
 depends="mpfr"
+make_depends="mpfr"
 wrk_src="mpc-${version}"
 
 configure_args="--enable-shared"

@@ -8,6 +8,7 @@ license="BSD-3-Clause OR GPL-2.0-only"
 dist_files="https://github.com/facebook/zstd/releases/download/v${version}/zstd-${version}.tar.gz"
 checksum="730dca31244abd219e995f03a55d95b2cfb4b3e16cda055a79fa6f30a4f0e1db8f"
 depends="xz zlib"
+make_depends="xz zlib"
 
 use_flags="lz4"
 use_default="-lz4"

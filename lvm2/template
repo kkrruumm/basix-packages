@@ -8,6 +8,7 @@ license="GPL-2.0-only, LGPL-2.1-only"
 dist_files="https://mirrors.kernel.org/sourceware/lvm2/releases/LVM2.${version}.tgz"
 checksum="09640e7576f521b96c2eda202d43984c9e999949fa4b2d28d93f96d3873cc2438d"
 depends="libaio util-linux"
+make_depends="libaio util-linux"
 wrk_src="LVM2.${version}"
 
 use_flags="udev selinux"

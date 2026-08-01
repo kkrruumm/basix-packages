@@ -7,6 +7,7 @@ home_page="https://zlib.net/pigz/"
 license="Zlib"
 dist_files="https://zlib.net/pigz/pigz-${version}.tar.gz"
 checksum="fa165f414a12851806d9d54920879dd989917b9aa410aec671c602b18773b23638"
+depends="zlib"
 make_depends="zlib"
 
 do_build() {

@@ -8,7 +8,8 @@ license="AFL-2.1 OR GPL-2.0-or-later"
 dist_files="https://dbus.freedesktop.org/releases/dbus/dbus-${version}.tar.xz"
 checksum="b1d1f22858a8f04665e5dca29d194f892620f00fd3e3f4e89dd208e78868436e"
 depends="expat"
-make_depends="cmake expat"
+make_depends="expat"
+host_make_depends="cmake"
 
 system_accounts="messagebus"
 messagebus_uid=22

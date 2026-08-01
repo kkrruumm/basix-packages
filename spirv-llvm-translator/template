@@ -9,7 +9,8 @@ dist_files="https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/v${ver
 checksum="ca8600a6f57b127a12bffac8b73cd4f7139b87aaec0eda5615f3c2b09ed5be5f"
 wrk_src="SPIRV-LLVM-Translator-$version"
 depends="llvm spirv-headers"
-make_depends="cmake llvm python spirv-headers spirv-tools"
+make_depends="llvm spirv-headers"
+host_make_depends="cmake python spirv-tools"
 
 configure_args="
     -DBUILD_SHARED_LIBS=ON

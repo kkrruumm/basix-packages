@@ -9,7 +9,8 @@ dist_files="https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/v${ver
 checksum="cf47ecec68f53e982de25f551fc344522a3ee58e116bf9a35caf278611dd237541"
 wrk_src="SPIRV-Tools-$version"
 depends="spirv-headers"
-make_depends="cmake python spirv-headers"
+make_depends="spirv-headers"
+host_make_depends="cmake python"
 
 configure_args="
     -DSPIRV_WERROR=OFF

@@ -9,4 +9,4 @@ dist_files="https://github.com/asciidoc-py/asciidoc-py/releases/download/${versi
 checksum="0dcd36ed183bcc853ffb42e210079f700a856d3c13e07e3e3ee0faed11de149c75"
 wrk_src="asciidoc-$version"
 depends="docbook-xsl libxslt python"
-make_depends="python python-build python-installer python-setuptools python-wheel"
+host_make_depends="python python-build python-installer python-setuptools python-wheel"

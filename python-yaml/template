@@ -11,4 +11,4 @@ wrk_src="pyyaml-$version"
 depends="python"
 
 make_build_args="--skip-dependency-check"
-make_depends="python python-build python-installer python-setuptools python-wheel"
+host_make_depends="python python-build python-installer python-setuptools python-wheel"

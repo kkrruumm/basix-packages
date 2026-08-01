@@ -12,7 +12,8 @@ wrk_src="llvm-project-llvmorg-$version/llvm"
 patch_args="-p2"
 
 depends="zlib"
-make_depends="cmake python"
+make_depends="zlib"
+host_make_depends="cmake python"
 
 use_flags="amdgpu"
 use_default="+amdgpu"

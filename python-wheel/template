@@ -9,4 +9,4 @@ dist_files="https://files.pythonhosted.org/packages/source/w/wheel/wheel-${versi
 checksum="7f4b1c6fa60e31805d2e4461463159eb7bc75db8c124c344e000ef01ca7232c3f8"
 wrk_src="wheel-$version"
 depends="python python-packaging"
-make_depends="python python-build python-flit-core python-installer"
+host_make_depends="python python-build python-flit-core python-installer"

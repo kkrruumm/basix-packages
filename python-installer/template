@@ -9,7 +9,7 @@ dist_files="https://github.com/pypa/installer/archive/${version}.tar.gz>installe
 checksum="7530b093847aaeed392bc8078e6590c45585d69e6bc696fd6a45e18919b3ec1d4b"
 wrk_src="installer-$version"
 depends="python"
-make_depends="python python-flit-core"
+host_make_depends="python python-flit-core"
 
 do_build() {
     python3 -m flit_core.wheel

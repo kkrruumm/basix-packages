@@ -9,7 +9,9 @@ dist_files="https://github.com/swaywm/sway/archive/refs/tags/${version}.tar.gz>s
 checksum="b70154614d961a9861c05fd7ad8ebb9022478bceaef2cfda76f93503f85017c2d3"
 wrk_src="sway-$version"
 depends="cairo json-c libdrm libevdev libinput libudev-zero libxkbcommon pango pcre2 pixman wlroots dejavu-fonts-ttf"
-make_depends="meson pkgconf scdoc wayland-protocols wlroots"
+make_depends="cairo json-c libdrm libevdev libinput libudev-zero libxkbcommon pango pcre2
+ pixman wlroots"
+host_make_depends="meson pkgconf scdoc wayland-protocols"
 
 use_flags="man swaybar swaynag tray"
 use_default="+man +swaybar +swaynag -tray"

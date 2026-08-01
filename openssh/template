@@ -9,6 +9,7 @@ dist_files="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${versi
 checksum="0534deadf94e03b8ed6f1ab8a4e22600f20e2042bdb40be61d2289eac7d25d737a"
 
 depends="openssl zlib"
+make_depends="openssl zlib"
 
 use_flags="security_key utmp services"
 use_default="-security_key -utmp +services"

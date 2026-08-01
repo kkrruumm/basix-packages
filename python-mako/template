@@ -9,4 +9,4 @@ dist_files="https://files.pythonhosted.org/packages/source/M/Mako/Mako-${version
 checksum="3609266a8bfbb7f788f12b0b6b78838720348a4c07792c885eaf4827aaaefc8b03"
 wrk_src="Mako-$version"
 depends="python python-markupsafe"
-make_depends="python python-build python-installer python-setuptools python-wheel"
+host_make_depends="python python-build python-installer python-setuptools python-wheel"

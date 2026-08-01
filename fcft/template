@@ -9,7 +9,8 @@ dist_files="https://codeberg.org/dnkl/fcft/archive/${version}.tar.gz>fcft-${vers
 checksum="378925bec7bfbc7ad45beb076811d099cefb72815f3315f4bcf3e503bc25bb2a"
 wrk_src="fcft"
 depends="fontconfig freetype harfbuzz libutf8proc pixman tllist"
-make_depends="meson pkgconf scdoc tllist"
+make_depends="fontconfig freetype harfbuzz libutf8proc pixman tllist"
+host_make_depends="meson pkgconf scdoc"
 
 use_flags="man"
 use_default="+man"

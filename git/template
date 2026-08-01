@@ -7,6 +7,7 @@ home_page="https://git-scm.com"
 license="GPL-2.0-only"
 dist_files="https://mirrors.edge.kernel.org/pub/software/scm/git/git-${version}.tar.xz https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-${version}.tar.xz"
 checksum="99cf418d6426cd615c2818986002f3d4619c707bceea9c624414cc2362c1ff5ed4 be976a5146ce71cf94793c93a9947879efe59a2d3948bf12872ff75d0551db063b"
+depends="curl zlib"
 make_depends="curl zlib"
 
 use_flags="man perl python"

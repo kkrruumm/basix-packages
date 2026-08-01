@@ -9,6 +9,7 @@ dist_files="https://www.python.org/ftp/python/${version}/Python-${version}.tar.x
 checksum="5380441c1be9eb181266b6b8e89d8d2e0db658d0eebdf8131a1d8bbdcb63ec83b6"
 wrk_src="Python-$version"
 depends="bzip2 expat libffi openssl zlib"
+make_depends="bzip2 expat libffi openssl zlib"
 
 configure_args="
     --enable-shared

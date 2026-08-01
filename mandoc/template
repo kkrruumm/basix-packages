@@ -8,6 +8,7 @@ license="ISC"
 dist_files="https://mandoc.bsd.lv/snapshots/mandoc-${version}.tar.gz"
 checksum="0e1e812610cea4d9a254d161599466abccd3688568f19baeff1c2ed0dae586e483"
 depends="zlib"
+make_depends="zlib"
 
 use_flags="man static"
 use_default="+man +static"

@@ -10,7 +10,8 @@ checksum="f2770e2de83b8dcf045ccf53271e85dc00afa1ee8f770379439b4300e76a5baa"
 wrk_src="llvm-project-llvmorg-$version/clang"
 patch_args="-p2"
 depends="llvm"
-make_depends="cmake llvm python"
+make_depends="llvm"
+host_make_depends="cmake python"
 
 configure_args="
     -DCLANG_DEFAULT_CXX_STDLIB=libstdc++

@@ -9,7 +9,8 @@ dist_files="https://github.com/KhronosGroup/Vulkan-Loader/archive/vulkan-sdk-${v
 checksum="6cc1b4501735b068b6fe2bde57ff96237a329ce30c819c6698be585026c63d0e35"
 wrk_src="Vulkan-Loader-vulkan-sdk-$version"
 depends="vulkan-headers wayland"
-make_depends="cmake python vulkan-headers wayland"
+make_depends="vulkan-headers wayland"
+host_make_depends="cmake python"
 
 configure_args="
     -DVULKAN_HEADERS_INSTALL_DIR=/usr

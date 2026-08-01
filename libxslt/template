@@ -8,7 +8,8 @@ license="MIT"
 dist_files="https://download.gnome.org/sources/libxslt/${version%.*}/libxslt-${version}.tar.xz"
 checksum="6c529acc02344fe48377810debadaee8eb0511a5553a8b7bea685d5282ab00cb"
 depends="libxml2"
-make_depends="libxml2 pkgconf"
+make_depends="libxml2"
+host_make_depends="pkgconf"
 
 # libgcrypt is only for the crypto extension module
 configure_args="

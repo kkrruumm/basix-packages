@@ -7,9 +7,10 @@ home_page="https://www.mesa3d.org"
 license="MIT"
 dist_files="https://mesa3d.org/archive/mesa-${version}.tar.xz"
 checksum="7c127e6df58b173f9d8126cce5f768d82235704c290ae1ba45c3206e1f04b27961"
-depends="expat libdrm libudev-zero llvm wayland wayland-protocols zlib zstd"
-make_depends="bison clang cmake flex libclc libdrm llvm meson pkgconf python
- python-mako python-yaml spirv-llvm-translator spirv-tools wayland-protocols glslang"
+depends="expat libdrm libelf libudev-zero llvm wayland zlib zstd"
+make_depends="expat libdrm libelf libudev-zero llvm wayland zlib zstd"
+host_make_depends="bison clang cmake flex glslang libclc meson pkgconf python python-mako
+ python-yaml spirv-llvm-translator spirv-tools wayland-protocols"
 
 use_flags="amdgpu intel nouveau rusticl vulkan"
 use_default="+amdgpu +intel -nouveau -rusticl +vulkan"

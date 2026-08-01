@@ -1,0 +1,24 @@
+pkg_name=libinput
+version=1.31.3
+revision=1
+build_style=meson
+short_desc="Input device library for Wayland and X"
+home_page="https://gitlab.freedesktop.org/libinput/libinput"
+license="MIT"
+dist_files="https://gitlab.freedesktop.org/libinput/libinput/-/archive/${version}/libinput-${version}.tar.gz"
+checksum="98f4b75c159279f6bc17f4c93d81726b080e64381086f898907b6fc31879abb88b"
+depends="libevdev libudev-zero mtdev"
+make_depends="libevdev meson pkgconf python"
+
+use_flags="lua"
+use_default="-lua"
+
+# libwacom is tablet support, debug-gui needs gtk, documentation needs sphinx
+configure_args="
+    -Dmtdev=true
+    -Dlibwacom=false
+    -Ddebug-gui=false
+    -Dtests=false
+    -Dinstall-tests=false
+    -Ddocumentation=false
+    $(use_if lua -Dlua-plugins=enabled -Dlua-plugins=disabled)"

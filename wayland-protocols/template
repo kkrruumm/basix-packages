@@ -1,0 +1,12 @@
+pkg_name=wayland-protocols
+version=1.49
+revision=1
+build_style=meson
+short_desc="Protocol extensions for the Wayland window system"
+home_page="https://gitlab.freedesktop.org/wayland/wayland-protocols"
+license="MIT"
+dist_files="https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/${version}/wayland-protocols-${version}.tar.gz"
+checksum="26138ac7e4aec530fb0ad6f630bfdb60f32354aa824c2d8638e8c5c5ab6bec2733"
+depends="wayland"
+make_depends="meson pkgconf wayland"
+configure_args="-Dtests=false"

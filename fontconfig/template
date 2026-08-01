@@ -1,0 +1,21 @@
+pkg_name=fontconfig
+version=2.17.1
+revision=1
+build_style=gnu-configure
+short_desc="Library for configuring and customizing font access"
+home_page="https://www.freedesktop.org/wiki/Software/fontconfig/"
+license="MIT"
+dist_files="https://gitlab.freedesktop.org/api/v4/projects/890/packages/generic/fontconfig/${version}/fontconfig-${version}.tar.xz"
+checksum="1263377ea896ef04fbc40176f83def7698e3f91f3a68b043d0132f87cfb9f07886"
+depends="expat freetype"
+make_depends="gperf python"
+
+use_flags="doc nls"
+use_default="+doc -nls"
+
+configure_args="
+    --enable-static
+    --enable-iconv
+    --with-cache-dir=/var/cache/fontconfig
+    $(use_enable doc docs)
+    $(use_enable nls)"

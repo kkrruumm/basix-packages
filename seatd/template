@@ -1,0 +1,31 @@
+pkg_name=seatd
+version=0.9.3
+revision=1
+build_style=meson
+short_desc="Minimal seat management daemon and libseat library"
+home_page="https://git.sr.ht/~kennylevinsen/seatd"
+license="MIT"
+dist_files="https://git.sr.ht/~kennylevinsen/seatd/archive/${version}.tar.gz>seatd-${version}.tar.gz"
+checksum="c1653dc2766e90c1fa606869f527085d939e13a84369bfad0f6762deeada152c04"
+wrk_src="seatd-$version"
+make_depends="meson pkgconf"
+
+use_flags="services"
+use_default="+services"
+
+# logind is elogind or systemd, neither of which is here. builtin lets a
+# compositor take a seat without the daemon running, seatd is the normal path
+configure_args="
+    -Dlibseat-seatd=enabled
+    -Dlibseat-builtin=enabled
+    -Dlibseat-logind=disabled
+    -Dserver=enabled
+    -Dexamples=disabled
+    -Dman-pages=disabled"
+
+post_install() {
+    if use services; then
+        binstall "$FILESDIR/seatd.run" 0755 /etc/sv/seatd run
+        bln /run/runit/supervise.seatd /etc/sv/seatd/supervise
+    fi
+}

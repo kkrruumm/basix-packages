@@ -1,0 +1,26 @@
+pkg_name=glib
+version=2.88.0
+revision=1
+build_style=meson
+short_desc="GNU library of C routines"
+home_page="https://gitlab.gnome.org/GNOME/glib"
+license="LGPL-2.1-or-later"
+dist_files="https://download.gnome.org/sources/glib/${version%.*}/glib-${version}.tar.xz"
+checksum="f2edb718705e11624da01c4c55b0c1a81e5fbccdc10842493e624b13371ca4b923"
+depends="libffi pcre2 util-linux zlib"
+make_depends="bison flex libelf meson pkgconf python"
+
+use_flags="man nls introspection"
+use_default="man -nls -introspection"
+
+# gobject-introspection and docbook-xsl need to be packaged later
+configure_args="
+    -Dselinux=disabled
+    -Dsysprof=disabled
+    -Dlibmount=enabled
+    -Dlibelf=enabled
+    -Ddocumentation=false
+    -Dtests=false
+    $(use_if man -Dman-pages=enabled -Dman-pages=disabled)
+    $(use_if nls -Dnls=enabled -Dnls=disabled)
+    $(use_if introspection -Dintrospection=enabled -Dintrospection=disabled)"

@@ -1,0 +1,21 @@
+pkg_name=foot
+version=1.27.0
+revision=1
+build_style=meson
+short_desc="Fast, lightweight and minimalistic Wayland terminal emulator"
+home_page="https://codeberg.org/dnkl/foot"
+license="MIT"
+dist_files="https://codeberg.org/dnkl/foot/archive/${version}.tar.gz>foot-${version}.tar.gz"
+checksum="34f92e0a50ca36b7de72971eddda215b7222462e2c7365e68e9c14961066c718"
+wrk_src="foot"
+depends="fcft fontconfig freetype libutf8proc libxkbcommon pixman wayland"
+make_depends="meson ncurses pkgconf scdoc tllist wayland wayland-protocols"
+
+use_flags="man terminfo"
+use_default="+man +terminfo"
+
+configure_args="
+    -Dgrapheme-clustering=enabled
+    -Dutmp-backend=none
+    $(use_if terminfo -Dterminfo=enabled -Dterminfo=disabled)
+    $(use_if man -Ddocs=enabled -Ddocs=disabled)"

@@ -1,0 +1,21 @@
+pkg_name=lm_sensors
+version=3.6.0
+revision=1
+build_style=gnu-makefile
+short_desc="Utilities to read temperature, voltage and fan sensors"
+home_page="https://github.com/lm-sensors/lm-sensors"
+license="GPL-2.0-or-later, LGPL-2.1-or-later"
+dist_files="https://github.com/lm-sensors/lm-sensors/archive/V3-6-0.tar.gz>lm_sensors-${version}.tar.gz"
+checksum="58a567dfcf852e90437880350db6a040d54e72312ff5858437937b291947e03eb3"
+wrk_src="lm-sensors-3-6-0"
+depends="perl"
+make_depends="bison flex perl"
+
+use_flags="man"
+use_default="+man"
+
+make_install_args="SBINDIR=/usr/bin MANDIR=/usr/share/man"
+
+post_install() {
+    use man || rm -Rf "$DESTDIR/usr/share/man"
+}

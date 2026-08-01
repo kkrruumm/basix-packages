@@ -1,0 +1,75 @@
+pkg_name=mesa
+version=26.1.5
+revision=1
+build_style=meson
+short_desc="Open source implementation of the OpenGL and Vulkan specifications"
+home_page="https://www.mesa3d.org"
+license="MIT"
+dist_files="https://mesa3d.org/archive/mesa-${version}.tar.xz"
+checksum="7c127e6df58b173f9d8126cce5f768d82235704c290ae1ba45c3206e1f04b27961"
+depends="expat libdrm libudev-zero llvm wayland wayland-protocols zlib zstd"
+make_depends="bison clang cmake flex libclc libdrm llvm meson pkgconf python
+ python-mako python-yaml spirv-llvm-translator spirv-tools wayland-protocols glslang"
+
+use_flags="amdgpu intel nouveau rusticl vulkan"
+use_default="+amdgpu +intel -nouveau -rusticl +vulkan"
+
+configure_args="
+    -Dplatforms=wayland
+    -Dglx=disabled
+    -Degl=enabled
+    -Dgbm=enabled
+    -Dopengl=true
+    -Dgles1=disabled
+    -Dgles2=enabled
+    -Dllvm=enabled
+    -Dshared-llvm=enabled
+    -Ddraw-use-llvm=true
+    -Dexpat=enabled
+    -Dzstd=enabled
+    -Dzlib=enabled
+    -Ddisplay-info=enabled
+    -Dvalgrind=disabled
+    -Dlibunwind=disabled
+    -Dlmsensors=disabled
+    -Dselinux=false
+    -Dbuild-tests=false
+    -Dhtml-docs=disabled
+    -Dxlib-lease=disabled
+    -Dlegacy-x11=disabled
+    -Dspirv-tools=enabled"
+
+pre_configure() {
+    _gallium=llvmpipe,softpipe
+    _vulkan=swrast
+
+    if use amdgpu; then
+        _gallium="$_gallium,radeonsi"
+        _vulkan="$_vulkan,amd"
+    fi
+    if use intel; then
+        _gallium="$_gallium,iris"
+        _vulkan="$_vulkan,intel"
+    fi
+    if use nouveau; then
+        _gallium="$_gallium,nouveau"
+        _vulkan="$_vulkan,nouveau"
+    fi
+
+    configure_args="$configure_args
+        -Dgallium-drivers=$_gallium"
+
+    if use vulkan; then
+        configure_args="$configure_args -Dvulkan-drivers=$_vulkan"
+    else
+        configure_args="$configure_args -Dvulkan-drivers="
+    fi
+
+    if use rusticl; then
+        configure_args="$configure_args
+            -Dgallium-rusticl=true
+            -Damd-use-llvm=true"
+    else
+        configure_args="$configure_args -Dgallium-rusticl=false"
+    fi
+}

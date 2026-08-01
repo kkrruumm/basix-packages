@@ -1,0 +1,19 @@
+pkg_name=pixman
+version=0.46.4
+revision=1
+build_style=meson
+short_desc="Low level pixel manipulation library"
+home_page="https://www.pixman.org"
+license="MIT"
+dist_files="https://www.cairographics.org/releases/pixman-${version}.tar.gz"
+checksum="bf7e48bf0e523ded06089cb99af7be29c2e2581970a63e72ea6f49a469e511a6b3"
+depends="libpng"
+make_depends="meson perl pkgconf"
+
+configure_args="
+    -Dgnu-inline-asm=enabled
+    -Dlibpng=enabled
+    -Dopenmp=disabled
+    -Dgtk=disabled
+    -Dtests=disabled
+    -Ddemos=disabled"

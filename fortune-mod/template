@@ -1,0 +1,24 @@
+pkg_name=fortune-mod
+version=3.24.0
+revision=1
+build_style=cmake
+short_desc="Implementation of the BSD games fortune program"
+home_page="https://www.shlomifish.org/open-source/projects/fortune-mod/"
+license="BSD-4-Clause-UC"
+dist_files="https://github.com/shlomif/fortune-mod/releases/download/fortune-mod-${version}/fortune-mod-${version}.tar.xz"
+checksum="28052a87c87ed51825062fd7e08f3cf4fd2f7f96d87e0d0d185258a1cfe60dc252"
+depends="pcre2"
+make_depends="cmake perl pcre2"
+
+use_flags="offensive"
+use_default="-offensive"
+
+# the cookies default under /usr/local and this is a merged /usr layout
+configure_args="
+    -DCOOKIEDIR=/usr/share/fortunes
+    -DLOCALDIR=/usr/share/fortunes/local
+    $(use_if offensive -DNO_OFFENSIVE=OFF -DNO_OFFENSIVE=ON)"
+
+post_install() {
+    bln ../games/fortune /usr/bin/fortune
+}

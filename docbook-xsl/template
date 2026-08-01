@@ -1,0 +1,27 @@
+pkg_name=docbook-xsl
+version=1.79.2
+revision=1
+build_style=custom
+short_desc="Docbook XSL modular stylesheets"
+home_page="https://github.com/docbook/xslt10-stylesheets"
+license="MIT"
+dist_files="https://github.com/docbook/xslt10-stylesheets/releases/download/release/${version}/docbook-xsl-nons-${version}.tar.bz2"
+checksum="43108052fa95ac65959cb22e8650e816bf8f60cc2cde50beb791102a7a03921725"
+wrk_src="docbook-xsl-nons-$version"
+depends="docbook-xml libxml2"
+
+do_build() { :; }
+
+do_install() {
+    bmkdir /usr/share/xsl/docbook
+    for _d in common eclipse epub fo highlighting html htmlhelp javahelp \
+              lib manpages params profiling roundtrip template website \
+              xhtml xhtml-1_1 xhtml5 catalog.xml VERSION VERSION.xsl; do
+        [ -e "$_d" ] && cp -R "$_d" "$DESTDIR/usr/share/xsl/docbook/"
+    done
+    :
+}
+
+post_install() {
+    binstall "$FILESDIR/docbook-xsl.hook" 0755 /etc/bpm/hooks/post-install docbook-xsl
+}

@@ -9,8 +9,8 @@ dist_files="https://mandoc.bsd.lv/snapshots/mandoc-${version}.tar.gz"
 checksum="0e1e812610cea4d9a254d161599466abccd3688568f19baeff1c2ed0dae586e483"
 depends="zlib"
 
-use_flags="static"
-use_default="+static"
+use_flags="man static"
+use_default="+man +static"
 
 do_configure() {
     _ldflags=$LDFLAGS
@@ -37,4 +37,6 @@ do_build() {
 
 do_install() {
     $make_cmd -j1 DESTDIR="$DESTDIR" base-install
+
+    use man || rm -rf "$DESTDIR/usr/share/man"
 }

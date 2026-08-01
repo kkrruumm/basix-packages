@@ -1,0 +1,33 @@
+pkg_name=opendoas
+version=6.8.2
+revision=1
+build_style=configure
+short_desc="Portable OpenBSD doas, to execute commands as another user"
+home_page="https://github.com/Duncaen/OpenDoas"
+license="ISC, BSD-3-Clause"
+dist_files="https://github.com/Duncaen/OpenDoas/archive/v${version}.tar.gz>opendoas-${version}.tar.gz"
+checksum="56a116e8617fc99184f3c919f591493b76d6511c2a79328f6f13a46ef2df0ae0d0"
+wrk_src="OpenDoas-$version"
+make_depends="bison"
+
+use_flags="timestamp"
+use_default="+timestamp"
+
+# no pam here, shadow is the auth backend. timestamp is the sudo style grace
+# period, it needs a kernel with CONFIG_TMPFS and a writable /run
+configure_args="
+    --prefix=/usr
+    --with-shadow
+    --without-pam
+    $(use_if timestamp --with-timestamp --without-timestamp)"
+
+pre_build() {
+    # its makefile chowns the installed binary to root, which fails in the
+    # sandbox, the setuid bit is set in post_install instead
+    bsed '/chown ${BINOWN}:${BINGRP}/d' GNUmakefile
+}
+
+post_install() {
+    # doas is useless without this, it needs to be root to change uid
+    chmod 4755 "$DESTDIR/usr/bin/doas"
+}

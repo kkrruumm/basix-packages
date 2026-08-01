@@ -1,0 +1,12 @@
+pkg_name=asciidoc
+version=10.2.1
+revision=1
+build_style=python3-pep517
+short_desc="Text based document generation"
+home_page="https://asciidoc-py.github.io"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/asciidoc-py/asciidoc-py/releases/download/${version}/asciidoc-${version}.tar.gz"
+checksum="0dcd36ed183bcc853ffb42e210079f700a856d3c13e07e3e3ee0faed11de149c75"
+wrk_src="asciidoc-$version"
+depends="docbook-xsl libxslt python"
+make_depends="python python-build python-installer python-setuptools python-wheel"

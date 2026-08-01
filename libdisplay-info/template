@@ -1,0 +1,11 @@
+pkg_name=libdisplay-info
+version=0.2.0
+revision=1
+build_style=meson
+short_desc="EDID and DisplayID library"
+home_page="https://gitlab.freedesktop.org/emersion/libdisplay-info"
+license="MIT"
+dist_files="https://gitlab.freedesktop.org/emersion/libdisplay-info/-/archive/${version}/libdisplay-info-${version}.tar.gz"
+checksum="118dc0d50860fcdfd4841feb883d47967dd2fcf9be2ed416402ad86532b12c48f9"
+depends="hwdata"
+make_depends="hwdata meson pkgconf python"

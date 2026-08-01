@@ -1,0 +1,36 @@
+pkg_name=docbook-xml
+version=4.5
+revision=1
+build_style=custom
+short_desc="XML DTD designed for computer documentation"
+home_page="https://www.oasis-open.org/docbook/"
+license="MIT"
+dist_files="https://www.oasis-open.org/docbook/xml/${version}/docbook-xml-${version}.zip
+ https://www.oasis-open.org/docbook/xml/4.4/docbook-xml-4.4.zip
+ https://www.oasis-open.org/docbook/xml/4.3/docbook-xml-4.3.zip
+ https://www.oasis-open.org/docbook/xml/4.2/docbook-xml-4.2.zip"
+checksum="64d749cd899f01f6237387a357a2e1fe8accf7c098f92273955c95a5584d6d39 ba855844e02a09a804aef321c20450e319b989b6d13ad500c0831125fe54a61a 650178369839a72951e8cf43250a71b378b59ccc408d2190ecdf3062a13efb2a 93ce3e4ff3bb9ea979dd96ff7f8d20fd2225221fd816058e4f7f44146229b633"
+depends="libxml2"
+
+# four dtd versions because documents pin the one they were written against
+wrk_src="."
+
+do_extract() {
+    for _v in 4.2 4.3 4.4 "$version"; do
+        mkdir -p "$build_dir/$_v"
+        unzip -q -o "$SOURCEDIR/docbook-xml-$_v.zip" -d "$build_dir/$_v"
+    done
+}
+
+do_build() { :; }
+
+do_install() {
+    for _v in 4.2 4.3 4.4 "$version"; do
+        bmkdir "/usr/share/xml/docbook/xml-dtd-$_v"
+        cp -R "$build_dir/$_v/." "$DESTDIR/usr/share/xml/docbook/xml-dtd-$_v/"
+    done
+}
+
+post_install() {
+    binstall "$FILESDIR/docbook-xml.hook" 0755 /etc/bpm/hooks/post-install docbook-xml
+}

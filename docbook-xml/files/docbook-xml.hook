@@ -1,0 +1,18 @@
+#!/bin/sh -e
+[ "$1" = docbook-xml ] || exit 0
+
+_cat=${2}etc/xml/catalog
+mkdir -p "${2}etc/xml"
+[ -f "$_cat" ] || xmlcatalog --noout --create "$_cat"
+
+for _v in 4.2 4.3 4.4 4.5; do
+    xmlcatalog --noout --add public \
+        "-//OASIS//DTD DocBook XML V$_v//EN" \
+        "file:///usr/share/xml/docbook/xml-dtd-$_v/docbookx.dtd" "$_cat"
+    xmlcatalog --noout --add rewriteSystem \
+        "http://www.oasis-open.org/docbook/xml/$_v" \
+        "file:///usr/share/xml/docbook/xml-dtd-$_v" "$_cat"
+    xmlcatalog --noout --add rewriteURI \
+        "http://www.oasis-open.org/docbook/xml/$_v" \
+        "file:///usr/share/xml/docbook/xml-dtd-$_v" "$_cat"
+done

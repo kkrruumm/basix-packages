@@ -1,0 +1,17 @@
+pkg_name=spirv-llvm-translator
+version=21.1.0
+revision=1
+build_style=cmake
+short_desc="Bidirectional translator between SPIR-V and LLVM IR"
+home_page="https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
+license="Apache-2.0 WITH LLVM-exception"
+dist_files="https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/v${version}/SPIRV-LLVM-Translator-${version}.tar.gz"
+checksum="ca8600a6f57b127a12bffac8b73cd4f7139b87aaec0eda5615f3c2b09ed5be5f"
+wrk_src="SPIRV-LLVM-Translator-$version"
+depends="llvm spirv-headers"
+make_depends="cmake llvm python spirv-headers spirv-tools"
+
+configure_args="
+    -DBUILD_SHARED_LIBS=ON
+    -DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=/usr
+    -DLLVM_SPIRV_INCLUDE_TESTS=OFF"

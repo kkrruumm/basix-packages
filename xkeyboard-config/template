@@ -1,0 +1,19 @@
+pkg_name=xkeyboard-config
+version=2.48
+revision=1
+build_style=meson
+short_desc="Keyboard configuration database for the X Window System"
+home_page="https://www.freedesktop.org/wiki/Software/XKeyboardConfig/"
+license="MIT"
+dist_files="https://www.x.org/releases/individual/data/xkeyboard-config/xkeyboard-config-${version}.tar.xz"
+checksum="4565e15c4f5807eddb5c87e0b3e3f6db7bb8f20e1348fe428d1d861bcd74288ad1"
+make_depends="meson pkgconf python"
+
+use_flags="nls"
+use_default="-nls"
+
+# the xorg rules symlinks are for a running X server, which this is not
+configure_args="
+    -Dcompat-rules=false
+    -Dxorg-rules-symlinks=false
+    $(use_if nls -Dnls=true -Dnls=false)"

@@ -1,0 +1,28 @@
+pkg_name=vim
+version=9.2.0506
+revision=1
+build_style=gnu-configure
+short_desc="Vi Improved, a highly configurable text editor"
+home_page="https://www.vim.org"
+license="Vim"
+dist_files="https://github.com/vim/vim/archive/refs/tags/v${version}.tar.gz>vim-${version}.tar.gz"
+checksum="13d3418343bca356cac6cf75f66ec3a9328d8a300265474a51ad626219029c33c2"
+depends="ncurses"
+make_depends="ncurses"
+
+use_flags="python"
+use_default="-python"
+
+# no gui
+configure_args="
+    --with-features=huge
+    --enable-multibyte
+    --disable-gui
+    --without-x
+    --disable-gtktest
+    --disable-netbeans
+    --disable-canberra
+    --disable-selinux
+    --disable-acl
+    --disable-nls
+    $(use_if python --enable-python3interp=dynamic --disable-python3interp)"

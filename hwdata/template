@@ -1,0 +1,15 @@
+pkg_name=hwdata
+version=0.409
+revision=1
+build_style=gnu-configure
+short_desc="Hardware identification and configuration data"
+home_page="https://github.com/vcrhonek/hwdata"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/vcrhonek/hwdata/archive/refs/tags/v${version}.tar.gz>hwdata-${version}.tar.gz"
+checksum="bdf013c6e3daef959e287518fee5e8214195d17d43e0ef4dd1b2cc0109f49652b5"
+wrk_src="hwdata-$version"
+configure_args="--datadir=/usr/share"
+
+pre_build() {
+    bsed 's/install -m 644 -T /install -m 644 /' Makefile
+}

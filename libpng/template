@@ -1,0 +1,10 @@
+pkg_name=libpng
+version=1.6.58
+revision=1
+build_style=gnu-configure
+short_desc="Library for manipulating PNG images"
+home_page="http://www.libpng.org/pub/png/libpng.html"
+license="Libpng"
+dist_files="https://downloads.sourceforge.net/sourceforge/libpng/libpng-${version}.tar.xz"
+checksum="8d53d22a1281c6198f19cb178f6d3639a49db810573a5f1c076eb8102685cde9"
+depends="zlib"

@@ -1,0 +1,16 @@
+pkg_name=lcms2
+version=2.19.1
+revision=1
+build_style=meson
+short_desc="Small colour management engine"
+home_page="https://littlecms.com"
+license="MIT"
+dist_files="https://downloads.sourceforge.net/sourceforge/lcms/lcms2-${version}.tar.gz"
+checksum="f649f683e5360ca77ff4117b036eadb0299c6ca7ef3c561525daec2908a9e5d243"
+depends="zlib"
+make_depends="meson pkgconf"
+
+configure_args="
+    -Dutils=false
+    -Dfastfloat=true
+    -Dthreaded=true"

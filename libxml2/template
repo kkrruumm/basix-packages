@@ -1,0 +1,19 @@
+pkg_name=libxml2
+version=2.13.8
+revision=1
+build_style=gnu-configure
+short_desc="Library providing XML and HTML support"
+home_page="https://gitlab.gnome.org/GNOME/libxml2"
+license="MIT"
+dist_files="https://download.gnome.org/sources/libxml2/${version%.*}/libxml2-${version}.tar.xz"
+checksum="b7229a616aa4d80f0474c69abf4b6a051f8c6badf73d2b7fa33d0606cf445e6e"
+depends="ncurses xz zlib"
+make_depends="ncurses pkgconf python xz zlib"
+
+configure_args="
+    --with-threads
+    --with-history=no
+    --without-icu
+    --without-python
+    --with-legacy
+    --enable-static"

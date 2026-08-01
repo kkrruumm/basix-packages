@@ -1,0 +1,20 @@
+pkg_name=wayland
+version=1.26.0
+revision=1
+build_style=meson
+short_desc="Core Wayland window system protocol library"
+home_page="https://wayland.freedesktop.org"
+license="MIT"
+dist_files="https://gitlab.freedesktop.org/wayland/wayland/-/releases/${version}/downloads/wayland-${version}.tar.xz"
+checksum="1c720640f57bc5356678131b3bd734cff8164892dcfe825361a80f9124970a177e"
+depends="expat libffi"
+make_depends="flex meson pkgconf"
+
+# dtd validation is the only thing that needs libxml2, and documentation needs
+# doxygen and xsltproc
+configure_args="
+    -Dlibraries=true
+    -Dscanner=true
+    -Ddocumentation=false
+    -Ddtd_validation=false
+    -Dtests=false"

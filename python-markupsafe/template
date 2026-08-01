@@ -1,0 +1,12 @@
+pkg_name=python-markupsafe
+version=3.0.3
+revision=1
+build_style=python3-pep517
+short_desc="Implements a XML/HTML/XHTML markup safe string for python"
+home_page="https://palletsprojects.com/p/markupsafe/"
+license="BSD-3-Clause"
+dist_files="https://files.pythonhosted.org/packages/source/M/MarkupSafe/markupsafe-${version}.tar.gz"
+checksum="31c0e30de872706dfc7789faa8f991527fb66ade1da83e78320c794af64e6da5ab"
+wrk_src="markupsafe-$version"
+depends="python"
+make_depends="python python-build python-installer python-setuptools python-wheel"

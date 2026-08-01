@@ -1,0 +1,13 @@
+pkg_name=libutf8proc
+version=2.11.3
+revision=1
+build_style=cmake
+short_desc="Library for processing UTF-8 encoded Unicode strings"
+home_page="https://juliastrings.github.io/utf8proc/"
+license="MIT"
+dist_files="https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v${version}.tar.gz>libutf8proc-${version}.tar.gz"
+checksum="3607ef0c754e7e77d48b02d85e50d84e41af81451b96906c99f426f9bfa958abf9"
+wrk_src="utf8proc-$version"
+make_depends="cmake"
+
+configure_args="-DBUILD_SHARED_LIBS=ON"

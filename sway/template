@@ -1,0 +1,28 @@
+pkg_name=sway
+version=1.12
+revision=1
+build_style=meson
+short_desc="Tiling Wayland compositor compatible with i3"
+home_page="https://swaywm.org"
+license="MIT"
+dist_files="https://github.com/swaywm/sway/archive/refs/tags/${version}.tar.gz>sway-${version}.tar.gz"
+checksum="b70154614d961a9861c05fd7ad8ebb9022478bceaef2cfda76f93503f85017c2d3"
+wrk_src="sway-$version"
+depends="cairo json-c libdrm libevdev libinput libudev-zero libxkbcommon pango pcre2 pixman wlroots dejavu-fonts-ttf"
+make_depends="meson pkgconf scdoc wayland-protocols wlroots"
+
+use_flags="man swaybar swaynag tray"
+use_default="+man +swaybar +swaynag -tray"
+
+# tray needs an sd-bus provider, which here would be basu. gdk-pixbuf is only
+# for loading non png wallpapers and tray icons
+configure_args="
+    -Ddefault-wallpaper=false
+    -Dgdk-pixbuf=disabled
+    -Dzsh-completions=false
+    -Dfish-completions=false
+    -Dbash-completions=true
+    $(use_if swaybar -Dswaybar=true -Dswaybar=false)
+    $(use_if swaynag -Dswaynag=true -Dswaynag=false)
+    $(use_if tray -Dtray=enabled -Dtray=disabled)
+    $(use_if man -Dman-pages=enabled -Dman-pages=disabled)"

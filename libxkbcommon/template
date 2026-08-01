@@ -1,0 +1,23 @@
+pkg_name=libxkbcommon
+version=1.13.2
+revision=1
+build_style=meson
+short_desc="Library to handle keyboard descriptions"
+home_page="https://xkbcommon.org"
+license="MIT"
+dist_files="https://github.com/xkbcommon/libxkbcommon/archive/xkbcommon-${version}.tar.gz>libxkbcommon-${version}.tar.gz"
+checksum="b6b869719334d160764d2fc3f1dd134dd903b3ea1b0605cd05e6e36917311a54"
+wrk_src="libxkbcommon-xkbcommon-$version"
+depends="xkeyboard-config"
+make_depends="bison meson pkgconf python xkeyboard-config"
+
+use_flags="tools xkbregistry"
+use_default="+tools -xkbregistry"
+
+configure_args="
+    -Denable-x11=false
+    -Denable-docs=false
+    -Denable-wayland=false
+    -Denable-xkbregistry=true
+    $(use_if xkbregistry -Denable-xkbregistry=true -Denable-xkbregistry=false)
+    $(use_if tools -Denable-tools=true -Denable-tools=false)"

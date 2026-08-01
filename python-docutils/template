@@ -1,0 +1,12 @@
+pkg_name=python-docutils
+version=0.23
+revision=1
+build_style=python3-pep517
+short_desc="Text processing system for reStructuredText"
+home_page="https://docutils.sourceforge.io"
+license="Public Domain, BSD-2-Clause, GPL-3.0-or-later"
+dist_files="https://files.pythonhosted.org/packages/source/d/docutils/docutils-${version}.tar.gz"
+checksum="6c4464081c82f0dfb41095c85d4c4d4a4335f0ccd163878f7ccd15585d26073bd2"
+wrk_src="docutils-$version"
+depends="python"
+make_depends="python python-build python-flit-core python-installer"

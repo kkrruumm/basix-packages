@@ -1,0 +1,23 @@
+pkg_name=htop
+version=3.5.2
+revision=1
+build_style=gnu-configure
+short_desc="Interactive process viewer"
+home_page="https://htop.dev"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/htop-dev/htop/releases/download/${version}/htop-${version}.tar.xz"
+checksum="c7a0ef8f2787def5af4b92f9e133052e640c215b4756fb99cfc36da806f1c0ad57"
+depends="ncurses"
+make_depends="ncurses"
+
+use_flags="man sensors"
+use_default="+man -sensors"
+
+configure_args="
+    --enable-unicode
+    --disable-hwloc
+    $(use_enable sensors)"
+
+post_install() {
+    use man || brm /usr/share/man/man1/htop.1
+}

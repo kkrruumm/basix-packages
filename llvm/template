@@ -1,0 +1,40 @@
+pkg_name=llvm
+version=21.1.7
+revision=1
+build_style=cmake
+short_desc="Low level virtual machine compiler infrastructure"
+home_page="https://llvm.org"
+license="Apache-2.0 WITH LLVM-exception"
+dist_files="https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${version}.tar.gz>llvm-${version}.tar.gz"
+checksum="f2770e2de83b8dcf045ccf53271e85dc00afa1ee8f770379439b4300e76a5baa"
+
+wrk_src="llvm-project-llvmorg-$version/llvm"
+patch_args="-p2"
+
+depends="zlib"
+make_depends="cmake python"
+
+use_flags="amdgpu"
+use_default="+amdgpu"
+
+configure_args="
+    -DLLVM_BUILD_LLVM_DYLIB=ON
+    -DLLVM_LINK_LLVM_DYLIB=ON
+    -DLLVM_ENABLE_RTTI=ON
+    -DLLVM_INCLUDE_BENCHMARKS=OFF
+    -DLLVM_INCLUDE_EXAMPLES=OFF
+    -DLLVM_INCLUDE_DOCS=OFF
+    -DLLVM_INCLUDE_TESTS=OFF
+    -DLLVM_ENABLE_TERMINFO=OFF
+    -DLLVM_ENABLE_LIBXML2=OFF
+    -Wno-dev"
+
+pre_configure() {
+    if use amdgpu; then
+        _targets="host;AMDGPU"
+    fi
+
+    configure_args="$configure_args
+        -DLLVM_TARGETS_TO_BUILD=$_targets
+        -DLLVM_HOST_TRIPLE=$(${CC:-cc} -dumpmachine)"
+}

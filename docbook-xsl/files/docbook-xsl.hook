@@ -1,0 +1,9 @@
+#!/bin/sh -e
+[ "$1" = docbook-xsl ] || exit 0
+
+_cat=${2}etc/xml/catalog
+mkdir -p "${2}etc/xml"
+[ -f "$_cat" ] || xmlcatalog --noout --create "$_cat"
+
+xmlcatalog --noout --add nextCatalog "" \
+    "file:///usr/share/xsl/docbook/catalog.xml" "$_cat"

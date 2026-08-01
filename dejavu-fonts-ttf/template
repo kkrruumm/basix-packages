@@ -1,0 +1,26 @@
+pkg_name=dejavu-fonts-ttf
+version=2.37
+revision=1
+build_style=custom
+short_desc="DejaVu font family, a Vera derivative with wider coverage"
+home_page="https://dejavu-fonts.github.io"
+license="Bitstream-Vera"
+dist_files="https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-${version}.tar.bz2"
+checksum="b702bac8a0f8e0802758549da3b4d8041c3c83c3894e1e8a960eab53af18cce845"
+depends="fontconfig"
+
+do_build() { :; }
+
+do_install() {
+    bmkdir /usr/share/fonts/dejavu
+    for _f in ttf/*.ttf; do
+        binstall "$_f" 0644 /usr/share/fonts/dejavu
+    done
+
+    # fontconfig ships these upstream, they set dejavu as the default for the
+    # generic sans, serif and monospace families
+    bmkdir /usr/share/fontconfig/conf.avail
+    for _c in fontconfig/*.conf; do
+        binstall "$_c" 0644 /usr/share/fontconfig/conf.avail
+    done
+}

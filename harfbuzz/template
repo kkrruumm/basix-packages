@@ -1,0 +1,31 @@
+pkg_name=harfbuzz
+version=14.2.1
+revision=1
+build_style=meson
+short_desc="OpenType text shaping engine"
+home_page="https://harfbuzz.github.io"
+license="MIT"
+dist_files="https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
+checksum="fd1ca500318637f241482bb35d7143ef8d8971bb6b6f439ec2cf0327a4f907280c"
+depends="freetype glib libpng zlib"
+make_depends="glib meson pkgconf python"
+
+use_flags="utilities"
+use_default="-utilities"
+
+configure_args="
+    -Dfreetype=enabled
+    -Dglib=enabled
+    -Dgobject=disabled
+    -Dpng=enabled
+    -Dzlib=enabled
+    -Dcairo=disabled
+    -Dchafa=disabled
+    -Dicu=disabled
+    -Dgraphite=disabled
+    -Dgraphite2=disabled
+    -Dintrospection=disabled
+    -Ddocs=disabled
+    -Dtests=disabled
+    -Dbenchmark=disabled
+    $(use_if utilities -Dutilities=enabled -Dutilities=disabled)"

@@ -1,0 +1,27 @@
+pkg_name=wlroots
+version=0.20
+revision=1
+build_style=meson
+short_desc="Modular Wayland compositor library"
+home_page="https://gitlab.freedesktop.org/wlroots/wlroots"
+license="MIT"
+dist_files="https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/${version}/wlroots-${version}.tar.gz"
+checksum="4255e64a0452a7a485e51624f38850e7dc1699c8f16399e18340b841ba2133ffd8"
+depends="libdisplay-info libdrm libinput libudev-zero libxkbcommon mesa pixman seatd wayland"
+make_depends="hwdata meson pkgconf wayland-protocols"
+
+use_flags="vulkan"
+use_default="+vulkan"
+
+# xwayland needs an x server, x11 backend needs libX11
+# this is wayland only *for now*
+configure_args="
+    -Dxwayland=disabled
+    -Dbackends=drm,libinput
+    -Dallocators=gbm
+    -Dexamples=false
+    -Dxcb-errors=disabled
+    -Dsession=enabled
+    -Dcolor-management=enabled
+    -Dlibliftoff=disabled
+    $(use_if vulkan -Drenderers=gles2,vulkan -Drenderers=gles2)"

@@ -1,0 +1,13 @@
+pkg_name=cowsay
+version=3.8.4
+revision=1
+build_style=gnu-makefile
+short_desc="Configurable speaking and thinking cow, and a bit more"
+home_page="https://cowsay.diamonds"
+license="GPL-1.0-or-later OR Artistic-1.0-Perl"
+dist_files="https://github.com/cowsay-org/cowsay/archive/refs/tags/v${version}.tar.gz>cowsay-${version}.tar.gz"
+checksum="732e372b075caa5d05332e97da90c8593cbf9ecfe2c91fb6228fa5a5832335bed6"
+wrk_src="cowsay-$version"
+depends="perl"
+
+make_install_args="prefix=/usr sysconfdir=/etc"

@@ -1,0 +1,23 @@
+pkg_name=libevdev
+version=1.13.4
+revision=1
+build_style=meson
+short_desc="Wrapper library for evdev input devices"
+home_page="https://www.freedesktop.org/wiki/Software/libevdev/"
+license="MIT"
+dist_files="https://www.freedesktop.org/software/libevdev/libevdev-${version}.tar.xz"
+checksum="f5b544de356cb65ff9e1c63e8eb1f53b1e421f32ac064f764a69927f57f91905a4"
+make_depends="meson pkgconf python"
+
+use_flags="man tools"
+use_default="+man +tools"
+
+# documentation wants doxygen, tools are diagnostic programs nothing needs
+configure_args="
+    -Dtests=disabled
+    -Ddocumentation=disabled
+    $(use_if tools -Dtools=enabled -Dtools=disabled)"
+
+post_install() {
+    use man || rm -Rf "$DESTDIR/usr/share/man"
+}

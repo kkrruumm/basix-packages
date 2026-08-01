@@ -1,0 +1,10 @@
+pkg_name=scdoc
+version=1.11.4
+revision=1
+build_style=gnu-makefile
+short_desc="Simple man page generator written in C99"
+home_page="https://sr.ht/~sircmpwn/scdoc/"
+license="MIT"
+dist_files="https://git.sr.ht/~sircmpwn/scdoc/archive/${version}.tar.gz>scdoc-${version}.tar.gz"
+checksum="7cea3ff2476ec7082337e6ff77c9aa9e94af57559e5ab3e1993b7d86b5283671"
+wrk_src="scdoc-$version"

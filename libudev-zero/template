@@ -1,0 +1,9 @@
+pkg_name=libudev-zero
+version=1.0.4
+revision=1
+build_style=gnu-makefile
+short_desc="Drop-in replacement for libudev without a daemon"
+home_page="https://github.com/illiliti/libudev-zero"
+license="ISC"
+dist_files="https://github.com/illiliti/libudev-zero/archive/${version}.tar.gz>libudev-zero-${version}.tar.gz"
+checksum="21c3945f8c38eeeca28ec2a1c41eda01c0681af400c655a3efd4a50a2adb178c72"

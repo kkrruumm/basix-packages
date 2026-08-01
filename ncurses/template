@@ -1,0 +1,44 @@
+pkg_name=ncurses
+version=6.6
+revision=1
+build_style=gnu-configure
+short_desc="System V Release 4.0 curses emulation library"
+home_page="https://invisible-island.net/ncurses/"
+license="MIT"
+dist_files="https://invisible-island.net/archives/ncurses/ncurses-${version}.tar.gz"
+checksum="fbec55697a01f99b9cc3f25be55e73ae7091f4c53e5d81a1ea15734c4e5b7238"
+
+# widec only with compatibility symlinks below
+configure_args="
+    --enable-pc-files
+    --enable-widec
+    --disable-rpath-hack
+    --with-pkg-config-libdir=/usr/lib/pkgconfig
+    --with-shared
+    --with-termlib
+    --without-ada
+    --without-tests
+    --without-debug
+    --without-cxx-binding"
+
+pre_configure() {
+    CFLAGS="$CFLAGS -fPIC"
+    export CFLAGS
+}
+
+post_install() {
+    # everything is built wide, so point the narrow names at the wide ones
+    # rather than building the whole library a second time
+    for _l in ncurses form panel menu tinfo; do
+        rm -f "$DESTDIR/usr/lib/lib$_l.so"
+        printf 'INPUT(-l%sw)\n' "$_l" > "$DESTDIR/usr/lib/lib$_l.so"
+        chmod 755 "$DESTDIR/usr/lib/lib$_l.so"
+        ln -sf "lib${_l}w.a" "$DESTDIR/usr/lib/lib$_l.a"
+        ln -sf "lib${_l}w.so.6" "$DESTDIR/usr/lib/lib$_l.so.6"
+        ln -sf "${_l}w.pc" "$DESTDIR/usr/lib/pkgconfig/$_l.pc"
+    done
+
+    # some packages look for libcurses rather than libncurses
+    printf 'INPUT(-lncursesw)\n' > "$DESTDIR/usr/lib/libcursesw.so"
+    ln -sf libncurses.so "$DESTDIR/usr/lib/libcurses.so"
+}

@@ -1,0 +1,18 @@
+pkg_name=libxslt
+version=1.1.43
+revision=1
+build_style=gnu-configure
+short_desc="XSLT parser library from the GNOME project"
+home_page="https://gitlab.gnome.org/GNOME/libxslt"
+license="MIT"
+dist_files="https://download.gnome.org/sources/libxslt/${version%.*}/libxslt-${version}.tar.xz"
+checksum="6c529acc02344fe48377810debadaee8eb0511a5553a8b7bea685d5282ab00cb"
+depends="libxml2"
+make_depends="libxml2 pkgconf"
+
+# libgcrypt is only for the crypto extension module
+configure_args="
+    --enable-static
+    --without-python
+    --without-crypto
+    --disable-dependency-tracking"

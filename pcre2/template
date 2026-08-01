@@ -1,0 +1,16 @@
+pkg_name=pcre2
+version=10.47
+revision=1
+build_style=gnu-configure
+short_desc="Perl compatible regular expressions library, second version"
+home_page="https://github.com/PhilipHazel/pcre2"
+license="BSD-3-Clause"
+dist_files="https://github.com/PhilipHazel/pcre2/releases/download/pcre2-${version}/pcre2-${version}.tar.bz2"
+checksum="abcd7327919f41f77b99c3782ab64bd67d4089246846b6149dd719c27ecf8f171c"
+depends="bzip2 zlib"
+
+configure_args="
+    --with-pic
+    --enable-jit
+    --enable-pcre2-16
+    --enable-pcre2-32"

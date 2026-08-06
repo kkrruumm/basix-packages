@@ -1,0 +1,148 @@
+# there's no default/normal way to disable some shit and leave other shit with this
+# so this is unpacked entirely and things use flags disable are deleted after
+# since there's no compile here, nbd
+# this fucking sucked, btw.
+pkg_name=linux-firmware
+version=20260622
+revision=1
+build_style=custom
+short_desc="Firmware blobs for devices supported by the Linux kernel"
+home_page="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+license="GPL-2.0-only, GPL-2.0-or-later, MIT, custom:redistributable"
+dist_files="https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-${version}.tar.xz"
+checksum="0d4b2c1f6de5b90bedb0dbb4c04123ebaed64a9c1107015bfb3395ed35d0244d"
+
+# these are vendor blobs
+no_strip=yes
+
+# note: intel cpu microcode is not here, thats a separate upstream
+# note: intel sof audio firmware isn't here either, it ships from sof-bin
+#       intel-audio below is the older avs/catpt/sst stuff, the only sof
+#       firmware in this tree is mediateks
+use_flags="amdgpu amd-ucode amd-misc radeon nvidia
+ intel-gpu intel-bt intel-audio intel-camera intel-misc iwlwifi
+ ath qca qcom brcm mediatek realtek marvell ti-wifi wifi-misc
+ ethernet storage serial media sound arm
+ whence dedup xz zstd"
+
+use_default="+amdgpu -amd-ucode +amd-misc -radeon -nvidia
+ +intel-gpu +intel-bt +intel-audio -intel-camera -intel-misc +iwlwifi
+ +ath +qca -qcom +brcm +mediatek +realtek -marvell -ti-wifi -wifi-misc
+ -ethernet -storage -serial -media +sound -arm
+ -whence -dedup -xz -zstd"
+
+# optional flags for compression, none of this is required
+# compressed firmware needs CONFIG_FW_LOADER_COMPRESS_{XZ,ZSTD} in the kernel though
+if use xz; then host_make_depends="${host_make_depends:-} xz"; fi
+if use zstd; then host_make_depends="${host_make_depends:-} zstd"; fi
+if use dedup; then host_make_depends="${host_make_depends:-} rdfind"; fi
+
+# paths owned by each flag, relative to /usr/lib/firmware, globs allowed
+# the intel wifi/bt/audio/camera split happens in do_install instead because they all
+# share one directory because fml
+# intel-misc is still here because the sensor hub firmware sits in the top level directories
+# named after the OEM
+_fw_paths() {
+    case $1 in
+        amdgpu) echo "amdgpu" ;;
+        amd-ucode) echo "amd-ucode" ;;
+        amd-misc) echo "amd amdnpu amdtee" ;;
+        radeon) echo "radeon r128 matrox" ;;
+        nvidia) echo "nvidia tegra*" ;;
+        intel-gpu) echo "i915 xe" ;;
+        intel-misc) echo "HP LENOVO dell qat_*.bin" ;;
+        iwlwifi) echo "iwlwifi iwlwifi-*.ucode iwlwifi-*.pnvm" ;;
+        ath) echo "ath6k ath9k_htc ath10k ath11k ath12k ar3k ath3k-1.fw
+                   ar5523.bin ar7010*.fw ar9170-*.fw ar9271.fw carl9170*.fw
+                   htc_7010.fw htc_9271.fw wil6210*" ;;
+        qca) echo "qca" ;;
+        qcom) echo "qcom a300_*.fw a330_*.fw a420_*.fw" ;;
+        brcm) echo "brcm cypress" ;;
+        mediatek) echo "mediatek airoha mt7601u.bin mt76*.bin vpu_d.bin vpu_p.bin
+                        rt2[0-9][0-9][0-9]*.bin rt3[0-9][0-9][0-9]*.bin rt73.bin" ;;
+        realtek) echo "realtek rtlwifi rtw88 rtw89 rtl_bt rtl_nic" ;;
+        marvell) echo "mrvl libertas mwl8k mwlwifi lbtf_usb.bin usb8388*" ;;
+        ti-wifi) echo "ti-connectivity wl12*.bin wl18*.bin" ;;
+        wifi-misc) echo "atmel atusb rsi rsi_91x.fw wfx agere_*.bin wsm_22.bin
+                         vntwusb.fw sdd_sagrad_*.bin ositech 3com" ;;
+        ethernet) echo "bnx2 bnx2x cxgb3 cxgb4 e100 tigon liquidio netronome qed
+                        mellanox myricom myri10ge_*.dat cavium dpaa2 emulex
+                        tehuti vxge slicoss sxg acenic phanfw.bin kaweth
+                        hfi1_*.fw sun ueagle-atm" ;;
+        storage) echo "adaptec advansys isci qlogic ql2*.bin
+                       cbfw-*.bin ct2fw-*.bin ctfw-*.bin" ;;
+        serial) echo "moxa keyspan keyspan_pda edgeport whiteheat*.fw ti_[0-9]*.fw
+                      rp2.fw mts_*.fw cis yam ene-ub6250 usbdux*_firmware.bin" ;;
+        media) echo "dvb-*.fw dvb-*.hex dvb_nova_*.inp sms1xxx-*.fw isdbt_*.inp
+                     cmmb_*.inp tdmb_*.inp av7110 cpia2 go7007 ttusb-budget
+                     as102_data*.hex cx18* v4l-* vicam dabusb s2250*.fw
+                     f2255usb.bin tlg2300_firmware.bin lgs8g75.fw" ;;
+        sound) echo "cirrus sdca cs42l43.bin TAS2XXX*.bin TIAS*.bin TXNW*.bin
+                     INT8866*.bin [0-9A-F][0-9A-F][0-9A-F][0-9A-F]-*.bin
+                     ctefx*.bin ctspeq.bin emi26 emi62 tas2781 ess yamaha korg
+                     emu sb16 turtlebeach dsp56k" ;;
+        arm) echo "arm imx nxp meson rockchip amlogic powervr ti ti-keystone
+                   renesas amphion cnm cadence microchip inside-secure aeonsemi
+                   s5p-mfc*.fw r8a779x_usb3_*.dlmem rcar_gen4_pcie.bin
+                   Lontium lt*_fw.bin ixp4xx bmi260-init-data.fw tsse_firmware.bin" ;;
+        *) echo "" ;;
+    esac
+}
+
+do_install() {
+    _fw=$DESTDIR/usr/lib/firmware
+
+    if use xz && use zstd; then
+        die "$pkg_name: the xz and zstd use flags are mutually exclusive"
+    fi
+    if use xz; then _comp=--xz
+    elif use zstd; then _comp=--zstd
+    else _comp=; fi
+
+    [ -f copy-firmware.sh ] || die "$pkg_name: upstream dropped copy-firmware.sh"
+    sh ./copy-firmware.sh ${_comp} "$_fw"
+
+    # intel/ mixes wifi, bluetooth, audio dsp, cameras, the sensor hub,
+    # quickassist, and the ice nic tables in one tree so it gets split by prefix
+    # rather than by directory, most iwlwifi firmware lives in here, not at
+    # the top level
+    for _e in "$_fw"/intel/*; do
+        [ -e "$_e" ] || continue
+        case ${_e##*/} in
+            iwlwifi*) use iwlwifi || rm -rf "$_e" ;;
+            ibt-*|ibt_*) use intel-bt || rm -rf "$_e" ;;
+            avs*|catpt*|dsp_fw_*|fw_sst_*|IntcSST*|sst*) use intel-audio || rm -rf "$_e" ;;
+            ipu*|irci*|vsc*) use intel-camera || rm -rf "$_e" ;;
+            *) use intel-misc || rm -rf "$_e" ;;
+        esac
+    done
+
+    for _f in $use_flags; do
+        if use "$_f"; then continue; fi
+        # deliberately unquoted, the table is globs
+        for _p in $(_fw_paths "$_f"); do rm -rf "$_fw"/$_p; done
+    done
+
+    # whence links firmware across directories, so pruning leaves dead symlinks
+    find "$_fw" -type l | while read -r _l; do
+        [ -e "$_l" ] || rm -f "$_l"
+    done
+    # -depth so a directory is tried after everything under it is gone
+    find "$_fw" -depth -type d | while read -r _d; do
+        rmdir "$_d" 2>/dev/null || :
+    done
+
+    # hardlink/symlink identical blobs, amdgpu and qcom ship a lot of those
+    if use dedup; then
+        [ -f dedup-firmware.sh ] || die "$pkg_name: no dedup-firmware.sh upstream"
+        sh ./dedup-firmware.sh "$_fw"
+    fi
+
+    for _l in LICEN[CS]E.* GPL-2 GPL-3; do
+        if [ -f "$_l" ]; then blicense "$_l"; fi
+    done
+    # ~1.5M of provenance and redistribution terms for every blob in the tree
+    if use whence; then
+        binstall WHENCE 0644 "/usr/share/licenses/$pkg_name"
+    fi
+}

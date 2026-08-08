@@ -1,0 +1,145 @@
+# ported from kiss linuxs extra/rust, which is the only sane reference for building
+# rust against a musl host with system llvm
+#
+# rust bootstraps itself, the previous stable is downloaded as prebuilt musl
+# tarballs and dropped into the cache directory x.py would otherwise fetch
+# into at build time
+pkg_name=rust
+version=1.97.1
+revision=1
+build_style=custom
+short_desc="Rust programming language compiler and cargo"
+home_page="https://www.rust-lang.org"
+license="Apache-2.0 OR MIT"
+
+# bootstrap compiler, must match src/stage0 in the source tarball
+_rust_boot=1.96.0
+_rust_stage0=2026-05-28
+_rust_triple=x86_64-unknown-linux-musl
+
+dist_files="https://static.rust-lang.org/dist/rustc-${version}-src.tar.xz
+ https://static.rust-lang.org/dist/${_rust_stage0}/rust-std-${_rust_boot}-${_rust_triple}.tar.xz
+ https://static.rust-lang.org/dist/${_rust_stage0}/rustc-${_rust_boot}-${_rust_triple}.tar.xz
+ https://static.rust-lang.org/dist/${_rust_stage0}/cargo-${_rust_boot}-${_rust_triple}.tar.xz"
+
+checksum="0c47ed32cc66e67edcce0ee604b55449fd9031d8e7ca71f2c6b44bb429ee6f4e 1eca9650cabfaad2d29315765f969775224a56940f73a8683e759b3ef8ce0160 d05e57d0752361cdfcef83358c42cd0e0a4de790015b9b72df09ee4630339b07 ef2d660aaf1a16ccb225519f745530c5916fe66e9bddccd0a3614649fdea7150"
+
+# the bootstrap tarballs go into x.py's cache as they are
+skip_extract="rust-std-${_rust_boot}-${_rust_triple}.tar.xz
+ rustc-${_rust_boot}-${_rust_triple}.tar.xz
+ cargo-${_rust_boot}-${_rust_triple}.tar.xz"
+
+wrk_src="rustc-${version}-src"
+
+depends="llvm openssl xz zlib"
+make_depends="llvm openssl xz zlib curl"
+host_make_depends="pkgconf python"
+
+use_flags="rustfmt clippy docs"
+use_default="+rustfmt -clippy -docs"
+
+do_configure() {
+    _tools='"cargo"'
+    if use rustfmt; then _tools="$_tools, \"rustfmt\""; fi
+    if use clippy; then _tools="$_tools, \"clippy\""; fi
+
+    if use docs; then _docs=true; else _docs=false; fi
+
+    cat > config.toml <<EOF
+[llvm]
+link-shared      = true
+download-ci-llvm = false
+
+[build]
+build  = "$_rust_triple"
+host   = [ "$_rust_triple" ]
+target = [ "$_rust_triple" ]
+
+docs           = $_docs
+compiler-docs  = false
+extended       = true
+submodules     = false
+python         = "python3"
+locked-deps    = true
+vendor         = true
+tools          = [ $_tools ]
+sanitizers     = false
+profiler       = false
+full-bootstrap = false
+
+[install]
+prefix = "/usr"
+
+[target.$_rust_triple]
+llvm-config = "/usr/bin/llvm-config"
+crt-static  = false
+sanitizers  = false
+
+[dist]
+src-tarball = false
+
+[rust]
+backtrace         = false
+channel           = "stable"
+codegen-tests     = false
+codegen-units-std = 1
+codegen-units     = 0
+debug             = false
+debug-assertions  = false
+debuginfo-level   = 0
+incremental       = false
+jemalloc          = false
+rpath             = false
+dist-src          = false
+lld               = false
+EOF
+
+    # kiss patches specific vendored curl-sys versions, this does the same
+    # thing to whatever versions this release happens to vendor. the checksum
+    # json has to be blanked afterwards or cargo refuses the edited tree
+    for _c in vendor/curl-sys-*/; do
+        [ -d "$_c" ] || continue
+        awk '{print}
+             /\.define\("BUILDING_LIBCURL", None\)/ {
+                 print "        .define(\"CURL_CA_BUNDLE\", \"\\\"/etc/ssl/cert.pem\\\"\")"
+                 print "        .define(\"CURL_CA_PATH\", \"\\\"/etc/ssl/certs\\\"\")"
+             }' "$_c/build.rs" > _cs && mv -f _cs "$_c/build.rs"
+        bsed 's/\("files":{\)[^}]*/\1/' "$_c/.cargo-checksum.json"
+    done
+
+    # x.py wants the bootstrap tarballs sitting in its cache, named exactly as
+    # upstream ships them
+    _cache=build/cache/$_rust_stage0
+    mkdir -p "$_cache"
+    for _b in rust-std rustc cargo; do
+        cp -f "$SOURCEDIR/${_b}-${_rust_boot}-${_rust_triple}.tar.xz" "$_cache/"
+    done
+}
+
+do_build() {
+    # trim absolute build paths out of the resulting binaries
+    RUSTFLAGS="${RUSTFLAGS:-} --remap-path-prefix=$PWD=."
+    export RUSTFLAGS
+
+    # llvm-only systems have no libgcc_s, which the bootstrap binaries want
+    # alias it to libunwind when that's what's installed, this does nothing on gcc
+    _unwind=$("${CC:-cc}" -print-file-name=libunwind.so)
+    case $_unwind in */*)
+        printf 'llvm-libunwind = "system"\n' >> config.toml
+        mkdir -p libgcc
+        printf 'INPUT(-lunwind)\n' > libgcc/libgcc_s.so
+        ln -sf "$_unwind" libgcc/libgcc_s.so.1
+        export LD_LIBRARY_PATH="$PWD/libgcc:${LD_LIBRARY_PATH:-}"
+        export LIBRARY_PATH="$PWD/libgcc:${LIBRARY_PATH:-}"
+    esac
+
+    python x.py build -j "$BPM_JOBS"
+}
+
+do_install() {
+    python x.py install
+
+    # rustlib/src is the standard library source, only useful to rust-analyzer
+    brm /usr/lib/rustlib/src /usr/lib/rustlib/uninstall.sh /usr/share/zsh
+    if ! use docs; then brm /usr/share/doc; fi
+}

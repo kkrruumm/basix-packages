@@ -1,6 +1,6 @@
 pkg_name=llvm
 version=21.1.7
-revision=1
+revision=2
 build_style=cmake
 short_desc="Low level virtual machine compiler infrastructure"
 home_page="https://llvm.org"
@@ -15,8 +15,17 @@ depends="zlib"
 make_depends="zlib"
 host_make_depends="cmake python"
 
-use_flags="amdgpu"
-use_default="+amdgpu"
+# one flag per llvm code generation backend, the host's own is always built
+# all-targets is the shorthand for every one of them, which is what zig wants,
+# it checks llvm-config --targets-built and refuses anything less
+# the five experimental backends (ARC, CSKY, DirectX, M68k, Xtensa) are not here
+use_flags="aarch64 amdgpu arm avr bpf hexagon lanai loongarch mips msp430
+ nvptx powerpc riscv sparc spirv systemz ve webassembly x86 xcore
+ all-targets"
+
+use_default="-aarch64 -amdgpu -arm -avr -bpf -hexagon -lanai -loongarch -mips
+ -msp430 -nvptx -powerpc -riscv -sparc -spirv -systemz -ve -webassembly -x86
+ -xcore +all-targets"
 
 configure_args="
     -DLLVM_BUILD_LLVM_DYLIB=ON
@@ -31,8 +40,20 @@ configure_args="
     -Wno-dev"
 
 pre_configure() {
-    if use amdgpu; then
-        _targets="host;AMDGPU"
+    # config-ix.cmake swaps host for the native arch and then dedupes, so
+    # host sitting next to an explicit x86 costs nothing
+    _targets=host
+
+    if use all-targets; then
+        _targets=all
+    else
+        for _t in aarch64:AArch64 amdgpu:AMDGPU arm:ARM avr:AVR bpf:BPF \
+                  hexagon:Hexagon lanai:Lanai loongarch:LoongArch mips:Mips \
+                  msp430:MSP430 nvptx:NVPTX powerpc:PowerPC riscv:RISCV \
+                  sparc:Sparc spirv:SPIRV systemz:SystemZ ve:VE \
+                  webassembly:WebAssembly x86:X86 xcore:XCore; do
+            if use "${_t%:*}"; then _targets="$_targets;${_t#*:}"; fi
+        done
     fi
 
     configure_args="$configure_args

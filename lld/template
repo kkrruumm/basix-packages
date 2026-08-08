@@ -1,0 +1,23 @@
+# zig links liblldELF/COFF/MachO/Wasm and wants lld/Common/Driver.h, so lld
+# has to be split out of the monorepo the same way clang already is
+pkg_name=lld
+version=21.1.7
+revision=1
+build_style=cmake
+short_desc="Linker from the LLVM project"
+home_page="https://lld.llvm.org"
+license="Apache-2.0 WITH LLVM-exception"
+dist_files="https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${version}.tar.gz>llvm-${version}.tar.gz"
+checksum="f2770e2de83b8dcf045ccf53271e85dc00afa1ee8f770379439b4300e76a5baa"
+wrk_src="llvm-project-llvmorg-$version/lld"
+patch_args="-p2"
+depends="llvm"
+make_depends="llvm"
+host_make_depends="cmake python"
+
+configure_args="
+    -DLLVM_INSTALL_TOOLCHAIN_ONLY=OFF
+    -DLLVM_ENABLE_RTTI=ON
+    -DLLVM_INCLUDE_TESTS=OFF
+    -DLLD_INCLUDE_TESTS=OFF
+    -Wno-dev"

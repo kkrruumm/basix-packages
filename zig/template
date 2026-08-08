@@ -1,0 +1,44 @@
+# zig pins its llvm, so like 0.15.x wants exactly 20.x, 0.16.0 wants exactly 21.x,
+# master already wants 22.x so like dont bump this without checking what the new one wants
+pkg_name=zig
+version=0.16.0
+revision=3
+build_style=cmake
+short_desc="General purpose programming language and toolchain"
+home_page="https://ziglang.org"
+license="MIT"
+dist_files="https://ziglang.org/download/${version}/zig-${version}.tar.xz"
+checksum="c216f4206ded117946e334b129300ba6716aa2a56e200943f27d66f6c6fad755"
+wrk_src="zig-$version"
+
+# the llvm package must be built with LLVM_TARGETS_TO_BUILD=all for this
+depends="llvm clang lld zlib zstd"
+make_depends="llvm clang lld zlib zstd"
+host_make_depends="cmake"
+
+configure_args="
+    -DZIG_SHARED_LLVM=ON
+    -DZIG_USE_LLVM_CONFIG=ON
+    -DZIG_STATIC=OFF
+    -DZIG_VERSION=$version
+    -Wno-dev"
+
+pre_build() {
+    # zig writes to $HOME/.cache/zig, and HOME is not something to rely on
+    # inside the sandbox
+    export ZIG_GLOBAL_CACHE_DIR="$build_dir/.cache/zig"
+    export ZIG_LOCAL_CACHE_DIR="$build_dir/.zig-cache"
+    mkdir -p "$ZIG_GLOBAL_CACHE_DIR"
+}
+
+do_build() {
+    # the build shells out to 'zig2 build --prefix <builddir>/stage3', and zigs
+    # build runner applies DESTDIR to whatever prefix it is given. with DESTDIR
+    # in the environment stage3 lands at $DESTDIR/<builddir>/stage3 instead, and
+    # the whole compiler tree ends up owned by the package
+    DESTDIR= cmake --build build --parallel "$BPM_JOBS"
+}
+
+post_install() {
+    blicense LICENSE
+}

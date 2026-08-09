@@ -1,0 +1,19 @@
+# not going to bother with haskell at the moment for just
+# this literal one package that needs it
+pkg_name=shellcheck-bin
+version=0.11.0
+revision=1
+build_style=custom
+short_desc="Static analysis tool for shell scripts"
+home_page="https://www.shellcheck.net"
+license="GPL-3.0-only"
+dist_files="https://github.com/koalaman/shellcheck/releases/download/v${version}/shellcheck-v${version}.linux.x86_64.tar.xz"
+checksum="0ad9524f3f16ad030f8350e7b970c62c24aeff3d813f2565665aecc5a8b79644a0"
+wrk_src="shellcheck-v$version"
+
+no_strip=yes
+
+do_install() {
+    bbin shellcheck
+    blicense LICENSE.txt
+}

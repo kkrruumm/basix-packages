@@ -1,0 +1,60 @@
+pkg_name=greetd
+version=0.10.3
+revision=1
+build_style=cargo
+short_desc="Minimal and flexible login manager daemon"
+home_page="https://kl.wtf/projects/greetd"
+license="GPL-3.0-only"
+dist_files="https://git.sr.ht/~kennylevinsen/greetd/archive/${version}.tar.gz>greetd-${version}.tar.gz"
+checksum="acf3f31550974bebce635ed84b6fabd21ee06fd12344d5fa993a5c5384724c8b"
+wrk_src="greetd-$version"
+depends="linux-pam"
+make_depends="linux-pam"
+host_make_depends="rust scdoc pkgconf"
+
+# crates.io is fetched at build time, TODO: handle vendored deps
+allow_network=yes
+
+system_accounts="greeter"
+greeter_uid=68
+greeter_gid=68
+greeter_descr="greetd greeter"
+greeter_homedir="/var/lib/greetd"
+greeter_groups="video input"
+
+use_flags="services"
+use_default="+services"
+
+pre_build() {
+    # keep cargos registry inside the build tree rather than wherever
+    # $HOME points inside the sandbox
+    export CARGO_HOME="$PWD/.cargo"
+}
+
+do_install() {
+    bbin target/release/greetd
+    bbin target/release/agreety
+
+    # vt = 1 conflicts with getty
+    bsed 's/^vt = 1$/vt = 7/' config.toml
+
+    # 0755 on the directory, the greeter user has to be able to read the
+    # config it was pointed at
+    binstall config.toml 0644 /etc/greetd
+
+    for _s in man/*.scd; do
+        _n=${_s##*/}; _n=${_n%.scd}
+        scdoc < "$_s" > "${_n%-*}.${_n##*-}"
+        bman "${_n%-*}.${_n##*-}"
+    done
+
+    binstall "$FILESDIR/greetd.pam" 0644 /etc/pam.d greetd
+
+    if use services; then
+        binstall "$FILESDIR/greetd.run" 0755 /etc/sv/greetd run
+        bln /run/runit/supervise.greetd /etc/sv/greetd/supervise
+    fi
+
+    bmkdir /var/lib/greetd
+    blicense LICENSE
+}

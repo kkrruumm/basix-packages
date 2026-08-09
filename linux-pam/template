@@ -1,0 +1,61 @@
+pkg_name=linux-pam
+version=1.7.2
+revision=1
+build_style=meson
+short_desc="Pluggable authentication modules for Linux"
+home_page="https://github.com/linux-pam/linux-pam"
+license="BSD-3-Clause"
+dist_files="https://github.com/linux-pam/linux-pam/releases/download/v${version}/Linux-PAM-${version}.tar.xz"
+checksum="05b8e0d0831baa13ff3b3b40666440b56af98dcdb475818faee106f0593a6770"
+wrk_src="Linux-PAM-$version"
+host_make_depends="meson pkgconf flex bison"
+
+use_flags="docs"
+use_default="-docs"
+
+# lckpwdf is glibc only
+# i18n wants gettext, econf wants libeconf, logind/elogind want a session
+# manager, none of which are here. nis/selinux/audit likewise
+configure_args="
+    -Dlckpwdf=false
+    -Di18n=disabled
+    -Daudit=disabled
+    -Delogind=disabled
+    -Deconf=disabled
+    -Dlogind=disabled
+    -Dnis=disabled
+    -Dopenssl=disabled
+    -Dpam_userdb=disabled
+    -Dselinux=disabled
+    -Dexamples=false
+    -Dxtests=false"
+
+pre_configure() {
+    if use docs; then
+        configure_args="$configure_args -Ddocs=enabled"
+    else
+        configure_args="$configure_args -Ddocs=disabled"
+    fi
+}
+
+post_install() {
+    # unix_chkpwd is what lets pam_unix read /etc/shadow as a non-root process
+    # if you're wondering, this is needed by, for example, DMs like greetd
+    if [ -f "$DESTDIR/usr/bin/unix_chkpwd" ]; then
+        chmod 4755 "$DESTDIR/usr/bin/unix_chkpwd"
+    elif [ -f "$DESTDIR/usr/sbin/unix_chkpwd" ]; then
+        chmod 4755 "$DESTDIR/usr/sbin/unix_chkpwd"
+    fi
+
+    # the base-* stack is ripped straight from alpine
+    # alpine puts these in /usr/lib/pam.d, which only works because libpam
+    # searches a vendor dir and that defaults to /usr/share/pam here, so they go
+    # in /etc/pam.d instead. include lines resolve within the same directory,
+    # so the whole set has to live in one place
+    for _p in base-auth base-account base-password base-session \
+              base-session-noninteractive other login su; do
+        binstall "$FILESDIR/$_p" 0644 /etc/pam.d "$_p"
+    done
+
+    blicense COPYING
+}

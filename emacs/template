@@ -1,0 +1,50 @@
+pkg_name=emacs
+version=30.2
+revision=1
+build_style=gnu-configure
+short_desc="Extensible, customizable, self-documenting text editor"
+home_page="https://www.gnu.org/software/emacs"
+license="GPL-3.0-or-later"
+dist_files="https://ftp.gnu.org/gnu/emacs/emacs-${version}.tar.xz"
+checksum="51101a26553420ee445adfbb537a8572750e3c21b9024569ef543c3f3508c3ca"
+
+use_flags="xml gnutls dbus lcms2 tree_sitter modules inotify"
+use_default="+xml +gnutls -dbus -lcms2 -tree_sitter +modules +inotify"
+
+depends="ncurses gmp zlib"
+if use xml; then depends="$depends libxml2"; fi
+if use gnutls; then depends="$depends gnutls"; fi
+if use dbus; then depends="$depends dbus"; fi
+if use lcms2; then depends="$depends lcms2"; fi
+if use tree_sitter; then depends="$depends tree-sitter"; fi
+
+make_depends="$depends linux-headers"
+host_make_depends="pkgconf"
+
+configure_args="
+    --without-x
+    --without-pgtk
+    --without-ns
+    --with-dumping=pdumper
+    --with-native-compilation=no
+    --with-gameuser=no
+    --without-sound
+    --without-gpm
+    --without-selinux
+    --without-libsystemd
+    --without-gsettings
+    --without-sqlite3
+    --without-imagemagick
+    --with-gmp
+    $(use_with xml xml2)
+    $(use_with gnutls)
+    $(use_with dbus)
+    $(use_with lcms2)
+    $(use_with tree_sitter tree-sitter)
+    $(use_with modules)
+    $(use_if inotify --with-file-notification=inotify --without-file-notification)"
+
+pre_configure() {
+    # ships a systemd unit for emacs --daemon, drop it
+    rm -f etc/emacs.service
+}

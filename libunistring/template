@@ -1,0 +1,15 @@
+pkg_name=libunistring
+version=1.4.2
+revision=1
+build_style=gnu-configure
+short_desc="Library for manipulating Unicode strings and C strings"
+home_page="https://www.gnu.org/software/libunistring"
+license="LGPL-3.0-or-later OR GPL-2.0-or-later"
+dist_files="https://ftp.gnu.org/gnu/libunistring/libunistring-${version}.tar.xz"
+checksum="7973e748fa45c40f06ad0434da6f672c675f3d6d61bfd4c1608f3a412be87700"
+
+host_make_depends="pkgconf"
+
+configure_args="--disable-static"
+
+# note the test suite is expected to fail here because it expects shit musl doesnt have

@@ -1,0 +1,44 @@
+pkg_name=gnutls
+version=3.8.13
+revision=1
+build_style=gnu-configure
+short_desc="TLS protocol implementation"
+home_page="https://www.gnutls.org"
+license="LGPL-2.1-or-later"
+dist_files="https://www.gnupg.org/ftp/gcrypt/gnutls/v${version%.*}/gnutls-${version}.tar.xz"
+checksum="817083bbd1af9caab9e30602ea01e4254200252289ca966770beff05fb26b2de"
+
+# probably just leave idn and p11kit off, those require p11-kit
+# which is like only useful for smartcards and hardware tokens
+# so i see no need to package it, this package is mostly
+# just here for emacs anyway
+use_flags="tools cxx zlib zstd idn p11kit ktls"
+use_default="+tools -cxx +zlib -zstd -idn -p11kit +ktls"
+
+depends="nettle libtasn1 libunistring gmp"
+if use zlib; then depends="$depends zlib"; fi
+if use zstd; then depends="$depends zstd"; fi
+
+make_depends="$depends linux-headers"
+host_make_depends="pkgconf"
+
+# the trust store is not autodetected reliably, and the path it would probe
+# for is not the one the certs package uses so point it straight at the bundle
+configure_args="
+    --disable-static
+    --disable-rpath
+    --disable-doc
+    --disable-valgrind-tests
+    --disable-full-test-suite
+    --disable-openssl-compatibility
+    --without-tpm2
+    --without-brotli
+    --with-included-unistring=no
+    --with-default-trust-store-file=/etc/ssl/cert.pem
+    $(use_enable tools)
+    $(use_enable cxx)
+    $(use_enable ktls)
+    $(use_if zlib --with-zlib=link --without-zlib)
+    $(use_if zstd --with-zstd=link --without-zstd)
+    $(use_with idn)
+    $(use_with p11kit p11-kit)"

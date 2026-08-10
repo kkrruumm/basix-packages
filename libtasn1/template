@@ -1,0 +1,15 @@
+pkg_name=libtasn1
+version=4.21.0
+revision=1
+build_style=gnu-configure
+short_desc="ASN.1 structure parser library used by gnutls"
+home_page="https://www.gnu.org/software/libtasn1"
+license="LGPL-2.1-or-later"
+dist_files="https://ftp.gnu.org/gnu/libtasn1/libtasn1-${version}.tar.gz"
+checksum="b156973b5629fe15050b4eaee334e50deddfaa6f907645be1c3d58f3ce93bf53"
+
+host_make_depends="pkgconf"
+
+configure_args="
+    --disable-static
+    --disable-doc"

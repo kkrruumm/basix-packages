@@ -1,0 +1,18 @@
+pkg_name=libmnl
+version=1.0.5
+revision=1
+build_style=gnu-configure
+short_desc="Minimalistic user space library oriented to netlink developers"
+home_page="https://netfilter.org/projects/libmnl"
+license="LGPL-2.1-or-later"
+dist_files="https://netfilter.org/projects/libmnl/files/libmnl-${version}.tar.bz2"
+checksum="bc4ab2439dba1a03954e554af39dd21ac96803870eec152f5d089659e3e5c142"
+
+make_depends="linux-headers"
+host_make_depends="pkgconf"
+
+configure_args="--disable-static"
+
+pre_build() {
+    bsed 's/^\(SUBDIRS *=.*\) examples/\1/;s/^\(DIST_SUBDIRS *=.*\) examples/\1/' Makefile
+}

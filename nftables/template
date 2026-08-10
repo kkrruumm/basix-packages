@@ -1,0 +1,80 @@
+pkg_name=nftables
+version=1.1.6
+revision=1
+build_style=gnu-configure
+short_desc="Netfilter tables userspace utility"
+home_page="https://netfilter.org/projects/nftables"
+license="GPL-2.0-only"
+dist_files="https://netfilter.org/projects/nftables/files/nftables-${version}.tar.xz"
+checksum="fe01ac223a3e41331bfa686058a04cb2719c2ced1ed7bb7892df3e5026f9fc82"
+
+# cli needs a readline package, xtables needs iptables and man_doc needs
+# docbook2x, but manpages are still installed (look at post_install)
+use_flags="json cli xtables python mini_gmp man_doc debug services"
+use_default="+json -cli -xtables -python -mini_gmp -man_doc -debug +services"
+
+depends="libmnl libnftnl"
+if ! use mini_gmp; then depends="$depends gmp"; fi
+if use json; then depends="$depends jansson"; fi
+if use cli; then depends="$depends readline"; fi
+if use xtables; then depends="$depends iptables"; fi
+if use python; then depends="$depends python"; fi
+
+make_depends="$depends linux-headers"
+
+host_make_depends="pkgconf bash flex bison"
+if use python; then
+    host_make_depends="$host_make_depends python python-build python-installer python-setuptools python-wheel"
+fi
+if use man_doc; then
+    host_make_depends="$host_make_depends asciidoc docbook2x"
+fi
+
+configure_args="
+    --disable-static
+    $(use_enable debug)
+    $(use_enable man_doc man-doc)
+    $(use_with mini_gmp mini-gmp)
+    $(use_with json)
+    $(use_with xtables)
+    $(use_if cli --with-cli=readline --without-cli)"
+
+pre_configure() {
+    # configure needs a real bash until 1.1.7, see nftables commit 2e3c68f26d5b
+    export CONFIG_SHELL=/bin/bash
+
+    # nftables does not pass --with-unitdir by default so nothing systemd
+    # related gets installed, no need to clean up after it
+}
+
+post_build() {
+    if use python; then
+        ( cd py && python3 -m build --wheel --no-isolation )
+    fi
+}
+
+post_install() {
+    if use python; then
+        ( cd py && python3 -m installer --destdir="$DESTDIR" --prefix=/usr dist/*.whl )
+    fi
+
+    # release tarballs ship the man pages already generated, --disable-man-doc
+    # only stops make install from putting them anywhere, so install them by
+    # hand rather than dragging in docbook2x for nothing
+    if ! use man_doc; then
+        for _m in doc/*.[0-9]; do
+            [ -f "$_m" ] || continue
+            bman "$_m"
+        done
+    fi
+
+    # the ruleset the service loads bpm keeps an existing /etc file and drops
+    # the new one next to it as .new, so this is safe across updates
+    bconf "$FILESDIR/nftables.conf"
+
+    if use services; then
+        binstall "$FILESDIR/nftables.run" 0755 /etc/sv/nftables run
+        binstall "$FILESDIR/nftables.finish" 0755 /etc/sv/nftables finish
+        bln /run/runit/supervise.nftables /etc/sv/nftables/supervise
+    fi
+}

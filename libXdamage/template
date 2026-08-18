@@ -1,0 +1,14 @@
+pkg_name=libXdamage
+version=1.1.7
+revision=1
+build_style=gnu-configure
+short_desc="X Damage extension library"
+home_page="https://gitlab.freedesktop.org/xorg/lib/libxdamage"
+license="MIT"
+dist_files="https://www.x.org/releases/individual/lib/libXdamage-${version}.tar.xz"
+checksum="72633074b373268a6873b38972184fb1c30ecef4353a71ed1671a82bf991f0e9"
+depends="libX11 libXfixes xorgproto"
+make_depends="libX11 libXfixes xorgproto"
+host_make_depends="pkgconf util-macros"
+
+configure_args="--disable-static"

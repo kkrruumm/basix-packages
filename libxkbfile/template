@@ -1,0 +1,12 @@
+pkg_name=libxkbfile
+version=1.2.0
+revision=1
+build_style=meson
+short_desc="XKB file handling library"
+home_page="https://gitlab.freedesktop.org/xorg/lib/libxkbfile"
+license="MIT"
+dist_files="https://www.x.org/releases/individual/lib/libxkbfile-${version}.tar.xz"
+checksum="47719f5b87e2090a1fd093f08fd162985ae4263381eee79785e66ca33e731981"
+depends="libX11 xorgproto"
+make_depends="libX11 xorgproto"
+host_make_depends="meson pkgconf"

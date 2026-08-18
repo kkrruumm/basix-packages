@@ -1,0 +1,14 @@
+pkg_name=xcb-util-wm
+version=0.4.2
+revision=1
+build_style=gnu-configure
+short_desc="XCB client and window manager helpers for ICCCM and EWMH"
+home_page="https://gitlab.freedesktop.org/xorg/lib/libxcb-wm"
+license="MIT"
+dist_files="https://www.x.org/releases/individual/lib/xcb-util-wm-${version}.tar.xz"
+checksum="4cf6b0e204e12eb6b824c939404fc5ad63d61cb94679e8adf5670207802bc738"
+depends="libxcb"
+make_depends="libxcb xorgproto"
+host_make_depends="m4 pkgconf util-macros"
+
+configure_args="--disable-static"

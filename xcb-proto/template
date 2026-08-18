@@ -1,0 +1,12 @@
+pkg_name=xcb-proto
+version=1.17.0
+revision=1
+build_style=gnu-configure
+short_desc="XML-XCB protocol descriptions and the xcbgen code generator"
+home_page="https://gitlab.freedesktop.org/xorg/proto/xcbproto"
+license="MIT"
+dist_files="https://www.x.org/releases/individual/proto/xcb-proto-${version}.tar.xz"
+checksum="68187400fded667f60b4b020d0fc37fa489ae0de33169fe7b07fcbaf88e7a3f9"
+host_make_depends="pkgconf python"
+
+# this should only ever be a host_make_depends

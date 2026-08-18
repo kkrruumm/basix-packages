@@ -1,0 +1,21 @@
+pkg_name=libxcb
+version=1.17.0
+revision=1
+build_style=gnu-configure
+short_desc="X protocol C-language binding"
+home_page="https://gitlab.freedesktop.org/xorg/lib/libxcb"
+license="MIT"
+dist_files="https://www.x.org/releases/individual/lib/libxcb-${version}.tar.xz"
+checksum="3dce3b8adc257177dfec9b6b6cf55eeac13921520dd6c372fd8f9d867600337b"
+depends="libXau"
+make_depends="libXau xorgproto"
+host_make_depends="pkgconf python xcb-proto"
+
+configure_args="
+    --disable-static
+    --without-doxygen"
+
+# force UTF-8 because bpm builds with LC_ALL=C
+pre_configure() {
+    export PYTHONUTF8=1
+}

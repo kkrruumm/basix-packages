@@ -7,22 +7,22 @@ home_page="https://gitlab.freedesktop.org/wlroots/wlroots"
 license="MIT"
 dist_files="https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/${version}/wlroots-${version}.tar.gz"
 checksum="4255e64a0452a7a485e51624f38850e7dc1699c8f16399e18340b841ba2133ffd8"
-use_flags="vulkan"
-use_default="+vulkan"
+use_flags="vulkan xwayland"
+use_default="+vulkan -xwayland"
 
 # lcms2 comes from -Dcolor-management=enabled, and both end up in the Requires
 # of wlroots.pc, so anything linking wlroots needs them present as well
 # i'm leaving these comments here as an example of conditional dependencies based on use
 depends="lcms2 libdisplay-info libdrm libinput libudev-zero libxkbcommon mesa pixman
- seatd wayland $(use_if vulkan vulkan-loader)"
+ seatd wayland $(use_if vulkan vulkan-loader)
+ $(use_if xwayland "libxcb xcb-util-wm xwayland")"
 make_depends="lcms2 libdisplay-info libdrm libinput libudev-zero libxkbcommon mesa
- pixman seatd wayland $(use_if vulkan "vulkan-headers vulkan-loader")"
-host_make_depends="hwdata meson pkgconf wayland-protocols"
+ pixman seatd wayland $(use_if vulkan "vulkan-headers vulkan-loader")
+ $(use_if xwayland "libxcb xcb-util-wm xwayland")"
+host_make_depends="hwdata meson pkgconf wayland-protocols $(use_if vulkan glslang)"
 
-# xwayland needs an x server, x11 backend needs libX11
-# this is wayland only *for now*
 configure_args="
-    -Dxwayland=disabled
+    $(use_if xwayland -Dxwayland=enabled -Dxwayland=disabled)
     -Dbackends=drm,libinput
     -Dallocators=gbm
     -Dexamples=false

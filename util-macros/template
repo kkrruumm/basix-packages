@@ -1,0 +1,13 @@
+pkg_name=util-macros
+version=1.20.2
+revision=1
+build_style=gnu-configure
+short_desc="Autoconf macros used to build X.Org packages"
+home_page="https://gitlab.freedesktop.org/xorg/util/macros"
+license="MIT"
+dist_files="https://www.x.org/releases/individual/util/util-macros-${version}.tar.xz"
+checksum="ad272a006b269e3925bc700dd1e51c1b8d8fa3a825dfc0aecfeeef3db38a94f0"
+
+# this doesn't install anything other than xorg-macros.m4 and the pkg-config file for it,
+# every autotools xorg package wants it around at configure time, however
+# nothing wants it afterwards so this should only ever be in host_make_depends

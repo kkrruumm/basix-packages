@@ -1,0 +1,25 @@
+pkg_name=libX11
+version=1.8.13
+revision=1
+build_style=gnu-configure
+short_desc="Core X11 client library"
+home_page="https://gitlab.freedesktop.org/xorg/lib/libx11"
+license="MIT"
+dist_files="https://www.x.org/releases/individual/lib/libX11-${version}.tar.xz"
+checksum="f8503727da9dbaa5974c9225e4343b5c36cc47027f9aed7369e563adc87ad9e9"
+depends="libxcb xorgproto"
+make_depends="libxcb xorgproto xtrans"
+host_make_depends="pkgconf util-macros"
+
+# all of the networking shit is disabled here
+# i'm not going to make these use flags for now,
+# don't see a point
+configure_args="
+    --enable-unix-transport
+    --disable-tcp-transport
+    --disable-ipv6
+    --disable-static
+    --disable-specs
+    --without-xmlto
+    --without-fop
+    --without-xsltproc"

@@ -1,0 +1,18 @@
+pkg_name=libepoxy
+version=1.5.10
+revision=1
+build_style=meson
+short_desc="Library for handling OpenGL function pointer management"
+home_page="https://github.com/anholt/libepoxy"
+license="MIT"
+dist_files="https://download.gnome.org/sources/libepoxy/1.5/libepoxy-${version}.tar.xz"
+checksum="0ccee9635115fe417cfc4bc33ffd160bf1e2852bd6c03816b4af771d59462f53"
+depends="libX11 mesa"
+make_depends="libX11 mesa xorgproto"
+host_make_depends="meson pkgconf python"
+
+configure_args="
+    -Dglx=yes
+    -Degl=yes
+    -Dx11=true
+    -Dtests=false"

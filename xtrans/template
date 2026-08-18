@@ -1,0 +1,15 @@
+pkg_name=xtrans
+version=1.6.0
+revision=1
+build_style=gnu-configure
+short_desc="X network transport layer shared source code"
+home_page="https://gitlab.freedesktop.org/xorg/lib/libxtrans"
+license="MIT"
+dist_files="https://www.x.org/releases/individual/lib/xtrans-${version}.tar.xz"
+checksum="18e5a2478425ec43370d7719bc4ee4f25d01ad7f580fcc3b5d91effa267cbaaa"
+host_make_depends="pkgconf util-macros"
+
+configure_args="
+    --without-xmlto
+    --without-fop
+    --without-xsltproc"

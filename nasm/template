@@ -1,0 +1,10 @@
+pkg_name=nasm
+version=2.16.03
+revision=1
+build_style=gnu-configure
+short_desc="80x86 assembler designed for portability and modularity"
+home_page="https://www.nasm.us"
+license="BSD-2-Clause"
+dist_files="https://www.nasm.us/pub/nasm/releasebuilds/${version}/nasm-${version}.tar.xz"
+checksum="16e081124c6eac65674e4f7e93d642826c11950e038e0656a23007a8899bf532"
+host_make_depends="perl"

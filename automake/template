@@ -1,0 +1,12 @@
+pkg_name=automake
+version=1.18.1
+revision=1
+build_style=gnu-configure
+short_desc="Tool for automatically generating Makefile.in files"
+home_page="https://www.gnu.org/software/automake/"
+license="GPL-2.0-or-later"
+dist_files="https://ftp.gnu.org/gnu/automake/automake-${version}.tar.xz"
+checksum="5f0bd223f42060fad07ad387f6b2b37866c350dc7414edec00dbc216f9c4b0be"
+depends="autoconf m4 perl"
+make_depends="autoconf perl"
+host_make_depends="autoconf m4 perl"

@@ -1,0 +1,12 @@
+pkg_name=autoconf
+version=2.73
+revision=1
+build_style=gnu-configure
+short_desc="Tool for producing configure scripts for building software"
+home_page="https://www.gnu.org/software/autoconf/"
+license="GPL-3.0-or-later"
+dist_files="https://ftp.gnu.org/gnu/autoconf/autoconf-${version}.tar.xz"
+checksum="3c437eb254f691da93f225a3ed1e29fb4450c723246dc5774d3b7ebe4b316b91"
+depends="m4 perl"
+make_depends="m4 perl"
+host_make_depends="m4 perl"

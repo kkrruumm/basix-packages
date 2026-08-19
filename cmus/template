@@ -1,0 +1,62 @@
+pkg_name=cmus
+version=2.12.0
+revision=1
+build_style=gnu-makefile
+short_desc="Feature-rich ncurses-based music player"
+home_page="https://cmus.github.io/"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/cmus/cmus/archive/v${version}.tar.gz>cmus-${version}.tar.gz"
+checksum="142c818fb92554f8fbcc2fa8129d5e6e28e87f43339f3324c61c2d7e30c70a53"
+
+use_flags="alsa flac mad mpris opus vorbis"
+use_default="+alsa +flac +mad +mpris +opus +vorbis"
+
+depends="ncurses
+ $(use_if alsa alsa-lib)
+ $(use_if flac "flac libogg")
+ $(use_if mad libmad)
+ $(use_if mpris basu)
+ $(use_if opus "libogg opus opusfile")
+ $(use_if vorbis "libogg libvorbis")"
+make_depends="ncurses
+ $(use_if alsa alsa-lib)
+ $(use_if flac "flac libogg")
+ $(use_if mad libmad)
+ $(use_if mpris basu)
+ $(use_if opus "libogg opus opusfile")
+ $(use_if vorbis "libogg libvorbis")"
+host_make_depends="pkgconf"
+
+do_configure() {
+    ./configure \
+        prefix=/usr \
+        mandir=/usr/share/man \
+        docdir=/usr/share/doc/cmus \
+        exampledir=/usr/share/doc/cmus/examples \
+        CONFIG_ALSA=$(usev alsa y n) \
+        CONFIG_FLAC=$(usev flac y n) \
+        CONFIG_MAD=$(usev mad y n) \
+        CONFIG_MPRIS=$(usev mpris y n) \
+        CONFIG_OPUS=$(usev opus y n) \
+        CONFIG_VORBIS=$(usev vorbis y n) \
+        CONFIG_AAC=n \
+        CONFIG_AO=n \
+        CONFIG_BASS=n \
+        CONFIG_CDDB=n \
+        CONFIG_CDIO=n \
+        CONFIG_DISCID=n \
+        CONFIG_FFMPEG=n \
+        CONFIG_JACK=n \
+        CONFIG_MIKMOD=n \
+        CONFIG_MODPLUG=n \
+        CONFIG_MP4=n \
+        CONFIG_MPC=n \
+        CONFIG_OSS=n \
+        CONFIG_PULSE=n \
+        CONFIG_ROAR=n \
+        CONFIG_SAMPLERATE=n \
+        CONFIG_SNDIO=n \
+        CONFIG_SUN=n \
+        CONFIG_VTX=n \
+        CONFIG_WAVPACK=n
+}

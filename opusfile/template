@@ -1,0 +1,18 @@
+pkg_name=opusfile
+version=0.12
+revision=1
+build_style=gnu-configure
+short_desc="High-level API for decoding and seeking in Ogg Opus streams"
+home_page="https://opus-codec.org"
+license="BSD-3-Clause"
+dist_files="https://downloads.xiph.org/releases/opus/opusfile-${version}.tar.gz"
+checksum="1b6a5c371a0ea2ae8e37ab2e921388dfef9252dbf7f60045192dabbdd898f2bf"
+depends="libogg opus"
+make_depends="libogg opus"
+host_make_depends="pkgconf"
+
+configure_args="
+    --disable-static
+    --disable-http
+    --disable-doc
+    --disable-examples"

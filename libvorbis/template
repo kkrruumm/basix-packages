@@ -1,0 +1,17 @@
+pkg_name=libvorbis
+version=1.3.7
+revision=1
+build_style=gnu-configure
+short_desc="Vorbis audio codec reference implementation"
+home_page="https://xiph.org/vorbis/"
+license="BSD-3-Clause"
+dist_files="https://downloads.xiph.org/releases/vorbis/libvorbis-${version}.tar.xz"
+checksum="c67f3f74ec26d93a5571c4404a64eb6e6587d7d77b46b552f7b410f5bc5b1f03"
+depends="libogg"
+make_depends="libogg"
+host_make_depends="pkgconf"
+
+configure_args="
+    --disable-static
+    --disable-docs
+    --disable-examples"

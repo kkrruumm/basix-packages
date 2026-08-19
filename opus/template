@@ -1,0 +1,15 @@
+pkg_name=opus
+version=1.6.1
+revision=1
+build_style=meson
+short_desc="Totally open, royalty-free, highly versatile audio codec"
+home_page="https://opus-codec.org"
+license="BSD-3-Clause"
+dist_files="https://downloads.xiph.org/releases/opus/opus-${version}.tar.gz"
+checksum="874bd7d28e24f10d88105c7d846a2e5bf085284af91a0ee36b05674a8f78e759"
+host_make_depends="meson pkgconf"
+
+configure_args="
+    -Dtests=disabled
+    -Ddocs=disabled
+    -Dextra-programs=disabled"

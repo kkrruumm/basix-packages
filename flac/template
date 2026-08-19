@@ -1,0 +1,20 @@
+pkg_name=flac
+version=1.5.0
+revision=1
+build_style=cmake
+short_desc="Free Lossless Audio Codec"
+home_page="https://xiph.org/flac/"
+license="BSD-3-Clause AND GPL-2.0-or-later"
+dist_files="https://downloads.xiph.org/releases/flac/flac-${version}.tar.xz"
+checksum="2adca3cd8da4b577ebb9c12e73c91cf6f6a7feb7485b3f003853b82710bada84"
+depends="libogg"
+make_depends="libogg"
+host_make_depends="cmake pkgconf samurai"
+
+configure_args="
+    -DBUILD_SHARED_LIBS=ON
+    -DBUILD_TESTING=OFF
+    -DBUILD_EXAMPLES=OFF
+    -DBUILD_DOCS=OFF
+    -DINSTALL_MANPAGES=OFF
+    -DWITH_OGG=ON"

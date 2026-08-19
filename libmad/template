@@ -1,0 +1,55 @@
+pkg_name=libmad
+version=0.15.1b
+revision=1
+build_style=gnu-configure
+short_desc="High-quality MPEG audio decoder"
+home_page="https://www.underbit.com/products/mad/"
+license="GPL-2.0-or-later"
+dist_files="https://downloads.sourceforge.net/sourceforge/mad/libmad-${version}.tar.gz"
+checksum="709ab5ff15f963ed5301ab164f621c6a5bf06a8b7db4b953bb604573735b97ee"
+host_make_depends="pkgconf"
+
+# unmaintained since 2004 and it shows.
+pre_configure() {
+    bsed 's/-fforce-mem//g; s/-fforce-addr//g' configure
+
+    if grep -q 'fforce-mem' configure; then
+        die "libmad: configure still references -fforce-mem"
+    fi
+
+    bsed 's/^\t    optimize="-O"$/\t    optimize="-O2"/' configure
+}
+
+do_configure() {
+    ./configure \
+        --prefix=/usr \
+        --bindir=/usr/bin \
+        --sbindir=/usr/bin \
+        --libdir=/usr/lib \
+        --libexecdir=/usr/libexec \
+        --includedir=/usr/include \
+        --datadir=/usr/share \
+        --mandir=/usr/share/man \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --disable-static
+}
+
+configure_args="--disable-static"
+
+post_install() {
+    bmkdir -m 0755 /usr/lib/pkgconfig
+    cat > "$DESTDIR/usr/lib/pkgconfig/mad.pc" <<-EOF
+	prefix=/usr
+	exec_prefix=\${prefix}
+	libdir=\${exec_prefix}/lib
+	includedir=\${prefix}/include
+
+	Name: mad
+	Description: MPEG audio decoder
+	Version: $version
+	Requires:
+	Libs: -L\${libdir} -lmad
+	Cflags: -I\${includedir}
+	EOF
+}

@@ -1,0 +1,18 @@
+pkg_name=gpgme
+version=2.1.2
+revision=1
+build_style=gnu-configure
+short_desc="Library for applications to access GnuPG"
+home_page="https://gnupg.org/software/gpgme"
+license="LGPL-2.1-or-later"
+dist_files="https://gnupg.org/ftp/gcrypt/gpgme/gpgme-${version}.tar.bz2"
+checksum="93d14828b7b7025b230b7b7f8a85565cf805daf2ebde53242d02c0b5cc7d5468"
+depends="gnupg libassuan libgpg-error"
+make_depends="libassuan libgpg-error"
+host_make_depends="gnupg pkgconf"
+
+configure_args="
+    --disable-static
+    --disable-languages
+    --disable-linux-getdents
+    --with-gpg=/usr/bin/gpg"

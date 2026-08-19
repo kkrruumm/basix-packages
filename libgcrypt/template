@@ -1,0 +1,16 @@
+pkg_name=libgcrypt
+version=1.12.2
+revision=1
+build_style=gnu-configure
+short_desc="General purpose cryptographic library from the GnuPG project"
+home_page="https://gnupg.org/software/libgcrypt"
+license="LGPL-2.1-or-later"
+dist_files="https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-${version}.tar.bz2"
+checksum="7eab6137f890c1144c280d97ad89ac115d8c54b317e4696f271c172d5133b10f"
+depends="libgpg-error"
+make_depends="libgpg-error"
+host_make_depends="pkgconf"
+
+configure_args="
+    --disable-static
+    --disable-doc"

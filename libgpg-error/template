@@ -1,0 +1,15 @@
+pkg_name=libgpg-error
+version=1.61
+revision=1
+build_style=gnu-configure
+short_desc="Common error values for all GnuPG components"
+home_page="https://gnupg.org/software/libgpg-error"
+license="LGPL-2.1-or-later"
+dist_files="https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-${version}.tar.bz2"
+checksum="3d8508a18c55a0442e15eab5110c592b0cb518cd9bd1210c8014bbb37277b9a0"
+host_make_depends="pkgconf"
+
+configure_args="
+    --disable-static
+    --disable-nls
+    --disable-tests"

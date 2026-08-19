@@ -1,0 +1,24 @@
+pkg_name=gst-plugins-base
+version=1.28.3
+revision=1
+build_style=meson
+short_desc="Base plugins for GStreamer"
+home_page="https://gstreamer.freedesktop.org"
+license="LGPL-2.0-or-later"
+dist_files="https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-${version}.tar.xz"
+checksum="6aab4b41871d82d03381c2a17838688b94df91745d48429aebb722a559f995d0"
+depends="glib gstreamer zlib"
+make_depends="glib gstreamer zlib"
+host_make_depends="meson pkgconf python"
+
+configure_args="
+    -Dgl=disabled
+    -Dalsa=disabled
+    -Dcdparanoia=disabled
+    -Diso-codes=disabled
+    -Dintrospection=disabled
+    -Dnls=disabled
+    -Dexamples=disabled
+    -Dtests=disabled
+    -Ddoc=disabled
+    -Dtools=disabled"

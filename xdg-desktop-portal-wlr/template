@@ -1,0 +1,21 @@
+pkg_name=xdg-desktop-portal-wlr
+version=0.8.4
+revision=1
+build_style=meson
+short_desc="xdg-desktop-portal backend for wlroots compositors"
+home_page="https://github.com/emersion/xdg-desktop-portal-wlr"
+license="MIT"
+dist_files="https://github.com/emersion/xdg-desktop-portal-wlr/releases/download/v${version}/xdg-desktop-portal-wlr-${version}.tar.gz"
+checksum="6aef309dde1a256a7f3fcd54f712740e579137c99348cd276487ea7f10982e8f"
+
+use_flags="man"
+use_default="+man"
+
+depends="basu inih libdrm mesa pipewire wayland xdg-desktop-portal"
+make_depends="basu inih libdrm mesa pipewire wayland"
+host_make_depends="meson pkgconf wayland-protocols $(use_if man scdoc)"
+
+configure_args="
+    -Dsd-bus-provider=basu
+    -Dsystemd=disabled
+    $(use_if man -Dman-pages=enabled -Dman-pages=disabled)"

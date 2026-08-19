@@ -1,0 +1,17 @@
+pkg_name=inih
+version=62
+revision=1
+build_style=meson
+short_desc="Simple INI file parser"
+home_page="https://github.com/benhoyt/inih"
+license="BSD-3-Clause"
+dist_files="https://github.com/benhoyt/inih/archive/r${version}.tar.gz>inih-r${version}.tar.gz"
+checksum="d3e654d280e40c816cf4497f2899ba707e610717e34acd06f9d5224cfdbb6c3f"
+wrk_src="inih-r$version"
+host_make_depends="meson pkgconf"
+
+configure_args="
+    -Ddistro_install=true
+    -Dwith_INIReader=false
+    -Dmulti-line_entries=true
+    -Dinline_comments=true"

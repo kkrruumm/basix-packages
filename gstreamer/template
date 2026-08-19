@@ -1,0 +1,26 @@
+pkg_name=gstreamer
+version=1.28.5
+revision=1
+build_style=meson
+short_desc="Streaming media framework"
+home_page="https://gstreamer.freedesktop.org"
+license="LGPL-2.0-or-later"
+dist_files="https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${version}.tar.xz"
+checksum="492c612027fd1bbc6179e8a3db225e8f78b0f7f161625fe81e4039e6763b215d"
+depends="glib"
+make_depends="glib"
+host_make_depends="bison flex meson pkgconf python"
+
+configure_args="
+    -Dptp-helper=disabled
+    -Dintrospection=disabled
+    -Dnls=disabled
+    -Dbash-completion=disabled
+    -Dexamples=disabled
+    -Dtests=disabled
+    -Dbenchmarks=disabled
+    -Dcheck=disabled
+    -Dlibunwind=disabled
+    -Dlibdw=disabled
+    -Ddoc=disabled
+    -Dcoretracers=disabled"

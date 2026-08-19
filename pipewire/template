@@ -1,0 +1,91 @@
+pkg_name=pipewire
+version=1.6.8
+revision=1
+build_style=meson
+short_desc="Server and user space API to deal with multimedia pipelines"
+home_page="https://pipewire.org"
+license="MIT"
+dist_files="https://github.com/PipeWire/pipewire/archive/${version}.tar.gz>pipewire-${version}.tar.gz"
+checksum="a04d69477e9ac071ae1fc0920440334c5735f20d88119ad928dddaf3fc8e6f1a"
+
+use_flags="alsa bluetooth camera echo-cancel gstreamer jack pulse sndfile v4l2 vulkan x11"
+use_default="+alsa -bluetooth -camera -echo-cancel -gstreamer -jack +pulse -sndfile -v4l2 -vulkan -x11"
+
+depends="dbus glib libudev-zero ncurses
+ $(use_if alsa alsa-lib)
+ $(use_if bluetooth bluez)
+ $(use_if camera libcamera)
+ $(use_if gstreamer "gstreamer gst-plugins-base")
+ $(use_if jack jack)
+ $(use_if sndfile libsndfile)
+ $(use_if vulkan vulkan-loader)
+ $(use_if x11 "libX11 libXfixes")"
+make_depends="dbus glib libudev-zero ncurses
+ $(use_if alsa alsa-lib)
+ $(use_if bluetooth bluez)
+ $(use_if camera libcamera)
+ $(use_if gstreamer "gstreamer gst-plugins-base")
+ $(use_if jack jack)
+ $(use_if sndfile libsndfile)
+ $(use_if vulkan "vulkan-headers vulkan-loader")
+ $(use_if x11 "libX11 libXfixes xorgproto")"
+host_make_depends="meson pkgconf python"
+
+# session-managers defaults to ['wireplumber']
+configure_args="
+    -Dsession-managers=[]
+    -Ddbus=enabled
+    -Dudev=enabled
+    -Dspa-plugins=enabled
+    -Dlibsystemd=disabled
+    -Dlogind=disabled
+    -Dsystemd-system-service=disabled
+    -Dsystemd-user-service=disabled
+    -Dselinux=disabled
+    -Davahi=disabled
+    -Draop=disabled
+    -Dlv2=disabled
+    -Dlibpulse=disabled
+    -Dlibcanberra=disabled
+    -Dreadline=disabled
+    -Dsdl2=disabled
+    -Dlibusb=disabled
+    -Dopus=disabled
+    -Dsnap=disabled
+    -Dfftw=disabled
+    -Debur128=disabled
+    -Dlibmysofa=disabled
+    -Donnxruntime=disabled
+    -Dcompress-offload=disabled
+    -Droc=disabled
+    -Dexamples=disabled
+    -Dtests=disabled
+    -Dman=disabled
+    -Ddocs=disabled
+    $(use_if alsa -Dalsa=enabled -Dalsa=disabled)
+    $(use_if alsa -Dpipewire-alsa=enabled -Dpipewire-alsa=disabled)
+    $(use_if bluetooth -Dbluez5=enabled -Dbluez5=disabled)
+    $(use_if camera -Dlibcamera=enabled -Dlibcamera=disabled)
+    $(use_if echo-cancel -Decho-cancel-webrtc=enabled -Decho-cancel-webrtc=disabled)
+    $(use_if gstreamer -Dgstreamer=enabled -Dgstreamer=disabled)
+    $(use_if jack -Djack=enabled -Djack=disabled)
+    $(use_if jack -Dpipewire-jack=enabled -Dpipewire-jack=disabled)
+    $(use_if pulse -Dgsettings-pulse-schema=enabled -Dgsettings-pulse-schema=disabled)
+    $(use_if sndfile -Dsndfile=enabled -Dsndfile=disabled)
+    $(use_if sndfile -Dpw-cat=enabled -Dpw-cat=disabled)
+    $(use_if v4l2 -Dv4l2=enabled -Dv4l2=disabled)
+    $(use_if v4l2 -Dpipewire-v4l2=enabled -Dpipewire-v4l2=disabled)
+    $(use_if vulkan -Dvulkan=enabled -Dvulkan=disabled)
+    $(use_if x11 -Dx11=enabled -Dx11=disabled)
+    $(use_if x11 -Dx11-xfixes=enabled -Dx11-xfixes=disabled)"
+
+post_install() {
+    # there isnt a meson option for this but some people may want to "turn it off"
+    # to "force pipewire" (albeit in a really shit way)
+    if ! use pulse; then
+        brm /usr/bin/pipewire-pulse
+        brm /usr/share/pipewire/pipewire-pulse.conf
+        brm /usr/share/pipewire/pipewire-pulse.conf.avail
+        brm /usr/share/pipewire/pipewire-pulse.conf.d
+    fi
+}

@@ -1,0 +1,19 @@
+pkg_name=alsa-lib
+version=1.2.16.1
+revision=1
+build_style=gnu-configure
+short_desc="Advanced Linux Sound Architecture library"
+home_page="https://alsa-project.org"
+license="LGPL-2.1-or-later"
+dist_files="https://alsa-project.org/files/pub/lib/alsa-lib-${version}.tar.bz2"
+checksum="400779eed4335f3f8abaafedf49518f1c9ce298f6e24eda33de3cfef233ed8b7"
+host_make_depends="linux-headers pkgconf"
+
+configure_args="
+    --disable-static
+    --disable-python
+    --disable-resmgr
+    --enable-rawmidi
+    --enable-seq
+    --enable-aload
+    --without-versioned"

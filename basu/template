@@ -1,0 +1,15 @@
+pkg_name=basu
+version=0.2.1
+revision=1
+build_style=meson
+short_desc="Standalone sd-bus implementation"
+home_page="https://git.sr.ht/~emersion/basu"
+license="LGPL-2.1-or-later"
+dist_files="https://git.sr.ht/~emersion/basu/archive/v${version}.tar.gz>basu-${version}.tar.gz"
+checksum="8e678e54208e0690d22d522448293da66cea08a4aeccb645b66b765f93ae2e66"
+wrk_src="basu-v$version"
+depends="libcap"
+make_depends="libcap"
+host_make_depends="gperf meson pkgconf"
+
+configure_args="-Dsystem-bus-address=unix:path=/run/dbus/system_bus_socket"

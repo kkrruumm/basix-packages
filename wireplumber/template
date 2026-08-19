@@ -1,0 +1,23 @@
+pkg_name=wireplumber
+version=0.5.15
+revision=1
+build_style=meson
+short_desc="Modular session and policy manager for PipeWire"
+home_page="https://pipewire.pages.freedesktop.org/wireplumber/"
+license="MIT"
+dist_files="https://gitlab.freedesktop.org/PipeWire/wireplumber/-/archive/${version}/wireplumber-${version}.tar.gz"
+checksum="0000000000000000000000000000000000000000000000000000000000000000"
+depends="glib lua pipewire"
+make_depends="glib lua pipewire"
+host_make_depends="meson pkgconf python"
+
+configure_args="
+    -Dsystem-lua=true
+    -Dintrospection=disabled
+    -Delogind=disabled
+    -Dsystemd=disabled
+    -Dsystemd-system-service=false
+    -Dsystemd-user-service=false
+    -Ddoc=disabled
+    -Dtests=false
+    -Ddbus-tests=false"

@@ -7,7 +7,6 @@ home_page="https://gitlab.freedesktop.org/xorg/lib/libxau"
 license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/libXau-${version}.tar.xz"
 checksum="674bc71a888eec20f0e29989e4669df90309d4baacad058107cdf89d23803bcc"
-depends="xorgproto"
 make_depends="xorgproto"
 host_make_depends="pkgconf util-macros"
 

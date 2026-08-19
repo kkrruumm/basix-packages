@@ -18,7 +18,7 @@ depends="lcms2 libdisplay-info libdrm libinput libudev-zero libxkbcommon mesa pi
  $(use_if xwayland "libxcb xcb-util-wm xwayland")"
 make_depends="lcms2 libdisplay-info libdrm libinput libudev-zero libxkbcommon mesa
  pixman seatd wayland $(use_if vulkan "vulkan-headers vulkan-loader")
- $(use_if xwayland "libxcb xcb-util-wm xwayland")"
+ $(use_if xwayland "libxcb xcb-util-wm xwayland xorgproto")"
 host_make_depends="hwdata meson pkgconf wayland-protocols $(use_if vulkan glslang)"
 
 configure_args="

@@ -1,0 +1,16 @@
+pkg_name=libfyaml
+version=0.9.6
+revision=1
+build_style=gnu-configure
+short_desc="Fully conformant YAML parser and emitter"
+home_page="https://github.com/pantoniou/libfyaml"
+license="MIT"
+dist_files="https://github.com/pantoniou/libfyaml/releases/download/v${version}/libfyaml-${version}.tar.gz"
+checksum="18c2deb847c782bcccaabd18bed64a6ad7ab9f900794913bd3b0435b2ddf6112"
+host_make_depends="bash linux-headers m4 pkgconf"
+
+configure_args="--disable-static"
+
+post_install() {
+    bsed 's/none required//' "$DESTDIR/usr/lib/pkgconfig/libfyaml.pc"
+}

@@ -1,0 +1,19 @@
+pkg_name=libxmlb
+version=0.3.29
+revision=1
+build_style=meson
+short_desc="Library for querying compressed XML metadata"
+home_page="https://github.com/hughsie/libxmlb"
+license="LGPL-2.1-or-later"
+dist_files="https://github.com/hughsie/libxmlb/releases/download/${version}/libxmlb-${version}.tar.xz"
+checksum="4b48d7d77ad083b520566de24e75e34aabf40fff70c94a0a4301de2e909bed1e"
+depends="glib xz zstd"
+make_depends="glib xz zstd"
+host_make_depends="meson pkgconf"
+
+configure_args="
+    -Dgtkdoc=false
+    -Dintrospection=false
+    -Dstemmer=false
+    -Dcli=false
+    -Dtests=false"

@@ -1,0 +1,20 @@
+pkg_name=libcap
+version=2.78
+revision=1
+build_style=custom
+short_desc="POSIX 1003.1e capabilities"
+home_page="https://sites.google.com/site/fullycapable/"
+license="BSD-3-Clause OR GPL-2.0-only"
+dist_files="https://kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-${version}.tar.xz"
+checksum="8309d1f55e89be484baa938d4a5ec1d661fdf66d639f7a4e99d5c6e4893f9c79"
+host_make_depends="bash linux-headers perl"
+
+do_build() {
+    make lib=lib prefix=/usr GOLANG=no PAM_CAP=no $make_jobs
+}
+
+do_install() {
+    make lib=lib prefix=/usr GOLANG=no PAM_CAP=no \
+        DESTDIR="$DESTDIR" SBINDIR=/usr/bin install
+    rm -f "$DESTDIR"/usr/lib/*.a
+}

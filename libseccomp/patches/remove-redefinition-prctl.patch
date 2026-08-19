@@ -1,0 +1,10 @@
+--- a/src/system.c
++++ b/src/system.c
+@@ -21,7 +21,6 @@
+ 
+ #include <stdlib.h>
+ #include <errno.h>
+-#include <sys/prctl.h>
+ 
+ #define _GNU_SOURCE
+ #include <unistd.h>

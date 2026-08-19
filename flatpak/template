@@ -1,0 +1,52 @@
+pkg_name=flatpak
+version=1.18.1
+revision=1
+build_style=meson
+short_desc="Application sandboxing and distribution framework"
+home_page="https://flatpak.org"
+license="LGPL-2.1-or-later"
+dist_files="https://github.com/flatpak/flatpak/releases/download/${version}/flatpak-${version}.tar.xz"
+checksum="0f8bb02c9e810bbf182c8ecc4d6f70a2737e146496aa89986915bf6570bedc53"
+
+use_flags="man seccomp wayland xauth"
+use_default="+man +seccomp +wayland +xauth"
+
+depends="appstream bubblewrap curl dbus fuse3 gdk-pixbuf glib gpgme json-glib
+ libarchive libcap libxml2 ostree xdg-dbus-proxy zstd
+ $(use_if seccomp libseccomp) $(use_if wayland wayland) $(use_if xauth libXau)"
+make_depends="appstream curl fuse3 gdk-pixbuf glib gpgme json-glib libarchive
+ libcap libxml2 ostree zstd
+ $(use_if seccomp libseccomp) $(use_if wayland wayland) $(use_if xauth libXau)"
+host_make_depends="bison bubblewrap xdg-dbus-proxy meson pkgconf python python-pyparsing
+ $(use_if man "docbook-xsl libxslt")
+ $(use_if wayland wayland-protocols)
+ $(use_if xauth "libXau xorgproto")"
+
+configure_args="
+    -Dsystem_helper=disabled
+    -Dsystemd=disabled
+    -Ddconf=disabled
+    -Dmalcontent=disabled
+    -Dgir=disabled
+    -Dgtkdoc=disabled
+    -Dselinux_module=disabled
+    -Ddocbook_docs=disabled
+    -Dauto_sideloading=false
+    -Dgdm_env_file=false
+    -Dtests=false
+    -Dlibzstd=enabled
+    -Dsystem_bubblewrap=bwrap
+    -Dsystem_dbus_proxy=xdg-dbus-proxy
+    -Ddbus_config_dir=/usr/share/dbus-1/system.d
+    $(use_if man -Dman=enabled -Dman=disabled)
+    $(use_if seccomp -Dseccomp=enabled -Dseccomp=disabled)
+    $(use_if xauth -Dxauth=enabled -Dxauth=disabled)
+    $(use_if wayland -Dwayland_security_context=enabled -Dwayland_security_context=disabled)"
+
+post_install() {
+    bmkdir -m 0755 /var/lib/flatpak
+}
+
+pre_configure() {
+    export XML_CATALOG_FILES=/usr/share/xsl/docbook/catalog.xml
+}

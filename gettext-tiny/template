@@ -1,0 +1,17 @@
+pkg_name=gettext-tiny
+version=0.3.3
+revision=1
+build_style=custom
+short_desc="Minimal gettext tool replacements for musl systems"
+home_page="https://github.com/sabotage-linux/gettext-tiny"
+license="MIT"
+dist_files="https://github.com/sabotage-linux/gettext-tiny/archive/v${version}.tar.gz>gettext-tiny-${version}.tar.gz"
+checksum="23db786d1c6832acb44613fd60f18e04d9bdb30ab37eb43a9b2af0e7c42ffabd"
+
+do_build() {
+    make LIBINTL=NONE prefix=/usr $make_jobs
+}
+
+do_install() {
+    make LIBINTL=NONE prefix=/usr DESTDIR="$DESTDIR" install
+}

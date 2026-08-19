@@ -1,0 +1,14 @@
+pkg_name=libseccomp
+version=2.6.0
+revision=1
+build_style=gnu-configure
+short_desc="Interface to the Linux kernel syscall filtering mechanism"
+home_page="https://github.com/seccomp/libseccomp"
+license="LGPL-2.1-only"
+dist_files="https://github.com/seccomp/libseccomp/releases/download/v${version}/libseccomp-${version}.tar.gz"
+checksum="48ba4e04a00bdace5ad130d88e2a1a51d0b3dfdabace9a405b404a50e1afdd56"
+host_make_depends="gperf linux-headers pkgconf"
+
+configure_args="
+    --disable-static
+    --disable-python"

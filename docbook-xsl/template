@@ -1,6 +1,6 @@
 pkg_name=docbook-xsl
 version=1.79.2
-revision=1
+revision=2
 build_style=custom
 short_desc="Docbook XSL modular stylesheets"
 home_page="https://github.com/docbook/xslt10-stylesheets"
@@ -9,6 +9,7 @@ dist_files="https://github.com/docbook/xslt10-stylesheets/releases/download/rele
 checksum="43108052fa95ac65959cb22e8650e816bf8f60cc2cde50beb791102a7a03921725"
 wrk_src="docbook-xsl-nons-$version"
 depends="docbook-xml libxml2"
+host_make_depends="libxml2"
 
 do_build() { :; }
 
@@ -18,6 +19,13 @@ do_install() {
               lib manpages params profiling roundtrip template website \
               xhtml xhtml-1_1 xhtml5 catalog.xml VERSION VERSION.xsl; do
         [ -e "$_d" ] && cp -R "$_d" "$DESTDIR/usr/share/xsl/docbook/"
+    done
+
+    for _t in rewriteURI rewriteSystem; do
+        xmlcatalog --noout --add "$_t" \
+            "http://docbook.sourceforge.net/release/xsl/current/" \
+            "file:///usr/share/xsl/docbook/" \
+            "$DESTDIR/usr/share/xsl/docbook/catalog.xml"
     done
     :
 }

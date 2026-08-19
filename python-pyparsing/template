@@ -1,0 +1,16 @@
+pkg_name=python-pyparsing
+version=3.3.2
+revision=1
+build_style=python3-pep517
+short_desc="Python parsing module"
+home_page="https://github.com/pyparsing/pyparsing"
+license="MIT"
+dist_files="https://files.pythonhosted.org/packages/source/p/pyparsing/pyparsing-${version}.tar.gz"
+checksum="aea0d7b161353c3bd7a4ca7e2a31fc0ef9fa776ea5969daff5098b5030154cfe"
+wrk_src="pyparsing-$version"
+depends="python"
+host_make_depends="python python-flit-core python-installer"
+
+do_build() {
+    python3 -c 'import os, flit_core.buildapi as b; os.makedirs("dist", exist_ok=True); b.build_wheel("dist")'
+}

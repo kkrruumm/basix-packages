@@ -44,10 +44,10 @@ do_install() {
     bmkdir /etc/acpi
 
     if use services; then
-        for s in acpid crond syslogd mdev ntpd; do
-            binstall "$FILESDIR/$s.run" 0755 "/etc/sv/$s" run
-            bln "/run/runit/supervise.$s" "/etc/sv/$s/supervise"
-        done
+        # s6-rc service definitions, installing them does not switch them on
+        # use s6-rc-set-change to turn them on, see /usr/lib/s6-rc/sync
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -name run -type f -exec chmod 0755 {} +
     fi
     bconf "$FILESDIR/mdev.conf"
 }

@@ -1,0 +1,36 @@
+pkg_name=s6-portable-utils
+version=2.3.1.2
+revision=1
+build_style=configure
+short_desc="Small and portable Unix utilities used by s6 service scripts"
+home_page="https://skarnet.org/software/s6-portable-utils"
+license="ISC"
+dist_files="https://skarnet.org/software/s6-portable-utils/s6-portable-utils-${version}.tar.gz"
+checksum="0000000000000000000000000000000000000000000000000000000000000000"
+
+depends="skalibs"
+make_depends="skalibs"
+
+use_flags="static multicall doc"
+use_default="-static -multicall +doc"
+
+configure_args="
+    --sysconfdir=/etc
+    --bindir=/usr/bin
+    --libdir=/usr/lib
+    --dynlibdir=/usr/lib
+    --libexecdir=/usr/libexec
+    --includedir=/usr/include
+    --with-sysdeps=/usr/lib/skalibs/sysdeps
+    --disable-rpath
+    $(use_if multicall --enable-multicall --disable-multicall)
+    $(use_if static --enable-static --disable-static)
+    $(use_if static --enable-allstatic --disable-allstatic)
+    $(use_if static --disable-shared --enable-shared)"
+
+post_install() {
+    if use doc; then
+        bcopy doc/. "/usr/share/doc/$pkg_name"
+    fi
+    blicense COPYING
+}

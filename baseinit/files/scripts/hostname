@@ -1,0 +1,11 @@
+#!/bin/sh
+. /usr/lib/s6-rc/rc.lib
+case $1 in
+up)
+    log "setting hostname..."
+    hostname=
+    [ -f /etc/hostname ] && read -r hostname < /etc/hostname
+    printf %s "${hostname:-basix}" > /proc/sys/kernel/hostname
+    ;;
+esac
+exit 0

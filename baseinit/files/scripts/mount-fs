@@ -1,0 +1,18 @@
+#!/bin/sh
+# rootfs read-write, then everything else in fstab
+. /usr/lib/s6-rc/rc.lib
+case $1 in
+up)
+    log "remounting rootfs read-write..."
+    mount -o remount,rw / || sos
+    log "mounting local filesystems..."
+    mount -a || sos
+    ;;
+down)
+    # unmounting is done via s6-linux-init-unmountall,
+    # this is just here to make certain nothing is mid-write
+    # when that happens
+    sync
+    ;;
+esac
+exit 0

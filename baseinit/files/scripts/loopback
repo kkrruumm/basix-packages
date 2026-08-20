@@ -1,0 +1,12 @@
+#!/bin/sh
+. /usr/lib/s6-rc/rc.lib
+case $1 in
+up)
+    log "setting up loopback..."
+    ip link set up dev lo || :
+    ;;
+down)
+    ip link set down dev lo || :
+    ;;
+esac
+exit 0

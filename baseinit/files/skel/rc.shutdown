@@ -1,0 +1,12 @@
+#!/bin/sh
+# this runs on shutdown/reboot/whatever
+# downing services is all that should be in this file, s6-linux-init-shutdownd should
+# handle unmounting filesystems and actually turning the machine off
+. /usr/lib/s6-rc/rc.lib
+
+log "stopping all services..."; {
+    # -D goes past flag-essential, -a is every service that is up, the down
+    # scripts of the boot oneshots run here, which is what saves the random
+    # seed and disables swap
+    s6-rc -v2 -bDa change
+}

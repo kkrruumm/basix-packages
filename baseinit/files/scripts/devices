@@ -1,0 +1,30 @@
+#!/bin/sh
+# this has to be the first thing the init does
+
+. /usr/lib/s6-rc/rc.lib
+case $1 in
+up)
+    log "coldplugging devices..."
+    if command -v udevadm >/dev/null && command -v udevd >/dev/null; then
+        udevd -d
+        udevadm trigger -c add -t subsystems
+        udevadm trigger -c add -t devices
+        udevadm settle
+
+        # if there's a udevd service in use, it takes over from here
+        udevadm control --exit 2>/dev/null || :
+    elif command -v mdev >/dev/null; then
+        mdev -s
+
+        # handle coldplugs (shit like a machine needing virtio-net and ideally starting it automatically)
+        find /sys -name modalias -type f 2>/dev/null | while read -r m; do
+            read -r alias < "$m" || continue
+            modprobe -bq "$alias" 2>/dev/null || :
+        done
+        
+        # handle hotplug events between here and the mdev service starting
+        command -v mdev > /proc/sys/kernel/hotplug
+    fi
+    ;;
+esac
+exit 0

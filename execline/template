@@ -1,0 +1,36 @@
+pkg_name=execline
+version=2.9.9.2
+revision=1
+build_style=configure
+short_desc="Non-interactive scripting language used by the s6 suite"
+home_page="https://skarnet.org/software/execline"
+license="ISC"
+dist_files="https://skarnet.org/software/execline/execline-${version}.tar.gz"
+checksum="29a8aa37cb10b4392e0d14ef3f76262c40bf7df36a5616cc6d0095d7dd2fac7f"
+
+depends="skalibs"
+make_depends="skalibs"
+
+use_flags="static pkgconfig doc"
+use_default="-static -pkgconfig +doc"
+
+configure_args="
+    --sysconfdir=/etc
+    --bindir=/usr/bin
+    --libdir=/usr/lib
+    --dynlibdir=/usr/lib
+    --libexecdir=/usr/libexec
+    --includedir=/usr/include
+    --with-sysdeps=/usr/lib/skalibs/sysdeps
+    --disable-rpath
+    $(use_if pkgconfig --enable-pkgconfig --disable-pkgconfig)
+    $(use_if static --enable-static --disable-static)
+    $(use_if static --enable-allstatic --disable-allstatic)
+    $(use_if static --disable-shared --enable-shared)"
+
+post_install() {
+    if use doc; then
+        bcopy doc/. "/usr/share/doc/$pkg_name"
+    fi
+    blicense COPYING
+}

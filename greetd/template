@@ -8,7 +8,7 @@ license="GPL-3.0-only"
 dist_files="https://git.sr.ht/~kennylevinsen/greetd/archive/${version}.tar.gz>greetd-${version}.tar.gz"
 checksum="acf3f31550974bebce635ed84b6fabd21ee06fd12344d5fa993a5c5384724c8b"
 wrk_src="greetd-$version"
-depends="linux-pam"
+depends="linux-pam seatd"
 make_depends="linux-pam"
 host_make_depends="rust scdoc pkgconf"
 
@@ -51,8 +51,11 @@ do_install() {
     binstall "$FILESDIR/greetd.pam" 0644 /etc/pam.d greetd
 
     if use services; then
-        binstall "$FILESDIR/greetd.run" 0755 /etc/sv/greetd run
-        bln /run/runit/supervise.greetd /etc/sv/greetd/supervise
+        binstall "$FILESDIR/greetd.run" 0755 /usr/share/s6-rc/sources/greetd run
+        printf 'longrun\n' > "$DESTDIR/usr/share/s6-rc/sources/greetd/type"
+        bmkdir /usr/share/s6-rc/sources/greetd/dependencies.d
+        : > "$DESTDIR/usr/share/s6-rc/sources/greetd/dependencies.d/base"
+        : > "$DESTDIR/usr/share/s6-rc/sources/greetd/dependencies.d/seatd"
     fi
 
     bmkdir /var/lib/greetd

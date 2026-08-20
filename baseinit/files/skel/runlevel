@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# this is fired off once by rc.init at boot and then again by the runleveld service
+# when telinit wants a machine state change, a runlevel here is just the name
+# of an s6-rc bundle
+
+if [ "$#" -lt 1 ]; then
+    echo 'runlevel: fatal: too few arguments' >&2
+    exit 100
+fi
+
+exec s6-rc -v2 -up change "$1"

@@ -1,0 +1,14 @@
+#!/bin/sh
+# check the filesystems listed in fstab with / read only
+. /usr/lib/s6-rc/rc.lib
+case $1 in
+up)
+    log "remounting rootfs read-only..."
+    mount -o remount,ro / || sos
+    log "checking filesystems..."
+    fsck -ATat noopts=_netdev
+    # fsck does not use 0/nonzero, 1 means it fixed something and carried on
+    [ $? -gt 1 ] && sos
+    ;;
+esac
+exit 0

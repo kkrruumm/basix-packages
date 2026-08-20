@@ -1,0 +1,18 @@
+#!/bin/sh
+. /usr/lib/s6-rc/rc.lib
+case $1 in
+up)
+    log "loading sysctl settings..."
+    seen=
+    for conf in /run/sysctl.d/*.conf \
+                /etc/sysctl.d/*.conf \
+                /usr/lib/sysctl.d/*.conf \
+                /etc/sysctl.conf; do
+        [ -f "$conf" ] || continue
+        case $seen in *" ${conf##*/} "*) continue ;; esac
+        seen=" $seen ${conf##*/} "
+        sysctl -p "$conf" >/dev/null || :
+    done
+    ;;
+esac
+exit 0

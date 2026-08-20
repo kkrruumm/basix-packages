@@ -25,7 +25,9 @@ configure_args="
 
 post_install() {
     if use services; then
-        binstall "$FILESDIR/seatd.run" 0755 /etc/sv/seatd run
-        bln /run/runit/supervise.seatd /etc/sv/seatd/supervise
+        binstall "$FILESDIR/seatd.run" 0755 /usr/share/s6-rc/sources/seatd run
+        printf 'longrun\n' > "$DESTDIR/usr/share/s6-rc/sources/seatd/type"
+        bmkdir /usr/share/s6-rc/sources/seatd/dependencies.d
+        : > "$DESTDIR/usr/share/s6-rc/sources/seatd/dependencies.d/base"
     fi
 }

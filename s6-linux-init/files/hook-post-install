@@ -1,0 +1,28 @@
+#!/bin/sh
+# args: <pkg_name> <root>
+#
+# /etc/s6-linux-init/current has to be regenerated whenever the maker changes
+# (s6-linux-init) or the skeleton scripts baked into it change (baseinit)
+case $1 in
+    s6-linux-init|baseinit) ;;
+    *) exit 0 ;;
+esac
+
+root=${2%/}
+fail() { printf 's6-linux-init: %s\n' "$*" >&2; exit 1; }
+
+for _s in rc.init rc.shutdown rc.shutdown.final runlevel; do
+    [ -f "$root/etc/s6-linux-init/skel/$_s" ] || exit 0
+done
+[ -x "$root/usr/lib/s6-linux-init/rebuild" ] || exit 0
+
+command -v s6-linux-init-maker >/dev/null ||
+    fail "s6-linux-init-maker not found, /sbin/init cannot be generated for ${root:-/}."
+
+"$root/usr/lib/s6-linux-init/rebuild" "$2" || fail "rebuild failed for ${root:-/}"
+
+[ -x "$root/etc/s6-linux-init/current/bin/init" ] ||
+    fail "rebuild ran but $root/etc/s6-linux-init/current/bin/init is missing"
+
+[ -x "$root/usr/bin/execlineb" ] ||
+    printf 's6-linux-init: warning: %s/usr/bin/execlineb is missing, /sbin/init will not run\n' "$root" >&2

@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# regenerate /etc/s6-linux-init/current from /etc/s6-linux-init/init.conf
+#
+# usage: rebuild [root]
+#
+# s6-linux-init-maker writes fifos and files with fixed ownership and modes, so
+# the directory it produces cannot sensibly be inside a binary package
+#
+# it's built here instead, either by hand after editing init.conf or by the bpm hook
+set -eu
+
+root=${1:-/}
+root=${root%/}
+
+conf=$root/etc/s6-linux-init/init.conf
+skel=$root/etc/s6-linux-init/skel
+base=/etc/s6-linux-init/current # path baked into the generated scripts
+dest=$root$base
+
+msg() { printf 's6-linux-init: %s\n' "$*" >&2; }
+die() { printf 's6-linux-init: error: %s\n' "$*" >&2; exit 1; }
+
+command -v s6-linux-init-maker >/dev/null ||
+    die "s6-linux-init-maker not found in PATH"
+[ -r "$conf" ] || die "no configuration at $conf"
+[ -d "$skel" ] || die "no skeleton scripts at $skel (is baseinit installed?)"
+
+S6_INIT_PATH="/usr/bin:/bin"
+S6_INIT_UMASK="022"
+S6_INIT_VERBOSITY="1"
+S6_INIT_TIMESTAMP="1"
+S6_INIT_CONSOLE="yes"
+S6_INIT_EARLY_GETTY=""
+S6_INIT_SLASHDEV="no"
+S6_INIT_GRACE="3000"
+S6_INIT_DEFAULT="default"
+S6_INIT_LOGUSER="root"
+S6_INIT_ENV=""
+
+# shellcheck disable=SC1090
+. "$conf"
+
+set -- -c "$base" -f "$skel" \
+       -p "$S6_INIT_PATH" \
+       -m "$S6_INIT_UMASK" \
+       -V "$S6_INIT_VERBOSITY" \
+       -t "$S6_INIT_TIMESTAMP" \
+       -q "$S6_INIT_GRACE" \
+       -D "$S6_INIT_DEFAULT" \
+       -u "$S6_INIT_LOGUSER" \
+       -s /run/s6-linux-init-env
+
+if [ "$S6_INIT_CONSOLE" = yes ]; then set -- "$@" -1; fi
+if [ "$S6_INIT_SLASHDEV" = yes ]; then set -- "$@" -d /dev; fi
+if [ -n "$S6_INIT_EARLY_GETTY" ]; then set -- "$@" -G "$S6_INIT_EARLY_GETTY"; fi
+
+for _e in $S6_INIT_ENV; do set -- "$@" -e "$_e"; done
+
+# the maker refuses to write into an existing directory, so build next to the
+# real one and swap only once it has succeeded
+tmp=$root/etc/s6-linux-init/.current.new
+rm -rf "$tmp"
+mkdir -p "$root/etc/s6-linux-init"
+
+msg "generating $dest"
+s6-linux-init-maker "$@" "$tmp"
+
+rm -rf "$dest"
+mv "$tmp" "$dest"
+
+for _n in init halt poweroff reboot shutdown telinit; do
+    [ -x "$dest/bin/$_n" ] || msg "warning: $dest/bin/$_n missing"
+done
+
+msg "done"

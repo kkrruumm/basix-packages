@@ -1,0 +1,52 @@
+pkg_name=s6-linux-init
+version=1.2.0.2
+revision=1
+build_style=configure
+short_desc="Minimal s6-based init system for Linux"
+home_page="https://skarnet.org/software/s6-linux-init"
+license="ISC"
+dist_files="https://skarnet.org/software/s6-linux-init/s6-linux-init-${version}.tar.gz"
+checksum="7268b37a1cd0631f85e2a1d67a16db54dac85ef48ecfd604fca724e4598a8e38"
+
+depends="skalibs execline s6"
+make_depends="skalibs execline s6"
+
+use_flags="static doc"
+use_default="-static +doc"
+
+# upstreams skeleton scripts are just examples but im keeping them here
+# as documentation, the ones that are actually used come from baseinit
+configure_args="
+    --sysconfdir=/etc
+    --bindir=/usr/bin
+    --libdir=/usr/lib
+    --dynlibdir=/usr/lib
+    --libexecdir=/usr/libexec
+    --includedir=/usr/include
+    --with-sysdeps=/usr/lib/skalibs/sysdeps
+    --skeldir=/usr/share/s6-linux-init/skel
+    --tmpfsdir=/run
+    --scandir=service
+    --disable-rpath
+    $(use_if static --enable-static --disable-static)
+    $(use_if static --enable-allstatic --disable-allstatic)
+    $(use_if static --disable-shared --enable-shared)"
+
+post_install() {
+    for c in init halt poweroff reboot shutdown telinit; do
+        bln "/etc/s6-linux-init/current/bin/$c" "/usr/bin/$c"
+    done
+
+    binstall "$FILESDIR/rebuild" 0755 /usr/lib/s6-linux-init
+    binstall "$FILESDIR/init.conf" 0644 /etc/s6-linux-init
+
+    binstall "$FILESDIR/hook-post-install" 0755 \
+        /etc/bpm/hooks/post-install 10-s6-linux-init
+    binstall "$FILESDIR/hook-pre-remove" 0755 \
+        /etc/bpm/hooks/pre-remove 10-s6-linux-init
+
+    if use doc; then
+        bcopy doc/. "/usr/share/doc/$pkg_name"
+    fi
+    blicense COPYING
+}

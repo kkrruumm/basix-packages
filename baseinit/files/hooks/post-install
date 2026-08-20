@@ -1,0 +1,5 @@
+#!/bin/sh
+# args: <pkg_name> <root>
+[ -x "${2%/}/usr/lib/s6-rc/sync" ] || exit 0
+"${2%/}/usr/lib/s6-rc/sync" "$2"
+exit 0

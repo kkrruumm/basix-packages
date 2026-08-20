@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# runs at the very end of the shutdown sequence, after the filesystems have
+# been unmounted and immediately before the machine is halted or rebooted
+#
+# you shouldnt need to put anything here most likely

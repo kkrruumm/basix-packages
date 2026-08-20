@@ -1,0 +1,38 @@
+pkg_name=s6
+version=2.15.1.0
+revision=1
+build_style=configure
+short_desc="Process supervision suite"
+home_page="https://skarnet.org/software/s6"
+license="ISC"
+dist_files="https://skarnet.org/software/s6/s6-${version}.tar.gz"
+checksum="0fa40d4cdc39ace536ca40e799fc3ffe51868718beedc1d074aafc315ea3d737"
+
+depends="skalibs execline"
+make_depends="skalibs execline"
+
+use_flags="static pkgconfig doc"
+use_default="-static -pkgconfig +doc"
+
+configure_args="
+    --sysconfdir=/etc
+    --bindir=/usr/bin
+    --libdir=/usr/lib
+    --dynlibdir=/usr/lib
+    --libexecdir=/usr/libexec
+    --includedir=/usr/include
+    --with-sysdeps=/usr/lib/skalibs/sysdeps
+    --disable-rpath
+    --disable-aliases-daemontools
+    --disable-aliases-runit
+    $(use_if pkgconfig --enable-pkgconfig --disable-pkgconfig)
+    $(use_if static --enable-static --disable-static)
+    $(use_if static --enable-allstatic --disable-allstatic)
+    $(use_if static --disable-shared --enable-shared)"
+
+post_install() {
+    if use doc; then
+        bcopy doc/. "/usr/share/doc/$pkg_name"
+    fi
+    blicense COPYING
+}

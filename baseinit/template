@@ -1,30 +1,51 @@
+# this package has no upstream, everything it ships lives in files/
 pkg_name=baseinit
-version=1.0.3
+version=2.0.0
 revision=1
 build_style=custom
-short_desc="Init scripts and helpers"
-home_page="https://github.com/kisslinux/init"
+short_desc="the base basix boot sequence, s6-linux-init skeleton and the s6-rc boot services"
+home_page="https://github.com/kkrruumm/basix-packages"
 license="MIT"
-dist_files="https://github.com/kisslinux/init/archive/${version}.tar.gz"
-checksum="a3d9b1aa9c67ca36c92cf880d336af56cec33522de127902d08cc3d66d0277c0c3"
-wrk_src="init-${version}"
 
-do_build() {
-    for b in kpow kall; do
-        $CC -o "$b" "bin/$b.c" $CFLAGS -static
-    done
-}
+depends="s6 s6-rc s6-linux-init execline skalibs busybox"
+
+use_flags="gettys"
+use_default="+gettys"
+
+do_build() { :; }
 
 do_install() {
-    bcopy etc/. /etc
-    bcopy lib/. /usr/lib
-    for b in kpow kall; do
-        bbin "$b"
-        binstall "bin/$b.c" 0644 /usr/share/doc/kiss/init
+    # skeleton scripts, s6-linux-init-maker copies these into
+    # /etc/s6-linux-init/current/scripts, it does not run them from here so
+    # editing them means re-running /usr/lib/s6-linux-init/rebuild
+    for s in rc.init rc.shutdown rc.shutdown.final runlevel; do
+        binstall "$FILESDIR/skel/$s" 0755 /etc/s6-linux-init/skel
     done
-}
 
-post_install() {
-    bsed 's/Welcome to KISS!/Welcome to basix!/' "$DESTDIR/usr/lib/init/rc.boot"
-    bsed 's/${hostname:-KISS}/${hostname:-basix}/' "$DESTDIR/usr/lib/init/rc.boot"
+    # helpers and boot script bodies, regular ass POSIX shell
+    binstall "$FILESDIR/rc.lib" 0644 /usr/lib/s6-rc
+    for s in "$FILESDIR"/scripts/*; do
+        binstall "$s" 0755 /usr/lib/s6-rc/scripts
+    done
+
+    bmkdir /var/lib/init
+
+    # the package managers service store, definitions live under /usr/share so
+    # bpm owns them outright, which of them run at boot is repository state in
+    # /var/lib/s6-rc, so an upgrade can never reenable something a user may have turned off
+    bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+    if ! use gettys; then
+        brm /usr/share/s6-rc/sources/getty-tty1 /usr/share/s6-rc/sources/getty-tty2
+    fi
+    find "$DESTDIR/usr/share/s6-rc/sources" -name run -type f -exec chmod 0755 {} +
+
+    # the local store for service definitions the admin writes by hand, a
+    # startup or shutdown script here is just a oneshot
+    bmkdir /etc/s6-rc/sources /etc/s6-rc/compiled /var/lib/s6-rc
+
+    # repository upkeep, bpm does this instead of the sysadmin
+    # read: probably don't fuck with these, or do, i'm not your dad
+    binstall "$FILESDIR/sync" 0755 /usr/lib/s6-rc
+    binstall "$FILESDIR/hooks/post-install" 0755 /etc/bpm/hooks/post-install 20-s6-rc
+    binstall "$FILESDIR/hooks/post-remove" 0755 /etc/bpm/hooks/post-remove 20-s6-rc
 }

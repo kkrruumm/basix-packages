@@ -1,0 +1,67 @@
+#!/bin/sh
+#
+# /usr/lib/s6-rc/sync - keep the s6-rc repository and the boot database in step
+# with the service stores, called by the bpm hooks whenever a package adds or
+# removes service definitions
+#
+# this is packaging glue (don't touch it), managing services is done with the s6-rc
+# commands directly, examples:
+#
+#     s6-rc-set-status  default                      what is enabled
+#     s6-rc-set-change  -i -p default enabled  foo   turn foo on at boot
+#     s6-rc-set-change  -i -p default disabled foo   turn foo off at boot
+#     s6-rc-set-commit  default                      compile the set
+#     s6-rc-set-install default                      make it live and bootable
+#
+set -eu
+
+root=${1:-/}
+root=${root%/}
+
+store_pkg=$root/usr/share/s6-rc/sources
+store_local=$root/etc/s6-rc/sources
+repo=$root/var/lib/s6-rc/repository
+bootdb=$root/etc/s6-rc/compiled/current
+live=$root/run/s6-rc
+set_name=${S6_RC_SET:-default}
+
+warn() { printf 's6-rc: warning: %s\n' "$*" >&2; }
+
+[ -d "$store_pkg" ] || exit 0
+
+command -v s6-rc-repo-sync >/dev/null || {
+    warn "s6-rc repo commands not on the host, the boot database was not updated"
+    exit 0
+}
+
+mkdir -p "$store_local" "$root/etc/s6-rc/compiled" "$root/var/lib/s6-rc"
+
+if [ -d "$repo" ]; then
+    # always sync, the compile here should be very fast given how small the tree should be
+    s6-rc-repo-sync -r "$repo" || { warn "repository sync failed"; exit 0; }
+else
+    s6-rc-repo-init -r "$repo" "$store_pkg" "$store_local" ||
+        { warn "repository init failed"; exit 0; }
+fi
+
+# a set has to exist before anything can be committed, rx defaults come from
+# the flag-essential and flag-recommended files in the stores
+if ! s6-rc-repo-list -r "$repo" | grep -qx "$set_name"; then
+    s6-rc-set-new -r "$repo" "$set_name" || { warn "could not create set $set_name"; exit 0; }
+fi
+
+s6-rc-set-commit -r "$repo" "$set_name" || {
+    warn "set $set_name is inconsistent and was not committed"
+    warn "inspect it with: s6-rc-set-status $set_name; repair with: s6-rc-set-fix $set_name"
+    exit 0
+}
+
+# --no-update is only correct with no live database, on a running
+# system it would skip the check that the set is actually bootable
+if [ "$root" = "" ] && [ -d "$live" ]; then
+    s6-rc-set-install -r "$repo" -c "$bootdb" -l "$live" "$set_name" ||
+        warn "could not install set $set_name into the running system"
+else
+    s6-rc-set-install -r "$repo" -c "$bootdb" --no-update "$set_name" ||
+        warn "could not install set $set_name as the boot database"
+fi

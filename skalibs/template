@@ -1,0 +1,34 @@
+pkg_name=skalibs
+version=2.15.1.0
+revision=1
+build_style=configure
+short_desc="General purpose C programming library used by the s6 suite"
+home_page="https://skarnet.org/software/skalibs"
+license="ISC"
+dist_files="https://skarnet.org/software/skalibs/skalibs-${version}.tar.gz"
+checksum="4b922d501d18f2860034e448b74f70a2665acbabeef09bd18b0701fa0552336a"
+
+use_flags="static ipv6 pkgconfig doc"
+use_default="-static +ipv6 -pkgconfig +doc"
+
+# skarnets configure gets sysconfdir from --prefix, so /usr would give it /usr/etc
+# bpms config style always passes --prefix=/usr, everything that would go under it
+# has to be spelled out here
+configure_args="
+    --sysconfdir=/etc
+    --libdir=/usr/lib
+    --dynlibdir=/usr/lib
+    --includedir=/usr/include
+    --sysdepdir=/usr/lib/skalibs/sysdeps
+    --disable-rpath
+    $(use_if ipv6 --enable-ipv6 --disable-ipv6)
+    $(use_if pkgconfig --enable-pkgconfig --disable-pkgconfig)
+    $(use_if static --enable-static --disable-static)
+    $(use_if static --disable-shared --enable-shared)"
+
+post_install() {
+    if use doc; then
+        bcopy doc/. "/usr/share/doc/$pkg_name"
+    fi
+    blicense COPYING
+}

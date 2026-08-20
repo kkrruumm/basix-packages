@@ -1,0 +1,13 @@
+#!/bin/sh
+. /usr/lib/s6-rc/rc.lib
+case $1 in
+up)
+    log "enabling swap..."
+    swapon -a || :
+    ;;
+down)
+    log "disabling swap..."
+    swapoff -a || :
+    ;;
+esac
+exit 0

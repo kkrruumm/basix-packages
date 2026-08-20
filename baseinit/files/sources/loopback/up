@@ -1,0 +1,1 @@
+/bin/sh /usr/lib/s6-rc/scripts/loopback up

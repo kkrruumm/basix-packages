@@ -1,0 +1,43 @@
+pkg_name=s6-rc
+version=0.7.0.0
+revision=1
+build_style=configure
+short_desc="Service manager for the s6 supervision suite"
+home_page="https://skarnet.org/software/s6-rc"
+license="ISC"
+dist_files="https://skarnet.org/software/s6-rc/s6-rc-${version}.tar.gz"
+checksum="3c286a94184d4343d046e394f905b66d46769275d70e26a3b9169038710d8496"
+
+depends="skalibs execline s6"
+make_depends="skalibs execline s6"
+
+use_flags="static pkgconfig doc"
+use_default="-static -pkgconfig +doc"
+
+configure_args="
+    --sysconfdir=/etc
+    --bindir=/usr/bin
+    --libdir=/usr/lib
+    --dynlibdir=/usr/lib
+    --libexecdir=/usr/libexec
+    --includedir=/usr/include
+    --with-sysdeps=/usr/lib/skalibs/sysdeps
+    --bootdb=/etc/s6-rc/compiled/current
+    --livedir=/run/s6-rc
+    --repodir=/var/lib/s6-rc/repository
+    --with-default-bundle=default
+    --disable-rpath
+    $(use_if pkgconfig --enable-pkgconfig --disable-pkgconfig)
+    $(use_if static --enable-static --disable-static)
+    $(use_if static --enable-allstatic --disable-allstatic)
+    $(use_if static --disable-shared --enable-shared)"
+
+post_install() {
+    bmkdir /usr/share/s6-rc/sources /etc/s6-rc/sources
+    bmkdir /etc/s6-rc/compiled /var/lib/s6-rc
+
+    if use doc; then
+        bcopy doc/. "/usr/share/doc/$pkg_name"
+    fi
+    blicense COPYING
+}

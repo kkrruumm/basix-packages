@@ -1,0 +1,8 @@
+#!/bin/sh
+# args: <pkg_name> <root>
+#
+# /etc/s6-linux-init/current and the /usr/bin symlinks are generated, not
+# packaged, so nothing else would ever clean them up
+[ "$1" = s6-linux-init ] || exit 0
+rm -rf "${2%/}/etc/s6-linux-init/current"
+exit 0

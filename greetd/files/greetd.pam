@@ -1,7 +1,6 @@
 #%PAM-1.0
-# greetd authenticates the greeter session, so it needs to be able to open a
-# session for an already-known user without a password prompt
-auth       required   pam_unix.so
+auth       required   pam_permit.so
 account    required   pam_unix.so
+session    required   pam_limits.so
 session    required   pam_unix.so
 session    optional   pam_keyinit.so   force revoke

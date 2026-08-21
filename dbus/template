@@ -41,9 +41,10 @@ post_install() {
     fi
 
     if use services; then
-        binstall "$FILESDIR/dbus.run" 0755 /usr/share/s6-rc/sources/dbus run
-        printf 'longrun\n' > "$DESTDIR/usr/share/s6-rc/sources/dbus/type"
-        bmkdir /usr/share/s6-rc/sources/dbus/dependencies.d
-        : > "$DESTDIR/usr/share/s6-rc/sources/dbus/dependencies.d/base"
+        # s6-rc service definitions, installing them does not switch them on,
+        # /usr/lib/s6-rc/sync files them into the repository and s6-rc-set-change
+        # is what turns them on at boot
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
     fi
 }

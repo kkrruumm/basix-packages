@@ -51,11 +51,8 @@ do_install() {
     binstall "$FILESDIR/greetd.pam" 0644 /etc/pam.d greetd
 
     if use services; then
-        binstall "$FILESDIR/greetd.run" 0755 /usr/share/s6-rc/sources/greetd run
-        printf 'longrun\n' > "$DESTDIR/usr/share/s6-rc/sources/greetd/type"
-        bmkdir /usr/share/s6-rc/sources/greetd/dependencies.d
-        : > "$DESTDIR/usr/share/s6-rc/sources/greetd/dependencies.d/base"
-        : > "$DESTDIR/usr/share/s6-rc/sources/greetd/dependencies.d/seatd"
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
     fi
 
     bmkdir /var/lib/greetd

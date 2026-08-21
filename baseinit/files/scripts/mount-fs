@@ -6,12 +6,13 @@ up)
     log "remounting rootfs read-write..."
     mount -o remount,rw / || sos
     log "mounting local filesystems..."
-    mount -a || sos
+    # no_netdev because there is no network at this point in the boot and a
+    # network mount in fstab would block
+    mount -a -O no_netdev || sos
     ;;
 down)
-    # unmounting is done via s6-linux-init-unmountall,
-    # this is just here to make certain nothing is mid-write
-    # when that happens
+    # unmounting is done via s6-linux-init-unmountall, this is just here to
+    # make certain nothing is mid-write when that happens
     sync
     ;;
 esac

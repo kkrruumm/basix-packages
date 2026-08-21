@@ -5,10 +5,24 @@ case $1 in
 up)
     log "remounting rootfs read-only..."
     mount -o remount,ro / || sos
+
     log "checking filesystems..."
     fsck -ATat noopts=_netdev
-    # fsck does not use 0/nonzero, 1 means it fixed something and carried on
-    [ $? -gt 1 ] && sos
+    rc=$?
+
+    # fsck doesn't use 0/nonzero
+    case $rc in
+        0|1) ;;
+        2|3)
+            log "filesystem repairs need a reboot to take effect, rebooting..."
+            reboot
+            sleep 60
+        ;;
+        *)
+            log "fsck failed (exit $rc)"
+            sos
+        ;;
+    esac
     ;;
 esac
 exit 0

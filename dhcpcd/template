@@ -24,11 +24,7 @@ make_install_args="BINMODE=755"
 
 post_install() {
     if use services; then
-        binstall "$FILESDIR/dhcpcd.run" 0755 /usr/share/s6-rc/sources/dhcpcd run
-        printf 'longrun\n' > "$DESTDIR/usr/share/s6-rc/sources/dhcpcd/type"
-        bmkdir /usr/share/s6-rc/sources/dhcpcd/dependencies.d
-
-        # needs lo up and the device nodes for its interfaces
-        : > "$DESTDIR/usr/share/s6-rc/sources/dhcpcd/dependencies.d/base"
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
     fi
 }

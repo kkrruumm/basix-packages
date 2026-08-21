@@ -28,8 +28,6 @@ do_install() {
         binstall "$s" 0755 /usr/lib/s6-rc/scripts
     done
 
-    bmkdir /var/lib/init
-
     # the package managers service store, definitions live under /usr/share so
     # bpm owns them outright, which of them run at boot is repository state in
     # /var/lib/s6-rc, so an upgrade can never reenable something a user may have turned off
@@ -37,7 +35,7 @@ do_install() {
     if ! use gettys; then
         brm /usr/share/s6-rc/sources/getty-tty1 /usr/share/s6-rc/sources/getty-tty2
     fi
-    find "$DESTDIR/usr/share/s6-rc/sources" -name run -type f -exec chmod 0755 {} +
+    find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
 
     # the local store for service definitions the admin writes by hand, a
     # startup or shutdown script here is just a oneshot

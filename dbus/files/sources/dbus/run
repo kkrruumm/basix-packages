@@ -1,0 +1,5 @@
+#!/bin/sh
+exec 2>&1
+mkdir -p /run/dbus
+[ -f /var/lib/dbus/machine-id ] || dbus-uuidgen --ensure
+exec dbus-daemon --system --nofork --nopidfile

@@ -34,9 +34,7 @@ post_install() {
     bman contrib/ssh-copy-id.1
 
     if use services; then
-        binstall "$FILESDIR/sshd.run" 0755 /usr/share/s6-rc/sources/sshd run
-        printf 'longrun\n' > "$DESTDIR/usr/share/s6-rc/sources/sshd/type"
-        bmkdir /usr/share/s6-rc/sources/sshd/dependencies.d
-        : > "$DESTDIR/usr/share/s6-rc/sources/sshd/dependencies.d/base"
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
     fi
 }

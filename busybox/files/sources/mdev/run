@@ -1,7 +1,2 @@
 #!/bin/sh
-
-# null the legacy hotplugger, the devices oneshot pointed it at mdev to cover
-# the gap between coldplug and this service, and we take over from here
-printf '\n' 2>/dev/null > /proc/sys/kernel/hotplug
-
 exec mdev -df 2>&1

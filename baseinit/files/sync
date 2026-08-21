@@ -4,25 +4,34 @@
 # with the service stores, called by the bpm hooks whenever a package adds or
 # removes service definitions
 #
-# this is packaging glue (don't touch it), managing services is done with the s6-rc
-# commands directly, examples:
+# this is packaging glue (don't touch it), managing services is done with the
+# s6-rc commands directly, examples:
 #
-#     s6-rc-set-status  default                      what is enabled
-#     s6-rc-set-change  -i -p default enabled  foo   turn foo on at boot
-#     s6-rc-set-change  -i -p default disabled foo   turn foo off at boot
-#     s6-rc-set-commit  default                      compile the set
-#     s6-rc-set-install default                      make it live and bootable
+#     s6-rc-set-status  default                    what is enabled
+#     s6-rc-set-change  -p default active foo      turn foo on at boot
+#     s6-rc-set-change  -p default masked foo      turn foo off at boot
+#     s6-rc-set-commit  default                    compile the set
+#     s6-rc-set-install default                    make it live and bootable
 #
-set -eu
+set -u
 
+# bpm passes BPM_ROOT with a slash appended, and BPM_ROOT defaults to "/", so
+# the argument for a normal install is "//", so strip every trailing slash
 root=${1:-/}
-root=${root%/}
+while :; do
+    case $root in
+        ''|/) root=; break ;;
+        */) root=${root%/} ;;
+        *) break ;;
+    esac
+done
 
 store_pkg=$root/usr/share/s6-rc/sources
 store_local=$root/etc/s6-rc/sources
 repo=$root/var/lib/s6-rc/repository
 bootdb=$root/etc/s6-rc/compiled/current
 live=$root/run/s6-rc
+stamp=$root/var/lib/s6-rc/stores.stamp
 set_name=${S6_RC_SET:-default}
 
 warn() { printf 's6-rc: warning: %s\n' "$*" >&2; }
@@ -36,32 +45,42 @@ command -v s6-rc-repo-sync >/dev/null || {
 
 mkdir -p "$store_local" "$root/etc/s6-rc/compiled" "$root/var/lib/s6-rc"
 
-if [ -d "$repo" ]; then
-    # always sync, the compile here should be very fast given how small the tree should be
-    s6-rc-repo-sync -r "$repo" || { warn "repository sync failed"; exit 0; }
-else
-    s6-rc-repo-init -r "$repo" "$store_pkg" "$store_local" ||
-        { warn "repository init failed"; exit 0; }
+# bpm runs this hook once per package and a sync so bail out
+# early when nothing in either store actually changed
+fp=$(ls -lnR "$store_pkg" "$store_local" 2>/dev/null | cksum)
+if [ -d "$repo" ] && [ -f "$stamp" ] && [ "$fp" = "$(cat "$stamp")" ]; then
+    exit 0
 fi
 
-# a set has to exist before anything can be committed, rx defaults come from
-# the flag-essential and flag-recommended files in the stores
-if ! s6-rc-repo-list -r "$repo" | grep -qx "$set_name"; then
-    s6-rc-set-new -r "$repo" "$set_name" || { warn "could not create set $set_name"; exit 0; }
+if [ -d "$repo" ]; then
+    # this also drops services whose package was just removed, and puts new
+    # ones in a set according to their flag-essential/flag-recommended
+    s6-rc-repo-sync -r "$repo" || { warn "repository sync failed"; exit 1; }
+else
+    s6-rc-repo-init -r "$repo" "$store_pkg" "$store_local" ||
+        { warn "repository init failed"; exit 1; }
 fi
+
+s6-rc-repo-list -r "$repo" | grep -qx "$set_name" ||
+    s6-rc-set-new -r "$repo" "$set_name" ||
+    { warn "could not create set $set_name"; exit 1; }
 
 s6-rc-set-commit -r "$repo" "$set_name" || {
     warn "set $set_name is inconsistent and was not committed"
-    warn "inspect it with: s6-rc-set-status $set_name; repair with: s6-rc-set-fix $set_name"
-    exit 0
+    warn "inspect it with: s6-rc-set-status -r $repo $set_name"
+    warn "repair it with: s6-rc-set-fix -r $repo $set_name"
+    exit 1
 }
 
-# --no-update is only correct with no live database, on a running
-# system it would skip the check that the set is actually bootable
-if [ "$root" = "" ] && [ -d "$live" ]; then
-    s6-rc-set-install -r "$repo" -c "$bootdb" -l "$live" "$set_name" ||
-        warn "could not install set $set_name into the running system"
+if [ -z "$root" ] && [ -d "$live" ]; then
+    # -b so a concurrent s6-rc transition makes us wait rather than fail
+    s6-rc-set-install -b -r "$repo" -c "$bootdb" -l "$live" "$set_name" ||
+        { warn "could not install set $set_name into the running system"; exit 1; }
 else
+    # --no-update is only correct with no live database, on a running system
+    # it would skip the check that the set is actually bootable
     s6-rc-set-install -r "$repo" -c "$bootdb" --no-update "$set_name" ||
-        warn "could not install set $set_name as the boot database"
+        { warn "could not install set $set_name as the boot database"; exit 1; }
 fi
+
+printf '%s\n' "$fp" > "$stamp"

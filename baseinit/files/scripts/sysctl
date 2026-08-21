@@ -1,18 +1,22 @@
 #!/bin/sh
+# apply sysctl.d the conventional way: all candidates sorted by basename
+# across every directory, and for a given basename the first directory in the
+# search path wins
 . /usr/lib/s6-rc/rc.lib
 case $1 in
 up)
     log "loading sysctl settings..."
-    seen=
-    for conf in /run/sysctl.d/*.conf \
-                /etc/sysctl.d/*.conf \
-                /usr/lib/sysctl.d/*.conf \
-                /etc/sysctl.conf; do
-        [ -f "$conf" ] || continue
-        case $seen in *" ${conf##*/} "*) continue ;; esac
-        seen=" $seen ${conf##*/} "
+    for conf in $(
+        for d in /run/sysctl.d /etc/sysctl.d /usr/lib/sysctl.d; do
+            for f in "$d"/*.conf; do
+                [ -f "$f" ] && printf '%s %s\n' "${f##*/}" "$f"
+            done
+        done | sort -s -u -k1,1 | cut -d' ' -f2
+    ); do
         sysctl -p "$conf" >/dev/null || :
     done
+
+    [ -f /etc/sysctl.conf ] && sysctl -p /etc/sysctl.conf >/dev/null
     ;;
 esac
 exit 0

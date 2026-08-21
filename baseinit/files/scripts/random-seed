@@ -1,21 +1,17 @@
 #!/bin/sh
+# seedrng loads the stored seed, credits it to the kernel pool and writes a
+# fresh one straight away, so an unclean shutdown can never leave two boots
+#
+# this should also create and set permissions on /var/lib/seedrng all by itself
 . /usr/lib/s6-rc/rc.lib
-seed=/var/lib/init/random-seed
 case $1 in
 up)
-    log "seeding random..."
-    [ -f "$seed" ] && cat "$seed" > /dev/urandom
+    log "seeding the kernel rng..."
+    seedrng || log "warning: seedrng failed"
     ;;
 down)
-    log "saving random seed..."
-    mkdir -p "${seed%/*}" || {
-        log "warning: could not create the random seed directory."
-        exit 0
-    }
-
-    # 512 bytes, the kernel pool is 4096 bits and hardcoded
-    dd count=1 bs=512 if=/dev/urandom of="$seed" >/dev/null 2>&1 || :
-    chmod 600 "$seed" 2>/dev/null || :
+    log "saving the rng seed..."
+    seedrng || :
     ;;
 esac
 exit 0

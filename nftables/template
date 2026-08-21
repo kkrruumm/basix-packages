@@ -73,13 +73,7 @@ post_install() {
     bconf "$FILESDIR/nftables.conf"
 
     if use services; then
-        bmkdir /usr/share/s6-rc/sources/nftables/dependencies.d
-        printf 'oneshot\n' > "$DESTDIR/usr/share/s6-rc/sources/nftables/type"
-        printf '/bin/sh /usr/lib/s6-rc/scripts/nftables up\n' \
-            > "$DESTDIR/usr/share/s6-rc/sources/nftables/up"
-        printf '/bin/sh /usr/lib/s6-rc/scripts/nftables down\n' \
-            > "$DESTDIR/usr/share/s6-rc/sources/nftables/down"
-        : > "$DESTDIR/usr/share/s6-rc/sources/nftables/dependencies.d/base"
-        binstall "$FILESDIR/nftables.script" 0755 /usr/lib/s6-rc/scripts nftables
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
     fi
 }

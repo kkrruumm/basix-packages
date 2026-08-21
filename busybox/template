@@ -47,7 +47,7 @@ do_install() {
         # s6-rc service definitions, installing them does not switch them on
         # use s6-rc-set-change to turn them on, see /usr/lib/s6-rc/sync
         bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
-        find "$DESTDIR/usr/share/s6-rc/sources" -name run -type f -exec chmod 0755 {} +
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
     fi
     bconf "$FILESDIR/mdev.conf"
 }

@@ -1,29 +1,30 @@
 #!/bin/sh
-# this has to be the first thing the init does
-
+# device nodes come from devtmpfs, which the kernel mounts on its own, so all
+# this does is load the modules that apply to the hardware
+# and then hand over to whatever device manager is in use
+# TODO: mdevd
 . /usr/lib/s6-rc/rc.lib
 case $1 in
 up)
-    log "coldplugging devices..."
-    if command -v udevadm >/dev/null && command -v udevd >/dev/null; then
-        udevd -d
-        udevadm trigger -c add -t subsystems
-        udevadm trigger -c add -t devices
-        udevadm settle
+    log "loading modules for present devices..."
+    find /sys/devices -name modalias -type f 2>/dev/null | while read -r m; do
+        read -r alias < "$m" || continue
+        modprobe -bq "$alias" 2>/dev/null || :
+    done
 
-        # if there's a udevd service in use, it takes over from here
-        udevadm control --exit 2>/dev/null || :
-    elif command -v mdev >/dev/null; then
-        mdev -s
+    for f in /etc/modules-load.d/*.conf; do
+        [ -f "$f" ] || continue
+        while read -r mod _; do
+            case $mod in ''|\#*) continue ;; esac
+            modprobe -bq "$mod" 2>/dev/null || :
+        done < "$f"
+    done
 
-        # handle coldplugs (shit like a machine needing virtio-net and ideally starting it automatically)
-        find /sys -name modalias -type f 2>/dev/null | while read -r m; do
-            read -r alias < "$m" || continue
-            modprobe -bq "$alias" 2>/dev/null || :
-        done
-        
-        # handle hotplug events between here and the mdev service starting
-        command -v mdev > /proc/sys/kernel/hotplug
+    # apply the mdev rules (permissions, symlinks, firmware) to everything
+    # that already exists and then the mdev service picks up hotplug from here
+    if command -v mdev >/dev/null; then
+        log "applying device rules..."
+        mdev -s || :
     fi
     ;;
 esac

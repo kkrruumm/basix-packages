@@ -1,7 +1,7 @@
 # /usr/lib/s6-rc/rc.lib - helpers shared by the boot scripts and rc.init
 
 log() {
-    printf '\033[31;1m=>\033[m %s\n' "$@"
+    printf '=> %s\n' "$@"
 
     # also push it at the kernel ring buffer so it survives into dmesg
     if [ -w /dev/kmsg ]; then
@@ -12,8 +12,7 @@ log() {
 
 # pure shell mountpoint test
 mounted() {
-    [ -e "$1" ] || return 1
-    [ -e /proc/mounts ] || return 1
+    [ -r /proc/mounts ] || return 1
 
     while read -r _ target _; do
         [ "$target" = "$1" ] && return 0
@@ -24,7 +23,9 @@ mounted() {
 
 # mnt <options> <type> <device> <mountpoint>
 mnt() {
-    # already mounted (an initramfs got there first) means remount, so the
+    mkdir -p "$4" 2>/dev/null || :
+
+    # already mounted (an initramfs got there first) means remount so the
     # options we want actually take effect
     mounted "$4" && set -- "remount,$1" "$2" "$3" "$4"
 
@@ -32,8 +33,8 @@ mnt() {
 }
 
 sos() {
-    log "the init system encountered an error, starting emergency shell" \
-        "when ready, type 'exit' to continue"
+    log "the init system encountered an error, starting an emergency shell" \
+        "when you are done, type 'exit' to carry on booting"
 
-    /bin/sh
+    setsid -c /bin/sh </dev/console >/dev/console 2>&1 || :
 }

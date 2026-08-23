@@ -8,7 +8,7 @@ license="MIT"
 dist_files="https://github.com/akheron/jansson/releases/download/v${version}/jansson-${version}.tar.gz"
 checksum="53432e6ba17b7ad7640c397c5f382eb2d6dbb7f22d13f04078454c7a6affe4bd"
 
-host_make_depends="pkgconf"
+make_depends="pkgconf"
 
 configure_args="--disable-static"
 

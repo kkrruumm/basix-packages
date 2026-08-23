@@ -13,9 +13,8 @@ use_default="+tls"
 
 depends="bzip2 libassuan libgcrypt libgpg-error libksba npth zlib
  $(use_if tls gnutls)"
-make_depends="bzip2 libassuan libgcrypt libgpg-error libksba npth zlib
+make_depends="bzip2 libassuan libgcrypt libgpg-error libksba npth pkgconf zlib
  $(use_if tls gnutls)"
-host_make_depends="pkgconf"
 
 configure_args="
     --disable-nls

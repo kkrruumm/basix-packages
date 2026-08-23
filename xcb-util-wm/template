@@ -8,7 +8,6 @@ license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/xcb-util-wm-${version}.tar.xz"
 checksum="4cf6b0e204e12eb6b824c939404fc5ad63d61cb94679e8adf5670207802bc738"
 depends="libxcb"
-make_depends="libxcb xorgproto"
-host_make_depends="m4 pkgconf util-macros"
+make_depends="libxcb m4 pkgconf util-macros xorgproto"
 
 configure_args="--disable-static"

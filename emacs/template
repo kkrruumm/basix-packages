@@ -18,8 +18,7 @@ if use dbus; then depends="$depends dbus"; fi
 if use lcms2; then depends="$depends lcms2"; fi
 if use tree_sitter; then depends="$depends tree-sitter"; fi
 
-make_depends="$depends linux-headers"
-host_make_depends="pkgconf"
+make_depends="$depends linux-headers pkgconf"
 
 configure_args="
     --without-x

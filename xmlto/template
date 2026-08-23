@@ -9,7 +9,7 @@ dist_files="https://pagure.io/xmlto/archive/${version}/xmlto-${version}.tar.gz"
 checksum="4513d55e6186ed2ce654de673816769ffd422dabe43115c3bb053b6e6baf4cab"
 wrk_src="xmlto-$version"
 depends="docbook-xsl libxslt bash"
-host_make_depends="libxslt"
+make_depends="libxslt"
 
 # wants actual bash for whatever reason
 configure_args="ac_cv_path_BASH=/bin/bash"

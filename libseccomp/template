@@ -7,7 +7,7 @@ home_page="https://github.com/seccomp/libseccomp"
 license="LGPL-2.1-only"
 dist_files="https://github.com/seccomp/libseccomp/releases/download/v${version}/libseccomp-${version}.tar.gz"
 checksum="48ba4e04a00bdace5ad130d88e2a1a51d0b3dfdabace9a405b404a50e1afdd56"
-host_make_depends="gperf linux-headers pkgconf"
+make_depends="gperf linux-headers pkgconf"
 
 configure_args="
     --disable-static

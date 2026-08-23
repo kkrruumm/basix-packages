@@ -13,10 +13,8 @@ use_default="+man"
 
 depends="bubblewrap dbus flatpak fuse3 gdk-pixbuf glib gst-plugins-base gstreamer
  json-glib pipewire"
-make_depends="dbus flatpak fuse3 gdk-pixbuf glib gst-plugins-base gstreamer
- json-glib pipewire"
-host_make_depends="bubblewrap meson pkgconf python
- $(use_if man python-docutils)"
+make_depends="bubblewrap dbus flatpak fuse3 gdk-pixbuf glib gst-plugins-base gstreamer
+ json-glib meson pipewire pkgconf python $(use_if man python-docutils)"
 
 configure_args="
     -Dgeoclue=disabled

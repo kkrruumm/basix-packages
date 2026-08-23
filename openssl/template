@@ -8,7 +8,7 @@ license="Apache-2.0"
 dist_files="https://github.com/openssl/openssl/releases/download/openssl-${version}/openssl-${version}.tar.gz https://github.com/kiss-community/openssl/releases/download/generated/openssl-${version}-generated.tar.gz"
 checksum="50266d0787caf4cf6c6fcee71db9dddc3ee071f2e917ea9274068423424efa97 15b0f3c0c16e4935a67f94a9ebb1fca4dabf2a3eee28a35d6d15b6877c529286"
 depends="certs"
-host_make_depends="perl"
+make_depends="perl"
 
 do_extract() {
     bextract "openssl-$version.tar.gz"

@@ -16,10 +16,10 @@ use_default="+vulkan -xwayland"
 depends="lcms2 libdisplay-info libdrm libinput libudev-zero libxkbcommon mesa pixman
  seatd wayland $(use_if vulkan vulkan-loader)
  $(use_if xwayland "libxcb xcb-util-wm xwayland")"
-make_depends="lcms2 libdisplay-info libdrm libinput libudev-zero libxkbcommon mesa
- pixman seatd wayland $(use_if vulkan "vulkan-headers vulkan-loader")
+make_depends="hwdata lcms2 libdisplay-info libdrm libinput libudev-zero libxkbcommon
+ mesa meson pixman pkgconf seatd wayland wayland-protocols
+ $(use_if vulkan "glslang vulkan-headers vulkan-loader")
  $(use_if xwayland "libxcb xcb-util-wm xwayland xorgproto")"
-host_make_depends="hwdata meson pkgconf wayland-protocols $(use_if vulkan glslang)"
 
 configure_args="
     $(use_if xwayland -Dxwayland=enabled -Dxwayland=disabled)

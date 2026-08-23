@@ -9,7 +9,7 @@ dist_files="https://github.com/pypa/pyproject-hooks/archive/v${version}.tar.gz>p
 checksum="f859182e2e587ad219a1f7be2fb1dc3ecbc28c64450c5e1ff163ad1436e366da3c"
 wrk_src="pyproject-hooks-$version"
 depends="python"
-host_make_depends="python python-flit-core python-installer"
+make_depends="python python-flit-core python-installer"
 
 do_build() {
     python3 -c 'import os, flit_core.buildapi as b; os.makedirs("dist", exist_ok=True); b.build_wheel("dist")'

@@ -8,8 +8,7 @@ license="LGPL-2.1-or-later"
 dist_files="https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-${version}.tar.bz2"
 checksum="7eab6137f890c1144c280d97ad89ac115d8c54b317e4696f271c172d5133b10f"
 depends="libgpg-error"
-make_depends="libgpg-error"
-host_make_depends="pkgconf"
+make_depends="libgpg-error pkgconf"
 
 configure_args="
     --disable-static

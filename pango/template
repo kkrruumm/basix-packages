@@ -8,8 +8,7 @@ license="LGPL-2.0-or-later"
 dist_files="https://download.gnome.org/sources/pango/${version%.*}/pango-${version}.tar.xz"
 checksum="78542feaaf007c1d648b94c4e9b6655ed7515d27ce434766aea99bef886c21ac98"
 depends="cairo fontconfig freetype glib harfbuzz fribidi"
-make_depends="cairo fontconfig freetype fribidi glib harfbuzz"
-host_make_depends="meson pkgconf python"
+make_depends="cairo fontconfig freetype fribidi glib harfbuzz meson pkgconf python"
 
 # xft is the X font backend, libthai is thai word breaking
 configure_args="

@@ -12,8 +12,8 @@ use_flags="man"
 use_default="+man"
 
 depends="basu inih libdrm mesa pipewire wayland xdg-desktop-portal"
-make_depends="basu inih libdrm mesa pipewire wayland"
-host_make_depends="meson pkgconf wayland-protocols $(use_if man scdoc)"
+make_depends="basu inih libdrm mesa meson pipewire pkgconf wayland wayland-protocols
+ $(use_if man scdoc)"
 
 configure_args="
     -Dsd-bus-provider=basu

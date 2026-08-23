@@ -9,8 +9,7 @@ dist_files="https://git.sr.ht/~kennylevinsen/greetd/archive/${version}.tar.gz>gr
 checksum="acf3f31550974bebce635ed84b6fabd21ee06fd12344d5fa993a5c5384724c8b"
 wrk_src="greetd-$version"
 depends="linux-pam seatd"
-make_depends="linux-pam"
-host_make_depends="rust scdoc pkgconf"
+make_depends="linux-pam pkgconf rust scdoc"
 
 # crates.io is fetched at build time, TODO: handle vendored deps
 allow_network=yes

@@ -8,8 +8,7 @@ license="LGPL-2.1-or-later"
 dist_files="https://download.gnome.org/sources/json-glib/${version%.*}/json-glib-${version}.tar.xz"
 checksum="5de3c263fda3e3874874c2700c20565f2a41ba4edeff4d348730652609d791a9"
 depends="glib"
-make_depends="glib"
-host_make_depends="meson pkgconf"
+make_depends="glib meson pkgconf"
 
 configure_args="
     -Dintrospection=disabled

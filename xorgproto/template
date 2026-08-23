@@ -7,6 +7,6 @@ home_page="https://gitlab.freedesktop.org/xorg/proto/xorgproto"
 license="MIT"
 dist_files="https://www.x.org/releases/individual/proto/xorgproto-${version}.tar.xz"
 checksum="80978f0950aab96f2b83750c6428e7ed7ea31fac0464d8cda23c759f457785f1"
-host_make_depends="meson pkgconf"
+make_depends="meson pkgconf"
 
 # this should only ever be in make_depends for shit

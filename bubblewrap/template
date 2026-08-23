@@ -8,12 +8,11 @@ license="LGPL-2.0-or-later"
 dist_files="https://github.com/containers/bubblewrap/releases/download/v${version}/bubblewrap-${version}.tar.xz"
 checksum="84bbaab8e6674e165401e96d0d3f342015dc043b2528ae30c1da039fb6a06c80"
 depends="libcap"
-make_depends="libcap"
+make_depends="libcap meson pkgconf $(use_if man "docbook-xsl libxslt")"
 
 use_flags="man"
 use_default="+man"
 
-host_make_depends="meson pkgconf $(use_if man "docbook-xsl libxslt")"
 
 configure_args="
     -Drequire_userns=true

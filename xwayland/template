@@ -13,9 +13,9 @@ use_default="+glamor -listen_tcp"
 
 depends="libdrm libXfont2 libxcvt libxshmfence mesa openssl pixman wayland
  xkbcomp xkeyboard-config $(use_if glamor libepoxy)"
-make_depends="libdrm libXfont2 libxcvt libxkbfile libxshmfence mesa openssl
- pixman wayland xorgproto xtrans $(use_if glamor libepoxy)"
-host_make_depends="font-util meson pkgconf python wayland-protocols"
+make_depends="font-util libdrm libxcvt libXfont2 libxkbfile libxshmfence mesa meson
+ openssl pixman pkgconf python wayland wayland-protocols xorgproto xtrans
+ $(use_if glamor libepoxy)"
 
 configure_args="
     -Dxdmcp=false

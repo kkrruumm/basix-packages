@@ -9,8 +9,7 @@ dist_files="https://gitlab.freedesktop.org/mesa/libdrm/-/archive/libdrm-${versio
 checksum="4b2f4a35c204ec3e3edd894969e301cf73054c8be5f13d4304a982bdb3b686aef1"
 wrk_src="libdrm-libdrm-$version"
 depends="libpciaccess libudev-zero"
-make_depends="libpciaccess libudev-zero"
-host_make_depends="meson pkgconf python-docutils"
+make_depends="libpciaccess libudev-zero meson pkgconf python-docutils"
 
 use_flags="man intel amdgpu radeon nouveau"
 use_default="+man +intel +amdgpu +radeon -nouveau"

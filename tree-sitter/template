@@ -8,7 +8,7 @@ license="MIT"
 dist_files="https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v${version}.tar.gz>tree-sitter-${version}.tar.gz"
 checksum="0323d00f4ed0f48d3bd17e4ece06d779302879e7e5d9793f11409d8596a7d0f6"
 
-host_make_depends="pkgconf"
+make_depends="pkgconf"
 
 # held at 0.25 on purpose. 0.26 removed ts_language_version, which emacs 30.2
 # still calls, so emacs will not compile against it without backporting

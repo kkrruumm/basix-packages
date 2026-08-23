@@ -7,7 +7,7 @@ home_page="https://opus-codec.org"
 license="BSD-3-Clause"
 dist_files="https://downloads.xiph.org/releases/opus/opus-${version}.tar.gz"
 checksum="874bd7d28e24f10d88105c7d846a2e5bf085284af91a0ee36b05674a8f78e759"
-host_make_depends="meson pkgconf"
+make_depends="meson pkgconf"
 
 configure_args="
     -Dtests=disabled

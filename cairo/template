@@ -8,8 +8,7 @@ license="LGPL-2.1-or-later OR MPL-1.1"
 dist_files="https://cairographics.org/releases/cairo-${version}.tar.xz"
 checksum="b9fa14e02f85ec4e72396c62236c98502d04dbbdf8daf01ab9557a1c7aa7106e6f"
 depends="fontconfig freetype glib libpng pixman zlib"
-make_depends="fontconfig freetype glib libpng pixman zlib"
-host_make_depends="meson pkgconf"
+make_depends="fontconfig freetype glib libpng meson pixman pkgconf zlib"
 
 configure_args="
     -Dfontconfig=enabled

@@ -14,13 +14,10 @@ use_default="+man +seccomp +wayland +xauth"
 depends="appstream bubblewrap curl dbus fuse3 gdk-pixbuf glib gpgme json-glib
  libarchive libcap libxml2 ostree xdg-dbus-proxy zstd
  $(use_if seccomp libseccomp) $(use_if wayland wayland) $(use_if xauth libXau)"
-make_depends="appstream curl fuse3 gdk-pixbuf glib gpgme json-glib libarchive
- libcap libxml2 ostree zstd
- $(use_if seccomp libseccomp) $(use_if wayland wayland) $(use_if xauth libXau)"
-host_make_depends="bison bubblewrap xdg-dbus-proxy meson pkgconf python python-pyparsing
- $(use_if man "docbook-xsl libxslt")
- $(use_if wayland wayland-protocols)
- $(use_if xauth "libXau xorgproto")"
+make_depends="appstream bison bubblewrap curl fuse3 gdk-pixbuf glib gpgme json-glib
+ libarchive libcap libxml2 meson ostree pkgconf python python-pyparsing xdg-dbus-proxy
+ zstd $(use_if man "docbook-xsl libxslt") $(use_if seccomp libseccomp)
+ $(use_if wayland "wayland wayland-protocols") $(use_if xauth "libXau xorgproto")"
 
 configure_args="
     -Dsystem_helper=disabled

@@ -8,7 +8,6 @@ license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/libXfixes-${version}.tar.xz"
 checksum="95fd7674b9a782e7dcc2ea38737262f931dbac8bddefe24066599eabdac6a142"
 depends="libX11"
-make_depends="libX11 xorgproto"
-host_make_depends="pkgconf util-macros"
+make_depends="libX11 pkgconf util-macros xorgproto"
 
 configure_args="--disable-static"

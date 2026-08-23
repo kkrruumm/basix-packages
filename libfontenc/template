@@ -8,8 +8,7 @@ license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/libfontenc-${version}.tar.xz"
 checksum="098188a7afd2804ec548d7cc4ff3190026377c0a5022eb5fe1566f88b516d653"
 depends="zlib"
-make_depends="zlib xorgproto"
-host_make_depends="pkgconf util-macros font-util"
+make_depends="font-util pkgconf util-macros xorgproto zlib"
 
 configure_args="
     --disable-static

@@ -14,8 +14,7 @@ use_flags="json"
 use_default="-json"
 
 depends="libmnl $(usev json jansson)"
-make_depends="libmnl linux-headers $(usev json jansson)"
-host_make_depends="pkgconf"
+make_depends="libmnl linux-headers pkgconf $(usev json jansson)"
 
 configure_args="
     --disable-static

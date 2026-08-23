@@ -9,8 +9,7 @@ dist_files="https://ftp.gnu.org/gnu/nettle/nettle-${version}.tar.gz"
 checksum="c6ff393796e76cdcc49b0d825b7f36357f4efc9dc74f4d718b62f347714b944f"
 
 depends="gmp"
-make_depends="gmp"
-host_make_depends="m4 pkgconf"
+make_depends="gmp m4 pkgconf"
 
 # fat builds every x86 assembly variant and picks one at runtime, which is
 # what a generic binary package wants

@@ -8,7 +8,7 @@ license="BSD-3-Clause"
 dist_files="https://github.com/linux-pam/linux-pam/releases/download/v${version}/Linux-PAM-${version}.tar.xz"
 checksum="05b8e0d0831baa13ff3b3b40666440b56af98dcdb475818faee106f0593a6770"
 wrk_src="Linux-PAM-$version"
-host_make_depends="meson pkgconf flex bison"
+make_depends="meson pkgconf flex bison"
 
 use_flags="docs"
 use_default="-docs"

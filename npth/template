@@ -7,7 +7,7 @@ home_page="https://gnupg.org/software/npth"
 license="LGPL-2.1-or-later"
 dist_files="https://gnupg.org/ftp/gcrypt/npth/npth-${version}.tar.bz2"
 checksum="cac4aa343cb1d426a913b29cb1692b6145dd530c9e1896696cd6e85872b3df03"
-host_make_depends="pkgconf"
+make_depends="pkgconf"
 
 configure_args="
     --disable-static

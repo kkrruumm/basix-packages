@@ -8,8 +8,7 @@ license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/libX11-${version}.tar.xz"
 checksum="f8503727da9dbaa5974c9225e4343b5c36cc47027f9aed7369e563adc87ad9e9"
 depends="libxcb"
-make_depends="libxcb xorgproto xtrans"
-host_make_depends="pkgconf util-macros"
+make_depends="libxcb pkgconf util-macros xorgproto xtrans"
 
 # all of the networking shit is disabled here
 # i'm not going to make these use flags for now,

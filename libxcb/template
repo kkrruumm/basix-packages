@@ -8,8 +8,7 @@ license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/libxcb-${version}.tar.xz"
 checksum="3dce3b8adc257177dfec9b6b6cf55eeac13921520dd6c372fd8f9d867600337b"
 depends="libXau"
-make_depends="libXau xorgproto"
-host_make_depends="pkgconf python xcb-proto"
+make_depends="libXau pkgconf python xcb-proto xorgproto"
 
 configure_args="
     --disable-static

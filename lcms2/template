@@ -8,8 +8,7 @@ license="MIT"
 dist_files="https://downloads.sourceforge.net/sourceforge/lcms/lcms2-${version}.tar.gz"
 checksum="f649f683e5360ca77ff4117b036eadb0299c6ca7ef3c561525daec2908a9e5d243"
 depends="zlib"
-make_depends="zlib"
-host_make_depends="meson pkgconf"
+make_depends="meson pkgconf zlib"
 
 configure_args="
     -Dutils=false

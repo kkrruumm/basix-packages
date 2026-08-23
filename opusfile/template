@@ -8,8 +8,7 @@ license="BSD-3-Clause"
 dist_files="https://downloads.xiph.org/releases/opus/opusfile-${version}.tar.gz"
 checksum="1b6a5c371a0ea2ae8e37ab2e921388dfef9252dbf7f60045192dabbdd898f2bf"
 depends="libogg opus"
-make_depends="libogg opus"
-host_make_depends="pkgconf"
+make_depends="libogg opus pkgconf"
 
 configure_args="
     --disable-static

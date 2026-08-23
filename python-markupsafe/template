@@ -9,4 +9,4 @@ dist_files="https://files.pythonhosted.org/packages/source/M/MarkupSafe/markupsa
 checksum="31c0e30de872706dfc7789faa8f991527fb66ade1da83e78320c794af64e6da5ab"
 wrk_src="markupsafe-$version"
 depends="python"
-host_make_depends="python python-build python-installer python-setuptools python-wheel"
+make_depends="python python-build python-installer python-setuptools python-wheel"

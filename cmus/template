@@ -18,14 +18,13 @@ depends="ncurses
  $(use_if mpris basu)
  $(use_if opus "libogg opus opusfile")
  $(use_if vorbis "libogg libvorbis")"
-make_depends="ncurses
+make_depends="ncurses pkgconf
  $(use_if alsa alsa-lib)
  $(use_if flac "flac libogg")
  $(use_if mad libmad)
  $(use_if mpris basu)
  $(use_if opus "libogg opus opusfile")
  $(use_if vorbis "libogg libvorbis")"
-host_make_depends="pkgconf"
 
 do_configure() {
     ./configure \

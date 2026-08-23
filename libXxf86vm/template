@@ -8,7 +8,6 @@ license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/libXxf86vm-${version}.tar.xz"
 checksum="54af9fb042d559b98a47524e3a81638882c9f881c2c4676f25d9486460fbfd24"
 depends="libX11 libXext"
-make_depends="libX11 libXext xorgproto"
-host_make_depends="pkgconf util-macros"
+make_depends="libX11 libXext pkgconf util-macros xorgproto"
 
 configure_args="--disable-static"

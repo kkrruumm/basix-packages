@@ -8,8 +8,7 @@ license="LGPL-3.0-or-later"
 dist_files="https://gnupg.org/ftp/gcrypt/libksba/libksba-${version}.tar.bz2"
 checksum="1ae65c16488b982448f238839466b21d32456f457769480ba27c0619e8804254"
 depends="libgpg-error"
-make_depends="libgpg-error"
-host_make_depends="pkgconf"
+make_depends="libgpg-error pkgconf"
 
 configure_args="
     --disable-static

@@ -9,7 +9,7 @@ dist_files="https://github.com/docbook/xslt10-stylesheets/releases/download/rele
 checksum="43108052fa95ac65959cb22e8650e816bf8f60cc2cde50beb791102a7a03921725"
 wrk_src="docbook-xsl-nons-$version"
 depends="docbook-xml libxml2"
-host_make_depends="libxml2"
+make_depends="libxml2"
 
 do_build() { :; }
 

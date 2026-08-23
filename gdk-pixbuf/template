@@ -8,8 +8,7 @@ license="LGPL-2.1-or-later"
 dist_files="https://download.gnome.org/sources/gdk-pixbuf/${version%.*}/gdk-pixbuf-${version}.tar.xz"
 checksum="af8996e49b106844a37f5dee68859530f8cdc7965b8ed3918b43b90cf5dfa365"
 depends="glib libjpeg-turbo libpng"
-make_depends="glib libjpeg-turbo libpng"
-host_make_depends="meson pkgconf python"
+make_depends="glib libjpeg-turbo libpng meson pkgconf python"
 
 configure_args="
     -Dgio_sniffing=false

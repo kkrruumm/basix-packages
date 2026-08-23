@@ -14,9 +14,10 @@ use_default="+fuse +man"
 
 depends="curl e2fsprogs glib gpgme libarchive openssl util-linux xz zlib
  $(use_if fuse fuse3)"
-make_depends="curl e2fsprogs glib gpgme libarchive openssl util-linux xz zlib
- $(use_if fuse fuse3)"
-host_make_depends="bison pkgconf python $(use_if man "docbook-xsl libxslt")"
+make_depends="bison curl e2fsprogs glib gpgme libarchive openssl pkgconf python
+ util-linux xz zlib
+ $(use_if fuse fuse3)
+ $(use_if man "docbook-xsl libxslt")"
 
 configure_args="
     --disable-static

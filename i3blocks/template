@@ -12,7 +12,7 @@ wrk_src="i3blocks-$version"
 use_flags="man"
 use_default="+man"
 
-host_make_depends="autoconf automake m4 perl pkgconf"
+make_depends="autoconf automake m4 perl pkgconf"
 make_install_args="-j1"
 
 pre_configure() {

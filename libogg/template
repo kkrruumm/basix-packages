@@ -7,7 +7,7 @@ home_page="https://xiph.org/ogg/"
 license="BSD-3-Clause"
 dist_files="https://downloads.xiph.org/releases/ogg/libogg-${version}.tar.gz"
 checksum="15700f821ca755821c0646eec5b965491e27578a241490bef9f89cf5f2597042"
-host_make_depends="cmake pkgconf samurai"
+make_depends="cmake pkgconf samurai"
 
 configure_args="
     -DBUILD_SHARED_LIBS=ON

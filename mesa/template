@@ -12,11 +12,11 @@ use_default="+amdgpu +intel -nouveau -rusticl +vulkan +x11"
 
 depends="expat libdisplay-info libdrm libelf libudev-zero llvm wayland zlib zstd
  $(use_if x11 "libX11 libXdamage libXext libXfixes libXxf86vm libxcb libxshmfence")"
-make_depends="expat libdisplay-info libdrm libelf libudev-zero llvm wayland zlib zstd
+make_depends="bison clang cmake expat flex glslang libclc libdisplay-info libdrm libelf
+ libudev-zero llvm meson pkgconf python python-mako python-packaging python-yaml
+ spirv-llvm-translator spirv-tools wayland wayland-protocols zlib zstd
  $(use_if x11 "libX11 libXdamage libXext libXfixes libXxf86vm libxcb libxshmfence
  xorgproto")"
-host_make_depends="bison clang cmake flex glslang libclc meson pkgconf python python-mako
- python-yaml python-packaging spirv-llvm-translator spirv-tools wayland-protocols"
 
 configure_args="
     $(use_if x11 -Dplatforms=x11,wayland -Dplatforms=wayland)

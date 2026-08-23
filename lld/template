@@ -12,8 +12,7 @@ checksum="f2770e2de83b8dcf045ccf53271e85dc00afa1ee8f770379439b4300e76a5baa"
 wrk_src="llvm-project-llvmorg-$version/lld"
 patch_args="-p2"
 depends="llvm"
-make_depends="llvm"
-host_make_depends="cmake python"
+make_depends="cmake llvm python"
 
 configure_args="
     -DLLVM_INSTALL_TOOLCHAIN_ONLY=OFF

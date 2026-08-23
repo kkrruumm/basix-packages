@@ -9,7 +9,7 @@ dist_files="https://github.com/xkbcommon/libxkbcommon/archive/xkbcommon-${versio
 checksum="b6b869719334d160764d2fc3f1dd134dd903b3ea1b0605cd05e6e36917311a54"
 wrk_src="libxkbcommon-xkbcommon-$version"
 depends="xkeyboard-config"
-host_make_depends="bison meson pkgconf python xkeyboard-config"
+make_depends="bison meson pkgconf python xkeyboard-config"
 
 use_flags="tools xkbregistry"
 use_default="+tools -xkbregistry"

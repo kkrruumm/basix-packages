@@ -8,7 +8,7 @@ license="ISC, BSD-3-Clause"
 dist_files="https://github.com/Duncaen/OpenDoas/archive/v${version}.tar.gz>opendoas-${version}.tar.gz"
 checksum="56a116e8617fc99184f3c919f591493b76d6511c2a79328f6f13a46ef2df0ae0d0"
 wrk_src="OpenDoas-$version"
-host_make_depends="bison"
+make_depends="bison"
 
 use_flags="timestamp"
 use_default="+timestamp"

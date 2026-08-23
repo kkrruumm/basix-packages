@@ -7,6 +7,6 @@ home_page="https://gitlab.freedesktop.org/xorg/proto/xcbproto"
 license="MIT"
 dist_files="https://www.x.org/releases/individual/proto/xcb-proto-${version}.tar.xz"
 checksum="68187400fded667f60b4b020d0fc37fa489ae0de33169fe7b07fcbaf88e7a3f9"
-host_make_depends="pkgconf python"
+make_depends="pkgconf python"
 
-# this should only ever be a host_make_depends
+# this should only ever be a make_depends

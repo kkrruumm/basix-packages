@@ -9,8 +9,8 @@ dist_files="https://www.freedesktop.org/software/appstream/releases/AppStream-${
 checksum="3a2c4ae8e2b71e60a9118cf402b920e028fc28514ebbdf94edd7ac09106d219a"
 wrk_src="AppStream-$version"
 depends="curl glib libfyaml libxml2 libxmlb zstd"
-make_depends="curl glib libfyaml libxml2 libxmlb wayland zstd"
-host_make_depends="gperf meson pkgconf gettext-tiny"
+make_depends="curl gettext-tiny glib gperf libfyaml libxml2 libxmlb meson pkgconf
+ wayland zstd"
 
 configure_args="
     -Dcompose=false

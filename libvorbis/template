@@ -8,8 +8,7 @@ license="BSD-3-Clause"
 dist_files="https://downloads.xiph.org/releases/vorbis/libvorbis-${version}.tar.xz"
 checksum="c67f3f74ec26d93a5571c4404a64eb6e6587d7d77b46b552f7b410f5bc5b1f03"
 depends="libogg"
-make_depends="libogg"
-host_make_depends="pkgconf"
+make_depends="libogg pkgconf"
 
 configure_args="
     --disable-static

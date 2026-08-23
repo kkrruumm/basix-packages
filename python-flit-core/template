@@ -9,7 +9,7 @@ dist_files="https://files.pythonhosted.org/packages/source/f/flit_core/flit_core
 checksum="2291118823fa351abbb592a8c414e2c5a5a1642bd4f0bbcc24599ab300f6aaa611"
 wrk_src="flit_core-$version"
 depends="python"
-host_make_depends="python"
+make_depends="python"
 
 do_build() {
     python3 -m flit_core.wheel

@@ -20,7 +20,7 @@ depends="dbus glib libudev-zero ncurses
  $(use_if sndfile libsndfile)
  $(use_if vulkan vulkan-loader)
  $(use_if x11 "libX11 libXfixes")"
-make_depends="dbus glib libudev-zero ncurses
+make_depends="dbus glib libudev-zero meson ncurses pkgconf python
  $(use_if alsa alsa-lib)
  $(use_if bluetooth bluez)
  $(use_if camera libcamera)
@@ -29,7 +29,6 @@ make_depends="dbus glib libudev-zero ncurses
  $(use_if sndfile libsndfile)
  $(use_if vulkan "vulkan-headers vulkan-loader")
  $(use_if x11 "libX11 libXfixes xorgproto")"
-host_make_depends="meson pkgconf python"
 
 # session-managers defaults to ['wireplumber']
 configure_args="

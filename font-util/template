@@ -7,6 +7,6 @@ home_page="https://gitlab.freedesktop.org/xorg/font/util"
 license="MIT"
 dist_files="https://www.x.org/releases/individual/font/font-util-${version}.tar.xz"
 checksum="b430a69efcba19f59d95bcb967aab1d5838b38f2bc94cbc58f6867eeeba21a3e"
-host_make_depends="pkgconf util-macros"
+make_depends="pkgconf util-macros"
 
 configure_args="--with-fontrootdir=/usr/share/fonts/X11"

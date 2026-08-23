@@ -12,8 +12,7 @@ use_flags="man"
 use_default="+man"
 
 depends="dbus glib"
-make_depends="glib"
-host_make_depends="meson pkgconf $(use_if man "docbook-xsl libxslt")"
+make_depends="glib meson pkgconf $(use_if man "docbook-xsl libxslt")"
 
 configure_args="
     -Dtests=false

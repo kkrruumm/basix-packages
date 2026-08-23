@@ -20,14 +20,13 @@ if use cli; then depends="$depends readline"; fi
 if use xtables; then depends="$depends iptables"; fi
 if use python; then depends="$depends python"; fi
 
-make_depends="$depends linux-headers"
+make_depends="$depends bash bison flex linux-headers pkgconf"
 
-host_make_depends="pkgconf bash flex bison"
 if use python; then
-    host_make_depends="$host_make_depends python python-build python-installer python-setuptools python-wheel"
+    make_depends="$make_depends python python-build python-installer python-setuptools python-wheel"
 fi
 if use man_doc; then
-    host_make_depends="$host_make_depends asciidoc docbook2x"
+    make_depends="$make_depends asciidoc docbook2x"
 fi
 
 configure_args="

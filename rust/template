@@ -32,8 +32,7 @@ skip_extract="rust-std-${_rust_boot}-${_rust_triple}.tar.xz
 wrk_src="rustc-${version}-src"
 
 depends="llvm openssl xz zlib"
-make_depends="llvm openssl xz zlib curl"
-host_make_depends="pkgconf python"
+make_depends="curl llvm openssl pkgconf python xz zlib"
 
 use_flags="rustfmt clippy docs"
 use_default="+rustfmt -clippy -docs"

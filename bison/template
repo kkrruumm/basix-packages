@@ -8,7 +8,7 @@ license="GPL-3.0-or-later"
 dist_files="https://ftp.gnu.org/gnu/bison/bison-${version}.tar.xz"
 checksum="9dd90be8df4d0474b941e2ca14ac76d11b7ccb46edb26344b60d866178bbcc9872"
 depends="m4"
-host_make_depends="m4"
+make_depends="m4"
 
 use_flags="nls"
 use_default="-nls"

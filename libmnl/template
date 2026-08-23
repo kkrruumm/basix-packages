@@ -8,8 +8,7 @@ license="LGPL-2.1-or-later"
 dist_files="https://netfilter.org/projects/libmnl/files/libmnl-${version}.tar.bz2"
 checksum="bc4ab2439dba1a03954e554af39dd21ac96803870eec152f5d089659e3e5c142"
 
-make_depends="linux-headers"
-host_make_depends="pkgconf"
+make_depends="linux-headers pkgconf"
 
 configure_args="--disable-static"
 

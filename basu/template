@@ -9,7 +9,6 @@ dist_files="https://git.sr.ht/~emersion/basu/archive/v${version}.tar.gz>basu-${v
 checksum="8e678e54208e0690d22d522448293da66cea08a4aeccb645b66b765f93ae2e66"
 wrk_src="basu-v$version"
 depends="libcap"
-make_depends="libcap"
-host_make_depends="gperf meson pkgconf"
+make_depends="gperf libcap meson pkgconf"
 
 configure_args="-Dsystem-bus-address=unix:path=/run/dbus/system_bus_socket"

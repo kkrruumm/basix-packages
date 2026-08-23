@@ -9,7 +9,7 @@ dist_files="https://github.com/lm-sensors/lm-sensors/archive/V3-6-0.tar.gz>lm_se
 checksum="58a567dfcf852e90437880350db6a040d54e72312ff5858437937b291947e03eb3"
 wrk_src="lm-sensors-3-6-0"
 depends="perl"
-host_make_depends="bison flex perl"
+make_depends="bison flex perl"
 
 use_flags="man"
 use_default="+man"

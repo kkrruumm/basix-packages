@@ -8,8 +8,7 @@ license="LGPL-2.1-or-later"
 dist_files="https://gnupg.org/ftp/gcrypt/gpgme/gpgme-${version}.tar.bz2"
 checksum="93d14828b7b7025b230b7b7f8a85565cf805daf2ebde53242d02c0b5cc7d5468"
 depends="gnupg libassuan libgpg-error"
-make_depends="libassuan libgpg-error"
-host_make_depends="gnupg pkgconf"
+make_depends="gnupg libassuan libgpg-error pkgconf"
 
 configure_args="
     --disable-static

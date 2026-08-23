@@ -7,7 +7,7 @@ home_page="https://github.com/pantoniou/libfyaml"
 license="MIT"
 dist_files="https://github.com/pantoniou/libfyaml/releases/download/v${version}/libfyaml-${version}.tar.gz"
 checksum="18c2deb847c782bcccaabd18bed64a6ad7ab9f900794913bd3b0435b2ddf6112"
-host_make_depends="bash linux-headers m4 pkgconf"
+make_depends="bash linux-headers m4 pkgconf"
 
 configure_args="--disable-static"
 

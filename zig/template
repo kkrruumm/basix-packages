@@ -13,8 +13,7 @@ wrk_src="zig-$version"
 
 # the llvm package must be built with LLVM_TARGETS_TO_BUILD=all for this
 depends="llvm clang lld zlib zstd"
-make_depends="llvm clang lld zlib zstd"
-host_make_depends="cmake"
+make_depends="clang cmake lld llvm zlib zstd"
 
 configure_args="
     -DZIG_SHARED_LLVM=ON

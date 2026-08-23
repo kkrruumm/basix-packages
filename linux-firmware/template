@@ -33,9 +33,9 @@ use_default="+amdgpu -amd-ucode +amd-misc -radeon -nvidia
 
 # optional flags for compression, none of this is required
 # compressed firmware needs CONFIG_FW_LOADER_COMPRESS_{XZ,ZSTD} in the kernel though
-if use xz; then host_make_depends="${host_make_depends:-} xz"; fi
-if use zstd; then host_make_depends="${host_make_depends:-} zstd"; fi
-if use dedup; then host_make_depends="${host_make_depends:-} rdfind"; fi
+if use xz; then make_depends="${make_depends:-} xz"; fi
+if use zstd; then make_depends="${make_depends:-} zstd"; fi
+if use dedup; then make_depends="${make_depends:-} rdfind"; fi
 
 # paths owned by each flag, relative to /usr/lib/firmware, globs allowed
 # the intel wifi/bt/audio/camera split happens in do_install instead because they all

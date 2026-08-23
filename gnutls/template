@@ -19,8 +19,7 @@ depends="nettle libtasn1 libunistring gmp"
 if use zlib; then depends="$depends zlib"; fi
 if use zstd; then depends="$depends zstd"; fi
 
-make_depends="$depends linux-headers"
-host_make_depends="pkgconf"
+make_depends="$depends linux-headers pkgconf"
 
 # the trust store is not autodetected reliably, and the path it would probe
 # for is not the one the certs package uses so point it straight at the bundle

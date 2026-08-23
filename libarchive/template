@@ -8,8 +8,7 @@ license="BSD-2-Clause"
 dist_files="https://github.com/libarchive/libarchive/releases/download/v${version}/libarchive-${version}.tar.xz"
 checksum="5db1e836d7ab5f0f166ece56a399af3104869d1f3857b41f5f762abc07c07471"
 depends="bzip2 expat openssl xz zlib zstd"
-make_depends="bzip2 expat openssl xz zlib zstd"
-host_make_depends="pkgconf"
+make_depends="bzip2 expat openssl pkgconf xz zlib zstd"
 
 configure_args="
     --disable-static

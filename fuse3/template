@@ -9,8 +9,7 @@ dist_files="https://github.com/libfuse/libfuse/releases/download/fuse-${version}
 checksum="8d10a06f56940d0c560619d030391a1aceb505d6afa041f004420806c71a71de"
 wrk_src="fuse-$version"
 depends="libudev-zero"
-make_depends="libudev-zero"
-host_make_depends="linux-headers meson pkgconf"
+make_depends="libudev-zero linux-headers meson pkgconf"
 
 configure_args="
     -Dexamples=false

@@ -8,7 +8,7 @@ home_page="https://www.lua.org"
 license="MIT"
 dist_files="https://www.lua.org/ftp/lua-${version}.tar.gz"
 checksum="634db1ca64e6ee891a248a837d42b18f236fe8915a8ee2475b3469a9e86805ef"
-host_make_depends="pkgconf"
+make_depends="pkgconf"
 
 use_flags="shared dlopen"
 use_default="+shared +dlopen"

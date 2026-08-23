@@ -8,8 +8,7 @@ license="MIT"
 dist_files="https://www.cairographics.org/releases/pixman-${version}.tar.gz"
 checksum="bf7e48bf0e523ded06089cb99af7be29c2e2581970a63e72ea6f49a469e511a6b3"
 depends="libpng"
-make_depends="libpng"
-host_make_depends="meson perl pkgconf"
+make_depends="libpng meson perl pkgconf"
 
 configure_args="
     -Dgnu-inline-asm=enabled

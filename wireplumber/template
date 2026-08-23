@@ -8,8 +8,7 @@ license="MIT"
 dist_files="https://gitlab.freedesktop.org/PipeWire/wireplumber/-/archive/${version}/wireplumber-${version}.tar.gz"
 checksum="0000000000000000000000000000000000000000000000000000000000000000"
 depends="glib lua pipewire"
-make_depends="glib lua pipewire"
-host_make_depends="meson pkgconf python"
+make_depends="glib lua meson pipewire pkgconf python"
 
 configure_args="
     -Dsystem-lua=true

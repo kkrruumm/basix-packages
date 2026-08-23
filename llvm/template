@@ -12,8 +12,7 @@ wrk_src="llvm-project-llvmorg-$version/llvm"
 patch_args="-p2"
 
 depends="zlib"
-make_depends="zlib"
-host_make_depends="cmake python"
+make_depends="cmake python zlib"
 
 # one flag per llvm code generation backend, the host's own is always built
 # all-targets is the shorthand for every one of them, which is what zig wants,

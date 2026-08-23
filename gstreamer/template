@@ -8,8 +8,7 @@ license="LGPL-2.0-or-later"
 dist_files="https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${version}.tar.xz"
 checksum="492c612027fd1bbc6179e8a3db225e8f78b0f7f161625fe81e4039e6763b215d"
 depends="glib"
-make_depends="glib"
-host_make_depends="bison flex meson pkgconf python"
+make_depends="bison flex glib meson pkgconf python"
 
 configure_args="
     -Dptp-helper=disabled

@@ -16,11 +16,11 @@ depends="cairo dejavu-fonts-ttf json-c libdrm libevdev libinput libudev-zero
  libxkbcommon pango pcre2 pixman wlroots
  $(use_if pixbuf gdk-pixbuf)
  $(use_if tray basu)"
-make_depends="cairo json-c libdrm libevdev libinput libudev-zero libxkbcommon pango
- pcre2 pixman wlroots xorgproto
+make_depends="cairo json-c libdrm libevdev libinput libudev-zero libxkbcommon meson
+ pango pcre2 pixman pkgconf wayland-protocols wlroots xorgproto
+ $(use_if man scdoc)
  $(use_if pixbuf gdk-pixbuf)
  $(use_if tray basu)"
-host_make_depends="meson pkgconf wayland-protocols $(use_if man scdoc)"
 
 configure_args="
     -Dzsh-completions=false

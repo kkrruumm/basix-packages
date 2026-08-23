@@ -7,7 +7,7 @@ home_page="https://www.underbit.com/products/mad/"
 license="GPL-2.0-or-later"
 dist_files="https://downloads.sourceforge.net/sourceforge/mad/libmad-${version}.tar.gz"
 checksum="709ab5ff15f963ed5301ab164f621c6a5bf06a8b7db4b953bb604573735b97ee"
-host_make_depends="pkgconf"
+make_depends="pkgconf"
 
 # unmaintained since 2004 and it shows.
 pre_configure() {

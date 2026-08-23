@@ -9,4 +9,4 @@ dist_files="https://files.pythonhosted.org/packages/source/d/docutils/docutils-$
 checksum="6c4464081c82f0dfb41095c85d4c4d4a4335f0ccd163878f7ccd15585d26073bd2"
 wrk_src="docutils-$version"
 depends="python"
-host_make_depends="python python-build python-flit-core python-installer"
+make_depends="python python-build python-flit-core python-installer"

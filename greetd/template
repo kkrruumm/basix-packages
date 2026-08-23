@@ -22,7 +22,6 @@ greeter_homedir="/var/lib/greetd"
 greeter_groups="video input"
 
 use_flags="services"
-use_default="+services"
 
 pre_build() {
     # keep cargos registry inside the build tree rather than wherever

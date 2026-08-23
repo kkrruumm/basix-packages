@@ -10,8 +10,7 @@ checksum="a922e6ef93df6ebc89b0a8a136b54a80995622a28dcd95a7ee68806415be2dd2"
 depends="json-c lvm2 openssl popt util-linux"
 make_depends="json-c lvm2 openssl popt util-linux"
 
-use_flags="static asciidoc external_tokens nls ssh_token udev"
-use_default="+static -asciidoc -external_tokens -ssh_token -udev -nls"
+use_flags="static -asciidoc -external_tokens -nls -ssh_token -udev"
 
 configure_args="
     $(use_enable static static-cryptsetup)

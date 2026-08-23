@@ -10,8 +10,7 @@ checksum="9dd90be8df4d0474b941e2ca14ac76d11b7ccb46edb26344b60d866178bbcc9872"
 depends="m4"
 make_depends="m4"
 
-use_flags="nls"
-use_default="-nls"
+use_flags="-nls"
 
 configure_args="$(use_enable nls) --without-libtextstyle-prefix"
 

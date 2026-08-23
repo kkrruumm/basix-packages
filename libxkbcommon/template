@@ -11,8 +11,7 @@ wrk_src="libxkbcommon-xkbcommon-$version"
 depends="xkeyboard-config"
 make_depends="bison meson pkgconf python xkeyboard-config"
 
-use_flags="tools xkbregistry"
-use_default="+tools -xkbregistry"
+use_flags="tools -xkbregistry"
 
 configure_args="
     -Denable-x11=false

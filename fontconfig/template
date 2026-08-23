@@ -10,8 +10,7 @@ checksum="1263377ea896ef04fbc40176f83def7698e3f91f3a68b043d0132f87cfb9f07886"
 depends="expat freetype"
 make_depends="expat freetype gperf python"
 
-use_flags="doc nls"
-use_default="+doc -nls"
+use_flags="doc -nls"
 
 configure_args="
     --enable-static

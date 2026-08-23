@@ -8,8 +8,7 @@ license="MIT"
 dist_files="https://github.com/PipeWire/pipewire/archive/${version}.tar.gz>pipewire-${version}.tar.gz"
 checksum="a04d69477e9ac071ae1fc0920440334c5735f20d88119ad928dddaf3fc8e6f1a"
 
-use_flags="alsa bluetooth camera echo-cancel gstreamer jack pulse sndfile v4l2 vulkan x11"
-use_default="+alsa -bluetooth -camera -echo-cancel -gstreamer -jack +pulse -sndfile -v4l2 -vulkan -x11"
+use_flags="alsa -bluetooth -camera -echo-cancel -gstreamer -jack pulse -sndfile -v4l2 -vulkan -x11"
 
 depends="dbus glib libudev-zero ncurses
  $(use_if alsa alsa-lib)

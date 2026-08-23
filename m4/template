@@ -8,7 +8,6 @@ license="GPL-3.0-or-later"
 dist_files="https://ftp.gnu.org/gnu/m4/m4-${version}.tar.xz"
 checksum="a23e9503084fa4087f45bb7bb9c39f0cf8e0f046e0f94e55c40a8da124c1fd686b"
 use_flags="static"
-use_default="+static"
 
 pre_configure() {
     use static && LDFLAGS="$LDFLAGS -static"

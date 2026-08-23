@@ -10,8 +10,7 @@ checksum="f2edb718705e11624da01c4c55b0c1a81e5fbccdc10842493e624b13371ca4b923"
 depends="libelf libffi pcre2 util-linux zlib"
 make_depends="bison flex libelf libffi meson pcre2 pkgconf python util-linux zlib"
 
-use_flags="man nls introspection"
-use_default="+man -nls -introspection"
+use_flags="man -nls -introspection"
 
 # gobject-introspection and docbook-xsl need to be packaged later
 configure_args="

@@ -9,8 +9,7 @@ dist_files="https://www.x.org/releases/individual/data/xkeyboard-config/xkeyboar
 checksum="4565e15c4f5807eddb5c87e0b3e3f6db7bb8f20e1348fe428d1d861bcd74288ad1"
 make_depends="meson pkgconf python"
 
-use_flags="nls"
-use_default="-nls"
+use_flags="-nls"
 
 # the xorg rules symlinks are for a running X server, which this is not
 configure_args="

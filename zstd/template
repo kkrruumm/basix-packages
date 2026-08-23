@@ -10,7 +10,6 @@ checksum="730dca31244abd219e995f03a55d95b2cfb4b3e16cda055a79fa6f30a4f0e1db8f"
 depends="xz zlib"
 make_depends="xz zlib"
 
-use_flags="lz4"
-use_default="-lz4"
+use_flags="-lz4"
 
 make_build_args="HAVE_ZLIB=1 HAVE_LZMA=1 $(use_if lz4 HAVE_LZ4=1 HAVE_LZ4=0)"

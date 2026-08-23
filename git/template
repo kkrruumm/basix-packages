@@ -10,8 +10,7 @@ checksum="99cf418d6426cd615c2818986002f3d4619c707bceea9c624414cc2362c1ff5ed4 be9
 depends="curl zlib"
 make_depends="curl zlib"
 
-use_flags="man perl python"
-use_default="+man -perl -python"
+use_flags="man -perl -python"
 
 configure_args="
     --libexecdir=/usr/lib

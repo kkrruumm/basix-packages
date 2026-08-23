@@ -17,7 +17,6 @@ messagebus_descr="D-Bus system message bus"
 messagebus_homedir="/var/lib/dbus"
 
 use_flags="services"
-use_default="+services"
 
 configure_args="
     -DCMAKE_INSTALL_RUNSTATEDIR=/run

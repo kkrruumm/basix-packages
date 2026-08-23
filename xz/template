@@ -7,8 +7,7 @@ home_page="https://tukaani.org/xz/"
 license="GPL-2.0-or-later"
 dist_files="https://excellmedia.dl.sourceforge.net/project/lzmautils/xz-${version}.tar.gz"
 checksum="80056b186e5fc54d4653c1163bc317ee690bf7fcfec890f2d29710319fe13816ca"
-use_flags="nls doc static"
-use_default="-nls -doc +static"
+use_flags="-nls -doc static"
 
 configure_args="$(use_enable doc) $(use_enable nls)"
 

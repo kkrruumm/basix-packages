@@ -13,7 +13,6 @@ make_depends="fontconfig freetype harfbuzz libutf8proc meson pixman pkgconf scdo
  tllist"
 
 use_flags="man"
-use_default="+man"
 
 configure_args="
     $(use_if shaping -Drun-shaping=enabled -Drun-shaping=disabled)

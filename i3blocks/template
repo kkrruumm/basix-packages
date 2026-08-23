@@ -10,7 +10,6 @@ checksum="cc370482bd23bbe60cfb5769e537635b5f6724ceae7a676b4f7fd209cc515196"
 wrk_src="i3blocks-$version"
 
 use_flags="man"
-use_default="+man"
 
 make_depends="autoconf automake m4 perl pkgconf"
 make_install_args="-j1"

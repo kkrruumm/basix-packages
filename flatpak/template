@@ -9,7 +9,6 @@ dist_files="https://github.com/flatpak/flatpak/releases/download/${version}/flat
 checksum="0f8bb02c9e810bbf182c8ecc4d6f70a2737e146496aa89986915bf6570bedc53"
 
 use_flags="man seccomp wayland xauth"
-use_default="+man +seccomp +wayland +xauth"
 
 depends="appstream bubblewrap curl dbus fuse3 gdk-pixbuf glib gpgme json-glib
  libarchive libcap libxml2 ostree xdg-dbus-proxy zstd

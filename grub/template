@@ -11,8 +11,7 @@ checksum="13c48453f9becf4a6e49618749dc7cb83a2c4a0d7600eeeadc6c7c2772c0b87784"
 depends="xz"
 make_depends="binutils bison flex linux-headers m4 xz"
 
-use_flags="pc efi nls"
-use_default="+pc +efi -nls"
+use_flags="pc efi -nls"
 
 do_extract() {
     if use pc; then

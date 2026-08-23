@@ -10,7 +10,6 @@ checksum="30d5cb4a25bb7c3c0c21eea5ee54fabc481382cd4b20650c80a575c15ff8dba9"
 wrk_src="unix-tree-${version}"
 
 use_flags="static"
-use_default="+static"
 
 pre_build() {
     use static || return 0

@@ -11,8 +11,7 @@ wrk_src="libdrm-libdrm-$version"
 depends="libpciaccess libudev-zero"
 make_depends="libpciaccess libudev-zero meson pkgconf python-docutils"
 
-use_flags="man intel amdgpu radeon nouveau"
-use_default="+man +intel +amdgpu +radeon -nouveau"
+use_flags="man intel amdgpu radeon -nouveau"
 
 # cairo-tests would pull cairo in as a
 # build dep for tests nothing runs

@@ -9,7 +9,6 @@ dist_files="https://github.com/dosfstools/dosfstools/releases/download/v${versio
 checksum="29996284e862ae2a12988fc0cc8f02304f9aaebe583a8c51c8d0a1140100161179"
 
 use_flags="static"
-use_default="+static"
 
 # mkdosfs, dosfsck and dosfslabel, the pre-4.0 names for mkfs.fat and stuff
 configure_args="--enable-compat-symlinks"

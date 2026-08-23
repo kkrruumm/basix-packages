@@ -19,17 +19,8 @@ no_strip=yes
 # note: intel sof audio firmware isn't here either, it ships from sof-bin
 #       intel-audio below is the older avs/catpt/sst stuff, the only sof
 #       firmware in this tree is mediateks
-use_flags="amdgpu amd-ucode amd-misc radeon nvidia
- intel-gpu intel-bt intel-audio intel-camera intel-misc iwlwifi
- ath qca qcom brcm mediatek realtek marvell ti-wifi wifi-misc
- ethernet storage serial media sound arm
- whence dedup xz zstd"
+use_flags="amdgpu -amd-ucode amd-misc -radeon -nvidia intel-gpu intel-bt intel-audio -intel-camera -intel-misc iwlwifi ath qca -qcom brcm mediatek realtek -marvell -ti-wifi -wifi-misc -ethernet -storage -serial -media sound -arm -whence -dedup -xz -zstd"
 
-use_default="+amdgpu -amd-ucode +amd-misc -radeon -nvidia
- +intel-gpu +intel-bt +intel-audio -intel-camera -intel-misc +iwlwifi
- +ath +qca -qcom +brcm +mediatek +realtek -marvell -ti-wifi -wifi-misc
- -ethernet -storage -serial -media +sound -arm
- -whence -dedup -xz -zstd"
 
 # optional flags for compression, none of this is required
 # compressed firmware needs CONFIG_FW_LOADER_COMPRESS_{XZ,ZSTD} in the kernel though

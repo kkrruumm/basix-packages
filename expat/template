@@ -8,8 +8,7 @@ license="MIT"
 dist_files="https://github.com/libexpat/libexpat/releases/download/R_2_8_2/expat-${version}.tar.bz2"
 checksum="12f132d2ccf08fb943bc19b0ce45912db98a1f0654d22b5db5a3db326641be13ea"
 
-use_flags="xmlwf"
-use_default="-xmlwf"
+use_flags="-xmlwf"
 
 configure_args="
     $(use_with xmlwf)

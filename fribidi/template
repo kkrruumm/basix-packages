@@ -9,7 +9,6 @@ dist_files="https://github.com/fribidi/fribidi/releases/download/v${version}/fri
 checksum="c16ee250f73f149d7d52dc7d285eb73ac755bad7907d237391e23f429b2b71d59c"
 
 use_flags="man"
-use_default="+man"
 
 post_install() {
     use man || brm /usr/share/man/man3

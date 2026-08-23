@@ -9,7 +9,6 @@ dist_files="https://github.com/flatpak/xdg-desktop-portal/releases/download/${ve
 checksum="bd5b14f049c7d4e73aea025b3ec5691602123125a396b03a6b0aea7d971e88a4"
 
 use_flags="man"
-use_default="+man"
 
 depends="bubblewrap dbus flatpak fuse3 gdk-pixbuf glib gst-plugins-base gstreamer
  json-glib pipewire"

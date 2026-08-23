@@ -10,8 +10,7 @@ checksum="c66598f95e9225638db6b31ff75ad1c8905d584e65952df05d0fda0add368a558a"
 depends="zlib"
 make_depends="flex zlib"
 
-use_flags="nls gold lto"
-use_default="-nls +gold +lto"
+use_flags="-nls gold lto"
 
 configure_args="
     --with-lib-path=/usr/lib:/usr/local/lib

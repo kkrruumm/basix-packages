@@ -8,8 +8,7 @@ license="GPL-3.0-or-later"
 dist_files="https://ftp.gnu.org/gnu/emacs/emacs-${version}.tar.xz"
 checksum="51101a26553420ee445adfbb537a8572750e3c21b9024569ef543c3f3508c3ca"
 
-use_flags="xml gnutls dbus lcms2 tree_sitter modules inotify"
-use_default="+xml +gnutls -dbus -lcms2 -tree_sitter +modules +inotify"
+use_flags="xml gnutls -dbus -lcms2 -tree_sitter modules inotify"
 
 depends="ncurses gmp zlib"
 if use xml; then depends="$depends libxml2"; fi

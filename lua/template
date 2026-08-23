@@ -11,7 +11,6 @@ checksum="634db1ca64e6ee891a248a837d42b18f236fe8915a8ee2475b3469a9e86805ef"
 make_depends="pkgconf"
 
 use_flags="shared dlopen"
-use_default="+shared +dlopen"
 
 pre_build() {
     bsed 's|"/usr/local/"|"/usr/"|' src/luaconf.h

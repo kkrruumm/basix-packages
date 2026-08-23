@@ -10,8 +10,7 @@ checksum="5bf3ac6c18f3dc3fe3e049a1e10ea5ae5c5b39dac2356cd796730f49b273fd0f"
 depends="ncurses"
 make_depends="bison ncurses"
 
-use_flags="net-redirections nls"
-use_default="-net-redirections -nls"
+use_flags="-net-redirections -nls"
 
 # net-redirections is the /dev/tcp/host/port and /dev/udp syntax
 # why the fuck these exist i have no idea

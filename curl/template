@@ -10,8 +10,7 @@ checksum="38e77a6e73698e5390c0acfa441ce7b6d15e6cb2b07efea8f12087a08543ed5bb2"
 depends="openssl zlib"
 make_depends="openssl zlib"
 
-use_flags="ipv6 ssl ldap ares psl idn brotli zstd static"
-use_default="+ipv6 +ssl -ldap -ares -psl -idn -brotli -zstd +static"
+use_flags="ipv6 ssl -ldap -ares -psl -idn -brotli -zstd static"
 
 configure_args="
     ac_cv_path_PERL=true

@@ -7,8 +7,7 @@ home_page="https://gitlab.freedesktop.org/wlroots/wlroots"
 license="MIT"
 dist_files="https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/${version}/wlroots-${version}.tar.gz"
 checksum="4255e64a0452a7a485e51624f38850e7dc1699c8f16399e18340b841ba2133ffd8"
-use_flags="vulkan xwayland"
-use_default="+vulkan -xwayland"
+use_flags="vulkan -xwayland"
 
 # lcms2 comes from -Dcolor-management=enabled, and both end up in the Requires
 # of wlroots.pc, so anything linking wlroots needs them present as well

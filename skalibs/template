@@ -8,8 +8,7 @@ license="ISC"
 dist_files="https://skarnet.org/software/skalibs/skalibs-${version}.tar.gz"
 checksum="4b922d501d18f2860034e448b74f70a2665acbabeef09bd18b0701fa0552336a"
 
-use_flags="static ipv6 pkgconfig doc"
-use_default="-static +ipv6 -pkgconfig +doc"
+use_flags="-static ipv6 -pkgconfig doc"
 
 # skarnets configure gets sysconfdir from --prefix, so /usr would give it /usr/etc
 # bpms config style always passes --prefix=/usr, everything that would go under it

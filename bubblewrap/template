@@ -11,7 +11,6 @@ depends="libcap"
 make_depends="libcap meson pkgconf $(use_if man "docbook-xsl libxslt")"
 
 use_flags="man"
-use_default="+man"
 
 
 configure_args="

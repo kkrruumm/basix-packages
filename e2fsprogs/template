@@ -9,8 +9,7 @@ dist_files="https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v${ve
 checksum="c0fbe968ae75041dd0294cbf88c367e3032f523ada38bc106ee4f8edea4ce5b3e1"
 make_depends="linux-headers"
 
-use_flags="nls static"
-use_default="-nls +static"
+use_flags="-nls static"
 
 # libuuid and libblkid get built but never installed, they exist only so these
 # tools link their own copies

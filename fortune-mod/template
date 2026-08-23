@@ -10,8 +10,7 @@ checksum="28052a87c87ed51825062fd7e08f3cf4fd2f7f96d87e0d0d185258a1cfe60dc252"
 depends="pcre2"
 make_depends="cmake pcre2 perl"
 
-use_flags="offensive"
-use_default="-offensive"
+use_flags="-offensive"
 
 # the cookies default under /usr/local and this is a merged /usr layout
 configure_args="

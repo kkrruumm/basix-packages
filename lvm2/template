@@ -11,8 +11,7 @@ depends="libaio util-linux"
 make_depends="libaio util-linux"
 wrk_src="LVM2.${version}"
 
-use_flags="udev selinux"
-use_default="-udev -selinux"
+use_flags="-udev -selinux"
 
 do_configure() {
     LDFLAGS="$LDFLAGS -Wl,--undefined-version"

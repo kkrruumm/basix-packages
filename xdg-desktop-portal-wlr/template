@@ -9,7 +9,6 @@ dist_files="https://github.com/emersion/xdg-desktop-portal-wlr/releases/download
 checksum="6aef309dde1a256a7f3fcd54f712740e579137c99348cd276487ea7f10982e8f"
 
 use_flags="man"
-use_default="+man"
 
 depends="basu inih libdrm mesa pipewire wayland xdg-desktop-portal"
 make_depends="basu inih libdrm mesa meson pipewire pkgconf wayland wayland-protocols

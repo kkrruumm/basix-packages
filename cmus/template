@@ -9,7 +9,6 @@ dist_files="https://github.com/cmus/cmus/archive/v${version}.tar.gz>cmus-${versi
 checksum="142c818fb92554f8fbcc2fa8129d5e6e28e87f43339f3324c61c2d7e30c70a53"
 
 use_flags="alsa flac mad mpris opus vorbis"
-use_default="+alsa +flac +mad +mpris +opus +vorbis"
 
 depends="ncurses
  $(use_if alsa alsa-lib)

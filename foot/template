@@ -13,7 +13,6 @@ make_depends="fcft fontconfig freetype libutf8proc libxkbcommon meson ncurses pi
  pkgconf scdoc tllist wayland wayland-protocols"
 
 use_flags="man terminfo"
-use_default="+man +terminfo"
 
 configure_args="
     -Dgrapheme-clustering=enabled

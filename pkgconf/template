@@ -9,7 +9,6 @@ dist_files="https://distfiles.ariadne.space/pkgconf/pkgconf-${version}.tar.xz"
 checksum="bc8e23fe42489c649fc192706acc746b968a9f03f053045c61a758aa3185eb606a"
 
 use_flags="pkg_config_symlink"
-use_default="+pkg_config_symlink"
 
 post_install() {
     if use pkg_config_symlink; then

@@ -10,8 +10,7 @@ checksum="21d5910f751b18cde5d4674b61ca2d53bf7afa74206f07155bfd2f56b1c4d55514"
 
 make_depends="linux-headers"
 
-use_flags="udev services"
-use_default="-udev +services"
+use_flags="-udev services"
 
 configure_args="
     --sbindir=/usr/bin

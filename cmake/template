@@ -10,8 +10,7 @@ checksum="df6de9b7df9831d212d0b16868ba9e1596dc100a7013fd2e9bdcdd17034d29d960"
 depends="bzip2 curl expat zlib"
 make_depends="bzip2 curl expat linux-headers zlib"
 
-use_flags="curses"
-use_default="-curses"
+use_flags="-curses"
 
 do_build() {
     if command -v cmake >/dev/null 2>&1; then

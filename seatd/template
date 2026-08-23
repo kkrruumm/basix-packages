@@ -11,7 +11,6 @@ wrk_src="seatd-$version"
 make_depends="meson pkgconf"
 
 use_flags="services"
-use_default="+services"
 
 # logind is elogind or systemd, neither of which is here. builtin lets a
 # compositor take a seat without the daemon running, seatd is the normal path

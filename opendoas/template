@@ -11,7 +11,6 @@ wrk_src="OpenDoas-$version"
 make_depends="bison"
 
 use_flags="timestamp"
-use_default="+timestamp"
 
 # no pam here, shadow is the auth backend. timestamp is the sudo style grace
 # period, it needs a kernel with CONFIG_TMPFS and a writable /run

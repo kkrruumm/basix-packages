@@ -9,8 +9,7 @@ dist_files="https://ftp.gnu.org/gnu/tar/tar-${version}.tar.xz"
 checksum="55e3853752c56a607ae5dbc9e9190fe5d3f7599b76bb80abe0edba36d712c36bb6"
 wrk_src="tar-$version"
 
-use_flags="static tar_symlink"
-use_default="+static -tar_symlink"
+use_flags="static -tar_symlink"
 
 # installed as gtar so it doesn't collide with busybox tar
 configure_args="--program-prefix=g"

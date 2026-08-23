@@ -12,7 +12,6 @@ depends="perl"
 make_depends="bison flex perl"
 
 use_flags="man"
-use_default="+man"
 
 make_install_args="SBINDIR=/usr/bin MANDIR=/usr/share/man"
 

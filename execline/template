@@ -11,8 +11,7 @@ checksum="29a8aa37cb10b4392e0d14ef3f76262c40bf7df36a5616cc6d0095d7dd2fac7f"
 depends="skalibs"
 make_depends="skalibs"
 
-use_flags="static pkgconfig doc"
-use_default="-static -pkgconfig +doc"
+use_flags="-static -pkgconfig doc"
 
 configure_args="
     --sysconfdir=/etc

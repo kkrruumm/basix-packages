@@ -10,8 +10,7 @@ checksum="fd1ca500318637f241482bb35d7143ef8d8971bb6b6f439ec2cf0327a4f907280c"
 depends="freetype glib libpng zlib"
 make_depends="freetype glib libpng meson pkgconf python zlib"
 
-use_flags="utilities"
-use_default="-utilities"
+use_flags="-utilities"
 
 configure_args="
     -Dfreetype=enabled

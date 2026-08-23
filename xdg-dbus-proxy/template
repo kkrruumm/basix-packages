@@ -9,7 +9,6 @@ dist_files="https://github.com/flatpak/xdg-dbus-proxy/releases/download/${versio
 checksum="564d6f8ccb45862bb00f136f1a37648c89f2251f358373d73d16102ecaf3c9b3"
 
 use_flags="man"
-use_default="+man"
 
 depends="dbus glib"
 make_depends="glib meson pkgconf $(use_if man "docbook-xsl libxslt")"

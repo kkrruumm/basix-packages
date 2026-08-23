@@ -10,7 +10,6 @@ checksum="ee3661a0579aa430b1b57e8754fbfa5d8575d1e72ea0dda294a03062b9013b4b"
 wrk_src="libostree-$version"
 
 use_flags="fuse man"
-use_default="+fuse +man"
 
 depends="curl e2fsprogs glib gpgme libarchive openssl util-linux xz zlib
  $(use_if fuse fuse3)"

@@ -10,8 +10,7 @@ checksum="05b8e0d0831baa13ff3b3b40666440b56af98dcdb475818faee106f0593a6770"
 wrk_src="Linux-PAM-$version"
 make_depends="meson pkgconf flex bison"
 
-use_flags="docs"
-use_default="-docs"
+use_flags="-docs"
 
 # lckpwdf is glibc only
 # i18n wants gettext, econf wants libeconf, logind/elogind want a session

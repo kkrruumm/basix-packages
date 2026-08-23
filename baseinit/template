@@ -10,7 +10,6 @@ license="MIT"
 depends="s6 s6-rc s6-linux-init execline skalibs busybox"
 
 use_flags="gettys"
-use_default="+gettys"
 
 do_build() { :; }
 

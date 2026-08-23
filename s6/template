@@ -11,8 +11,7 @@ checksum="0fa40d4cdc39ace536ca40e799fc3ffe51868718beedc1d074aafc315ea3d737"
 depends="skalibs execline"
 make_depends="skalibs execline"
 
-use_flags="static pkgconfig doc"
-use_default="-static -pkgconfig +doc"
+use_flags="-static -pkgconfig doc"
 
 configure_args="
     --sysconfdir=/etc

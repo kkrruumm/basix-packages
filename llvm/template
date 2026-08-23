@@ -18,13 +18,8 @@ make_depends="cmake python zlib"
 # all-targets is the shorthand for every one of them, which is what zig wants,
 # it checks llvm-config --targets-built and refuses anything less
 # the five experimental backends (ARC, CSKY, DirectX, M68k, Xtensa) are not here
-use_flags="aarch64 amdgpu arm avr bpf hexagon lanai loongarch mips msp430
- nvptx powerpc riscv sparc spirv systemz ve webassembly x86 xcore
- all-targets"
+use_flags="-aarch64 -amdgpu -arm -avr -bpf -hexagon -lanai -loongarch -mips -msp430 -nvptx -powerpc -riscv -sparc -spirv -systemz -ve -webassembly -x86 -xcore all-targets"
 
-use_default="-aarch64 -amdgpu -arm -avr -bpf -hexagon -lanai -loongarch -mips
- -msp430 -nvptx -powerpc -riscv -sparc -spirv -systemz -ve -webassembly -x86
- -xcore +all-targets"
 
 configure_args="
     -DLLVM_BUILD_LLVM_DYLIB=ON

@@ -11,8 +11,7 @@ checksum="0000000000000000000000000000000000000000000000000000000000000000"
 depends="skalibs"
 make_depends="skalibs"
 
-use_flags="static multicall doc"
-use_default="-static -multicall +doc"
+use_flags="-static -multicall doc"
 
 configure_args="
     --sysconfdir=/etc

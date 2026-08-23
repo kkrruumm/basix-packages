@@ -11,8 +11,7 @@ checksum="7268b37a1cd0631f85e2a1d67a16db54dac85ef48ecfd604fca724e4598a8e38"
 depends="skalibs execline s6"
 make_depends="skalibs execline s6"
 
-use_flags="static doc"
-use_default="-static +doc"
+use_flags="-static doc"
 
 # upstreams skeleton scripts are just examples but im keeping them here
 # as documentation, the ones that are actually used come from baseinit

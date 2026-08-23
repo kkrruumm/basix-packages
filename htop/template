@@ -10,8 +10,7 @@ checksum="c7a0ef8f2787def5af4b92f9e133052e640c215b4756fb99cfc36da806f1c0ad57"
 depends="ncurses"
 make_depends="ncurses"
 
-use_flags="man sensors"
-use_default="+man -sensors"
+use_flags="man -sensors"
 
 configure_args="
     --enable-unicode

@@ -15,8 +15,7 @@ make_depends="go-bootstrap"
 # invalidates it and the toolchain then refuses to reuse anything
 no_strip=yes
 
-use_flags="tests toolchain_auto"
-use_default="-tests -toolchain_auto"
+use_flags="-tests -toolchain_auto"
 
 do_build() {
     # keep this in line with go-bootstraps version, it installs its goroot

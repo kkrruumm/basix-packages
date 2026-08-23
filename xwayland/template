@@ -8,8 +8,7 @@ home_page="https://gitlab.freedesktop.org/xorg/xserver"
 license="MIT"
 dist_files="https://www.x.org/releases/individual/xserver/xwayland-${version}.tar.xz"
 checksum="76ca3242b88a794e0b7c6104e1833e813788b45a0090abc43ef060205ff95375"
-use_flags="glamor listen_tcp"
-use_default="+glamor -listen_tcp"
+use_flags="glamor -listen_tcp"
 
 depends="libdrm libXfont2 libxcvt libxshmfence mesa openssl pixman wayland
  xkbcomp xkeyboard-config $(use_if glamor libepoxy)"

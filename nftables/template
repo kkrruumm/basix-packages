@@ -10,8 +10,7 @@ checksum="fe01ac223a3e41331bfa686058a04cb2719c2ced1ed7bb7892df3e5026f9fc82"
 
 # cli needs a readline package, xtables needs iptables and man_doc needs
 # docbook2x, but manpages are still installed (look at post_install)
-use_flags="json cli xtables python mini_gmp man_doc debug services"
-use_default="+json -cli -xtables -python -mini_gmp -man_doc -debug +services"
+use_flags="json -cli -xtables -python -mini_gmp -man_doc -debug services"
 
 depends="libmnl libnftnl"
 if ! use mini_gmp; then depends="$depends gmp"; fi

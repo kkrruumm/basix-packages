@@ -10,8 +10,7 @@ checksum="5f001609f662143ce9285cd740bd0acfeeaf7f13731b46fd1d9ebe620c5c340d0d"
 depends="binutils gmp libmpc mpfr zlib"
 make_depends="binutils bison flex gmp libmpc mpfr zlib"
 
-use_flags="nls bootstrap cxx"
-use_default="-nls +cxx"
+use_flags="-nls -bootstrap cxx"
 
 build_wrk_src="gcc-build"
 configure_script="../configure"

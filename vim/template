@@ -10,8 +10,7 @@ checksum="13d3418343bca356cac6cf75f66ec3a9328d8a300265474a51ad626219029c33c2"
 depends="ncurses"
 make_depends="ncurses"
 
-use_flags="python"
-use_default="-python"
+use_flags="-python"
 
 # no gui
 configure_args="

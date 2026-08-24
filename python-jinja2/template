@@ -1,0 +1,12 @@
+pkg_name=python-jinja2
+version=3.1.6
+revision=1
+build_style=python3-pep517
+short_desc="Fast and secure templating engine for python"
+home_page="https://palletsprojects.com/p/jinja/"
+license="BSD-3-Clause"
+dist_files="https://files.pythonhosted.org/packages/source/J/Jinja2/jinja2-${version}.tar.gz"
+checksum="55cc18fa679e7243d9fdbbb1eab636067fa35285a4a2cb6691602e675c4f718d"
+wrk_src="jinja2-$version"
+depends="python python-markupsafe"
+make_depends="python python-build python-flit-core python-installer"

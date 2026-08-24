@@ -1,0 +1,101 @@
+pkg_name=mpv
+version=0.41.0
+revision=1
+build_style=meson
+short_desc="Media player based on MPlayer and mplayer2"
+home_page="https://mpv.io"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/mpv-player/mpv/archive/refs/tags/v${version}.tar.gz>mpv-${version}.tar.gz"
+checksum="4548eb519b3c81ca90c4587b0d676ad1eb0f0e1322777e9c2870a919e5ec2a92"
+
+# there's no lua flag here because i'm just not supporting it for now
+# the version of lua i have packaged at the moment is 5.5 and mpv wants 5.1/5.2
+#
+# there's also no x11 here because it requires a bunch of extra packages
+# that aren't needed for other things at the moment and i only care to
+# support wlroots stuff anyway in the main repo
+use_flags="man alsa pipewire vaapi vulkan lcms archive jpeg -sixel"
+
+depends="ffmpeg libass libdisplay-info libdrm libplacebo libxkbcommon mesa
+ wayland zlib
+ $(use_if alsa alsa-lib)
+ $(use_if archive libarchive)
+ $(use_if jpeg libjpeg-turbo)
+ $(use_if lcms lcms2)
+ $(use_if pipewire pipewire)
+ $(use_if vaapi libva)
+ $(use_if vulkan "shaderc vulkan-loader")"
+make_depends="ffmpeg libass libdisplay-info libdrm libplacebo libxkbcommon meson
+ mesa pkgconf wayland wayland-protocols xorgproto zlib
+ $(use_if alsa alsa-lib)
+ $(use_if archive libarchive)
+ $(use_if jpeg libjpeg-turbo)
+ $(use_if lcms lcms2)
+ $(use_if man python-docutils)
+ $(use_if pipewire pipewire)
+ $(use_if vaapi libva)
+ $(use_if vulkan "shaderc vulkan-headers vulkan-loader")"
+
+configure_args="
+    -Dcplayer=true
+    -Dlibmpv=true
+    -Dbuild-date=false
+    -Dtests=false
+    -Dgpl=true
+    -Dcplugins=enabled
+    -Diconv=enabled
+    -Dzlib=enabled
+    -Dwayland=enabled
+    -Ddmabuf-wayland=enabled
+    -Degl=enabled
+    -Degl-wayland=enabled
+    -Degl-drm=enabled
+    -Dgbm=enabled
+    -Dgl=enabled
+    -Ddrm=enabled
+    -Dplain-gl=enabled
+    -Dlibavdevice=enabled
+    -Dx11=disabled
+    -Dx11-clipboard=disabled
+    -Dgl-x11=disabled
+    -Degl-x11=disabled
+    -Dxv=disabled
+    -Dvdpau=disabled
+    -Dvdpau-gl-x11=disabled
+    -Dvaapi-x11=disabled
+    -Dcaca=disabled
+    -Dcdda=disabled
+    -Ddvbin=disabled
+    -Ddvdnav=disabled
+    -Djack=disabled
+    -Djavascript=disabled
+    -Dlibbluray=disabled
+    -Dlua=disabled
+    -Dopenal=disabled
+    -Doss-audio=disabled
+    -Dpulse=disabled
+    -Drubberband=disabled
+    -Dsdl2-audio=disabled
+    -Dsdl2-gamepad=disabled
+    -Dsdl2-video=disabled
+    -Dshaderc=disabled
+    -Dsndio=disabled
+    -Dspirv-cross=disabled
+    -Duchardet=disabled
+    -Dvapoursynth=disabled
+    -Dzimg=disabled
+    -Dhtml-build=disabled
+    -Dpdf-build=disabled
+    $(use_if alsa -Dalsa=enabled -Dalsa=disabled)
+    $(use_if archive -Dlibarchive=enabled -Dlibarchive=disabled)
+    $(use_if jpeg -Djpeg=enabled -Djpeg=disabled)
+    $(use_if lcms -Dlcms2=enabled -Dlcms2=disabled)
+    $(use_if man -Dmanpage-build=enabled -Dmanpage-build=disabled)
+    $(use_if pipewire -Dpipewire=enabled -Dpipewire=disabled)
+    $(use_if sixel -Dsixel=enabled -Dsixel=disabled)
+    $(use_if vaapi "-Dvaapi=enabled -Dvaapi-drm=enabled -Dvaapi-wayland=enabled" "-Dvaapi=disabled -Dvaapi-drm=disabled -Dvaapi-wayland=disabled")
+    $(use_if vulkan -Dvulkan=enabled -Dvulkan=disabled)"
+
+post_install() {
+    blicense LICENSE.GPL
+}

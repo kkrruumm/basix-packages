@@ -1,0 +1,85 @@
+pkg_name=ffmpeg
+version=8.1.2
+revision=1
+build_style=configure
+short_desc="Complete solution to record, convert and stream audio and video"
+home_page="https://ffmpeg.org/"
+license="LGPL-2.1-or-later"
+# upstream is ffmpeg.org, this is their mirror
+dist_files="https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n${version}.tar.gz>ffmpeg-${version}.tar.gz"
+checksum="c0f47044859593634274056f094bdf2eb2777ddcc6892cefb97f6f8a7872214e"
+wrk_src="FFmpeg-n${version}"
+
+# gpl is off because nothing enabled by default here is licensed with it
+use_flags="asm man vaapi vulkan dav1d ass webp text xml ssl alsa opus vorbis
+ -gpl -x11 -static"
+
+depends="bzip2 zlib
+ $(use_if alsa alsa-lib)
+ $(use_if ass libass)
+ $(use_if dav1d dav1d)
+ $(use_if opus opus)
+ $(use_if ssl openssl)
+ $(use_if text "fontconfig freetype fribidi harfbuzz")
+ $(use_if vaapi "libdrm libva")
+ $(use_if vorbis libvorbis)
+ $(use_if vulkan "glslang libplacebo shaderc spirv-tools vulkan-loader")
+ $(use_if webp libwebp)
+ $(use_if x11 libxcb)
+ $(use_if xml libxml2)"
+make_depends="bzip2 pkgconf zlib
+ $(use_if alsa alsa-lib)
+ $(use_if asm nasm)
+ $(use_if ass libass)
+ $(use_if dav1d dav1d)
+ $(use_if man perl)
+ $(use_if opus opus)
+ $(use_if ssl openssl)
+ $(use_if text "fontconfig freetype fribidi harfbuzz")
+ $(use_if vaapi "libdrm libva")
+ $(use_if vorbis libvorbis)
+ $(use_if vulkan "glslang libplacebo shaderc spirv-tools vulkan-headers vulkan-loader")
+ $(use_if webp libwebp)
+ $(use_if x11 "libxcb xorgproto")
+ $(use_if xml libxml2)"
+
+configure_args="
+    --enable-shared
+    --enable-pic
+    --enable-pthreads
+    --disable-stripping
+    --disable-debug
+    --disable-nonfree
+    --disable-htmlpages
+    --disable-txtpages
+    --disable-podpages
+    --disable-ffplay
+    --disable-lzma
+    --disable-librtmp
+    --disable-sdl2
+    --disable-vdpau
+    --disable-libv4l2
+    --enable-zlib
+    --enable-bzlib
+    $(use_if static --enable-static --disable-static)
+    $(use_if asm --enable-x86asm --disable-x86asm)
+    $(use_if man "--enable-doc --enable-manpages" "--disable-doc --disable-manpages")
+    $(use_if gpl --enable-gpl --disable-gpl)
+    $(use_if alsa --enable-alsa --disable-alsa)
+    $(use_if ass --enable-libass --disable-libass)
+    $(use_if dav1d --enable-libdav1d --disable-libdav1d)
+    $(use_if opus --enable-libopus --disable-libopus)
+    $(use_if ssl --enable-openssl --disable-openssl)
+    $(use_if text "--enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libharfbuzz" "--disable-libfontconfig --disable-libfreetype --disable-libfribidi --disable-libharfbuzz")
+    $(use_if vaapi "--enable-libdrm --enable-vaapi" "--disable-vaapi")
+    $(use_if vorbis --enable-libvorbis --disable-libvorbis)
+    $(use_if vulkan "--enable-vulkan --enable-libshaderc --enable-libplacebo" "--disable-vulkan --disable-libglslang --disable-libplacebo")
+    $(use_if webp --enable-libwebp --disable-libwebp)
+    $(use_if x11 --enable-libxcb --disable-libxcb)
+    $(use_if xml --enable-libxml2 --disable-libxml2)"
+
+post_install() {
+    blicense COPYING.LGPLv2.1
+    use gpl && blicense COPYING.GPLv2
+    return 0
+}

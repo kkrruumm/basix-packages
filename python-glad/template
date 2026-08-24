@@ -1,0 +1,13 @@
+pkg_name=python-glad
+version=2.0.8
+revision=1
+build_style=python3-pep517
+short_desc="Multi-language GL/GLES/EGL/GLX/WGL loader generator"
+home_page="https://gen.glad.sh"
+license="MIT"
+# the pypi name is glad2, glad on pypi is the unrelated 0.1.x series
+dist_files="https://files.pythonhosted.org/packages/source/g/glad2/glad2-${version}.tar.gz"
+checksum="80a5cec34c6c8662a54557261eda4a80a66fd111efce90b12067268c865274b4"
+wrk_src="glad2-$version"
+depends="python python-jinja2"
+make_depends="python python-build python-installer python-setuptools python-wheel"

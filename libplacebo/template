@@ -1,0 +1,40 @@
+pkg_name=libplacebo
+version=7.360.1
+revision=1
+build_style=meson
+short_desc="Reusable library for GPU accelerated video and image rendering"
+home_page="https://code.videolan.org/videolan/libplacebo"
+license="LGPL-2.1-or-later"
+dist_files="https://github.com/haasn/libplacebo/archive/refs/tags/v${version}.tar.gz>libplacebo-${version}.tar.gz"
+checksum="76b1f05a66cdc30ca3e773bff965f2c123b7a1bb00af93947046efd986868314"
+wrk_src="libplacebo-$version"
+
+use_flags="lcms opengl vulkan"
+
+depends="glslang spirv-tools
+ $(use_if lcms lcms2)
+ $(use_if vulkan vulkan-loader)"
+make_depends="glslang meson pkgconf python spirv-tools
+ $(use_if lcms lcms2)
+ $(use_if opengl python-glad)
+ $(use_if vulkan "python-jinja2 vulkan-headers vulkan-loader")"
+
+configure_args="
+    -Ddemos=false
+    -Dtests=false
+    -Dbench=false
+    -Dfuzz=false
+    -Dd3d11=disabled
+    -Dshaderc=disabled
+    -Dglslang=enabled
+    -Dlibdovi=disabled
+    -Ddovi=disabled
+    -Dunwind=disabled
+    -Dxxhash=disabled
+    $(use_if lcms -Dlcms=enabled -Dlcms=disabled)
+    $(use_if opengl "-Dopengl=enabled -Dgl-proc-addr=enabled" "-Dopengl=disabled -Dgl-proc-addr=disabled")
+    $(use_if vulkan "-Dvulkan=enabled -Dvk-proc-addr=enabled" "-Dvulkan=disabled -Dvk-proc-addr=disabled")"
+
+post_install() {
+    blicense LICENSE
+}

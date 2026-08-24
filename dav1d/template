@@ -1,0 +1,28 @@
+pkg_name=dav1d
+version=1.5.4
+revision=1
+build_style=meson
+short_desc="Small and fast AV1 decoder"
+home_page="https://code.videolan.org/videolan/dav1d"
+license="BSD-2-Clause"
+# normal upstream is videolan.org, this is their mirror
+dist_files="https://github.com/videolan/dav1d/archive/refs/tags/${version}.tar.gz>dav1d-${version}.tar.gz"
+checksum="e8487e66bda0d1234638db199d5f52c7d15bf6c95e8233c2a80e706883e9b213"
+
+use_flags="asm tools"
+
+make_depends="meson pkgconf
+ $(use_if asm nasm)"
+
+configure_args="
+    -Denable_examples=false
+    -Denable_tests=false
+    -Denable_docs=false
+    -Dtestdata_tests=false
+    -Dfuzzing_engine=none
+    $(use_if asm -Denable_asm=true -Denable_asm=false)
+    $(use_if tools -Denable_tools=true -Denable_tools=false)"
+
+post_install() {
+    blicense COPYING
+}

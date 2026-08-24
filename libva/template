@@ -1,0 +1,27 @@
+pkg_name=libva
+version=2.24.1
+revision=1
+build_style=meson
+short_desc="Video Acceleration (VA) API"
+home_page="https://intel.github.io/libva"
+license="MIT"
+dist_files="https://github.com/intel/libva/archive/refs/tags/${version}.tar.gz>libva-${version}.tar.gz"
+checksum="5fd43c884578ae3ad14c48dc3391baf263aeaca2d2d440c0b7d6bfb81a37ac92"
+
+use_flags="wayland -x11"
+
+depends="libdrm wayland
+ $(use_if x11 "libX11 libXext libXfixes libxcb")"
+make_depends="libdrm meson pkgconf wayland
+ $(use_if x11 "libX11 libXext libXfixes libxcb xorgproto")"
+
+configure_args="
+    -Dwith_glx=no
+    -Dwith_win32=no
+    -Denable_docs=false
+    $(use_if wayland -Dwith_wayland=yes -Dwith_wayland=no)
+    $(use_if x11 -Dwith_x11=yes -Dwith_x11=no)"
+
+post_install() {
+    blicense COPYING
+}

@@ -1,0 +1,36 @@
+pkg_name=shaderc
+version=2026.2
+revision=1
+build_style=cmake
+short_desc="Collection of tools, libraries and tests for shader compilation"
+home_page="https://github.com/google/shaderc"
+license="Apache-2.0"
+dist_files="https://github.com/google/shaderc/archive/v${version}.tar.gz>shaderc-${version}.tar.gz"
+checksum="d399b02a0fa2f3bb7d438781a3135ef45fceba6cae449f4a22603a2ec3a5f813"
+depends="glslang spirv-tools"
+make_depends="cmake glslang python spirv-headers spirv-tools"
+
+configure_args="
+    -DBUILD_SHARED_LIBS=ON
+    -DSHADERC_SKIP_TESTS=ON
+    -DSHADERC_ENABLE_TESTS=OFF
+    -DSHADERC_SKIP_EXAMPLES=ON
+    -DSHADERC_SKIP_COPYRIGHT_CHECK=ON
+    -Dglslang_SOURCE_DIR=/usr/include/glslang"
+
+pre_configure() {
+    bsed '/add_subdirectory(third_party)/d' CMakeLists.txt
+    bsed '/add_subdirectory(examples)/d' CMakeLists.txt
+
+    bsed '/add_dependencies(glslc_exe build-version)/d' glslc/CMakeLists.txt
+
+    cat > glslc/src/build-version.inc <<-EOF
+	"shaderc ${version}\n"
+	"SPIRV-Tools\n"
+	"glslang\n"
+	EOF
+}
+
+post_install() {
+    blicense LICENSE
+}

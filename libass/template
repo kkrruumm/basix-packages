@@ -1,0 +1,33 @@
+pkg_name=libass
+version=0.17.5
+revision=1
+build_style=gnu-configure
+short_desc="Portable library for SSA/ASS subtitle rendering"
+home_page="https://github.com/libass/libass"
+license="ISC"
+dist_files="https://github.com/libass/libass/releases/download/${version}/libass-${version}.tar.xz"
+checksum="39e3ffb3884b6e58789a6ae271369eadaac9e0277efc85919535400671631543"
+
+use_flags="fontconfig asm -static"
+
+depends="freetype fribidi harfbuzz
+ $(use_if fontconfig fontconfig)"
+make_depends="freetype fribidi harfbuzz pkgconf
+ $(use_if asm nasm)
+ $(use_if fontconfig fontconfig)"
+
+# without libunibreak libAss will fall back to the internal line breaker
+# in theory it's just a bit worse at cjk wrapping
+configure_args="
+    --disable-libunibreak
+    --disable-test
+    --disable-compare
+    --disable-profile
+    --disable-fuzz
+    $(use_if fontconfig --enable-fontconfig "--disable-fontconfig --disable-require-system-font-provider")
+    $(use_if asm --enable-asm --disable-asm)
+    $(use_enable static)"
+
+post_install() {
+    blicense COPYING
+}

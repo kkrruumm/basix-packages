@@ -1,0 +1,20 @@
+pkg_name=exiftool
+version=13.59
+revision=1
+build_style=perl-module
+short_desc="Reader and rewriter of EXIF and other metadata in image and media files"
+home_page="https://exiftool.org/"
+license="Artistic-1.0-Perl OR GPL-1.0-or-later"
+dist_files="https://github.com/exiftool/exiftool/archive/refs/tags/${version}.tar.gz>exiftool-${version}.tar.gz"
+checksum="7e8a04af4425091097e0ff7100b46c081c62114b9201231df83d1b5edf852596"
+depends="perl"
+make_depends="perl"
+
+use_flags="man -doc"
+
+post_install() {
+    use man || brm /usr/share/man
+
+    # 209 module manpages
+    use doc || brm /usr/share/man/man3
+}

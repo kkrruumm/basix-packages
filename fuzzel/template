@@ -1,0 +1,20 @@
+pkg_name=fuzzel
+version=1.14.1
+revision=1
+build_style=meson
+short_desc="App launcher and fuzzy finder for Wayland"
+home_page="https://codeberg.org/dnkl/fuzzel"
+license="MIT"
+dist_files="https://codeberg.org/dnkl/fuzzel/archive/${version}.tar.gz>fuzzel-${version}.tar.gz"
+checksum="d2f1708a2ce0d0dc04f36662f07f5debb5f2b2f190f6bfda93e699c4c8667f0c"
+wrk_src="fuzzel"
+
+use_flags="man png svg cairo"
+
+depends="fcft libxkbcommon pixman wayland
+ $(use_if cairo cairo)
+ $(use_if png libpng)"
+make_depends="fcft libxkbcommon meson pixman pkgconf scdoc tllist wayland
+ wayland-protocols
+ $(use_if cairo cairo)
+ $(use_if png libpng)"

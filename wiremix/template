@@ -1,0 +1,39 @@
+pkg_name=wiremix
+version=0.11.0
+revision=1
+build_style=cargo
+short_desc="TUI audio mixer for PipeWire"
+home_page="https://github.com/tsowell/wiremix"
+license="MIT OR Apache-2.0"
+dist_files="https://github.com/tsowell/wiremix/archive/v${version}.tar.gz>wiremix-${version}.tar.gz"
+checksum="756c2d7c69b4c575bc0ff950e34c5603d46700c55ea176c98880c1b673bc2300"
+depends="pipewire"
+make_depends="clang pipewire pkgconf rust"
+
+allow_network=yes
+
+use_flags="config doc -desktop -trace"
+
+cargo_args="$(usev trace --features=trace)"
+
+pre_build() {
+    export CARGO_HOME="$PWD/.cargo"
+}
+
+post_install() {
+    if use config; then
+        bdata wiremix.toml
+    fi
+
+    if use desktop; then
+        binstall wiremix.desktop 0644 /usr/share/applications
+    fi
+
+    if use doc; then
+        bdoc README.md
+        bdoc CHANGELOG.md
+    fi
+
+    blicense LICENSE-MIT
+    blicense LICENSE-APACHE
+}

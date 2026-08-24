@@ -1,0 +1,22 @@
+pkg_name=ncdu
+version=1.22
+revision=1
+build_style=gnu-configure
+short_desc="Disk usage analyzer with an ncurses interface"
+home_page="https://dev.yorhel.nl/ncdu"
+license="MIT"
+dist_files="https://dev.yorhel.nl/download/ncdu-${version}.tar.gz"
+checksum="b7838c03ded7207a328a26c840ec3d62d3be6bbf7269a70ea3430c6cbf065960"
+depends="ncurses"
+
+make_depends="linux-headers ncurses pkgconf"
+
+use_flags="man"
+
+configure_args="--with-ncursesw"
+
+post_install() {
+    use man || brm /usr/share/man/man1/ncdu.1
+
+    blicense COPYING
+}

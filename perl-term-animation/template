@@ -1,0 +1,12 @@
+pkg_name=perl-term-animation
+version=2.6
+revision=1
+build_style=perl-module
+short_desc="ASCII sprite animation framework for perl"
+home_page="https://metacpan.org/dist/Term-Animation"
+license="Artistic-1.0-Perl OR GPL-1.0-or-later"
+dist_files="https://cpan.metacpan.org/authors/id/K/KB/KBAUCOM/Term-Animation-${version}.tar.gz"
+checksum="07917c60a847af584d0859fdb4291219837aa33c5d4f9ea72fd6914d106f3a64"
+wrk_src="Term-Animation-${version}"
+depends="perl perl-curses"
+make_depends="perl perl-curses"

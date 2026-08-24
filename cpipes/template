@@ -1,0 +1,21 @@
+pkg_name=cpipes
+version=1.2.1
+revision=1
+build_style=gnu-configure
+short_desc="Animated pipes terminal screensaver"
+home_page="https://github.com/pipeseroni/pipes.c"
+license="GPL-3.0-or-later"
+dist_files="https://github.com/pipeseroni/pipes.c/releases/download/v${version}/pipes-c-${version}.tar.gz"
+checksum="0e092b005b7117665869c2ac8accf06919433a486ab71543e3973067e081ad3e"
+wrk_src="pipes-c-${version}"
+depends="ncurses"
+make_depends="ncurses pkgconf"
+
+configure_args="
+    --with-ncurses
+    --disable-Werror
+    --enable-compile-warnings=no"
+
+post_install() {
+    blicense LICENSE
+}

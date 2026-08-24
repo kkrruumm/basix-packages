@@ -1,0 +1,23 @@
+pkg_name=cbonsai
+version=1.4.2
+revision=1
+build_style=gnu-makefile
+short_desc="Grow bonsai trees in your terminal"
+home_page="https://gitlab.com/jallbrit/cbonsai"
+license="GPL-3.0-only"
+dist_files="https://gitlab.com/jallbrit/cbonsai/-/archive/v${version}/cbonsai-v${version}.tar.gz"
+checksum="727a0553ab357619b9fa0f3dc71614f11ad8ff51120b83dc9567abbc0d520997"
+wrk_src="cbonsai-v${version}"
+depends="ncurses"
+make_depends="ncurses pkgconf
+ $(use_if man scdoc)"
+
+use_flags="man bashcomp"
+
+make_install_args="$(use_if bashcomp WITH_BASH=1 WITH_BASH=0)"
+
+post_install() {
+    use man || brm /usr/share/man/man6/cbonsai.6
+
+    blicense LICENSE
+}

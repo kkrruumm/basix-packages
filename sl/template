@@ -1,0 +1,39 @@
+pkg_name=sl
+version=5.05
+revision=1
+build_style=gnu-makefile
+short_desc="Steam locomotive that runs across the terminal when you mistype ls"
+home_page="https://github.com/eyJhb/sl"
+license="custom:0BSD-like"
+dist_files="https://github.com/eyJhb/sl/archive/refs/tags/${version}.tar.gz>sl-${version}.tar.gz"
+checksum="24645ebb43e7d26ce0d7d2f442553c8312b0ccc285c60a5f9662c8ea9da5280f"
+depends="ncurses"
+make_depends="ncurses pkgconf"
+
+# there's fuckin manpages for sl?
+use_flags="man -nls"
+
+pre_build() {
+    _libs=$(pkg-config --libs ncursesw tinfow) || die "pkg-config: no ncursesw"
+
+    bsed "s|-lncurses|$_libs|" Makefile
+}
+
+do_build() {
+    $make_cmd CC="$CC" CFLAGS="$CFLAGS $LDFLAGS"
+}
+
+# no install target upstream
+do_install() {
+    bbin sl
+
+    if use man; then
+        bman sl.1
+        # same page in japanese, it belongs in the ja locale tree
+        if use nls; then
+            binstall sl.1.ja 0644 /usr/share/man/ja/man1 sl.1
+        fi
+    fi
+
+    blicense LICENSE
+}

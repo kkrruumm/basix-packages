@@ -1,0 +1,40 @@
+pkg_name=tmux
+version=3.7c
+revision=1
+build_style=gnu-configure
+short_desc="Terminal multiplexer"
+home_page="https://tmux.github.io"
+license="ISC"
+dist_files="https://github.com/tmux/tmux/releases/download/${version}/tmux-${version}.tar.gz"
+checksum="83a68d1180368750aaadd30750c95b304455f1faf6d2d38e8471284ab39daa9b"
+
+# if you want emojis for some reason or CJK fonts, enable utf8proc
+use_flags="-utf8proc sixel man doc -static"
+
+depends="libevent ncurses
+ $(use_if utf8proc libutf8proc)"
+make_depends="bison libevent ncurses pkgconf
+ $(use_if utf8proc libutf8proc)"
+
+configure_args="
+    $(use_enable utf8proc)
+    $(use_enable sixel)
+    $(use_enable static)
+    --disable-utempter
+    --disable-systemd
+    --disable-cgroups
+    --disable-jemalloc
+    --disable-debug"
+
+pre_configure() {
+    YACC="bison -y"
+    export YACC
+}
+
+post_install() {
+    use man || brm /usr/share/man/man1/tmux.1
+
+    use doc || return 0
+    bdoc example_tmux.conf
+    bdoc CHANGES
+}

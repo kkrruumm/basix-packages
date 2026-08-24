@@ -1,0 +1,22 @@
+pkg_name=swaybg
+version=1.2.2
+revision=1
+build_style=meson
+short_desc="Wallpaper utility for Wayland compositors"
+home_page="https://github.com/swaywm/swaybg"
+license="MIT"
+dist_files="https://github.com/swaywm/swaybg/archive/refs/tags/v${version}.tar.gz>swaybg-${version}.tar.gz"
+checksum="2dcb5b04ed989fdadab4ce83d657a9b76054b96bd1efdf6e82309c72f13074b3"
+wrk_src="swaybg-$version"
+
+use_flags="man pixbuf"
+
+depends="cairo wayland
+ $(use_if pixbuf gdk-pixbuf)"
+make_depends="cairo meson pkgconf wayland wayland-protocols
+ $(use_if man scdoc)
+ $(use_if pixbuf gdk-pixbuf)"
+
+configure_args="
+    $(use_if pixbuf -Dgdk-pixbuf=enabled -Dgdk-pixbuf=disabled)
+    $(use_if man -Dman-pages=enabled -Dman-pages=disabled)"

@@ -1,0 +1,29 @@
+pkg_name=libevent
+version=2.1.13
+revision=1
+build_style=gnu-configure
+short_desc="Asynchronous event notification library"
+home_page="https://libevent.org"
+license="BSD-3-Clause"
+dist_files="https://github.com/libevent/libevent/releases/download/release-${version}-stable/libevent-${version}-stable.tar.gz"
+checksum="a0e189ad0530e9d6eff25ac70a4c65ded31063145fb68d79741d18c0522fb014"
+wrk_src="libevent-${version}-stable"
+
+use_flags="ssl static -rpcgen -samples"
+
+depends="$(use_if ssl openssl)"
+make_depends="pkgconf $(use_if ssl openssl)"
+
+configure_args="
+    --enable-thread-support
+    --disable-libevent-regress
+    $(use_if ssl --enable-openssl --disable-openssl)
+    $(use_enable static)
+    $(use_enable samples)
+    --enable-shared"
+
+post_install() {
+    # event_rpcgen.py is a code gen for evrpc and is the only thing
+    # that would need python as a dependency, just ditch it
+    use rpcgen || brm /usr/bin/event_rpcgen.py
+}

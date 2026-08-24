@@ -1,0 +1,41 @@
+pkg_name=swaylock
+version=1.8.6
+revision=1
+build_style=meson
+short_desc="Screen locker for Wayland compositors"
+home_page="https://github.com/swaywm/swaylock"
+license="MIT"
+dist_files="https://github.com/swaywm/swaylock/archive/refs/tags/v${version}.tar.gz>swaylock-${version}.tar.gz"
+checksum="652790429b2d20d0665883c01a3e6416f07201950af8d322a8d9ceb7c8b393b4"
+wrk_src="swaylock-$version"
+
+use_flags="man pam pixbuf"
+
+depends="cairo libxkbcommon wayland
+ $(use_if pam linux-pam)
+ $(use_if pixbuf gdk-pixbuf)"
+make_depends="cairo libxkbcommon meson pkgconf wayland wayland-protocols
+ $(use_if man scdoc)
+ $(use_if pam linux-pam)
+ $(use_if pixbuf gdk-pixbuf)"
+
+# if you disable pam the shadow backend gets compiled in instead, look at post_install
+configure_args="
+    -Dzsh-completions=false
+    -Dbash-completions=false
+    -Dfish-completions=false
+    $(use_if pam -Dpam=enabled -Dpam=disabled)
+    $(use_if pixbuf -Dgdk-pixbuf=enabled -Dgdk-pixbuf=disabled)
+    $(use_if man -Dman-pages=enabled -Dman-pages=disabled)"
+
+post_install() {
+    # when pam is enabled /etc/pam.d/swaylock is installed by the build
+    # and uses /etc/pam.d/login from linux-pam and auth is done with
+    # unix_chkpwd so the binary gets to remain unprivileged
+    use pam && return 0
+
+    # if you build this without pam, swaylock reads /etc/shadow by itself
+    # and needs setuid, you shouldn't do this but i'm going to leave it
+    # exposed as a flag
+    chmod 4755 "$DESTDIR/usr/bin/swaylock"
+}

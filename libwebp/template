@@ -1,0 +1,35 @@
+pkg_name=libwebp
+version=1.6.0
+revision=1
+build_style=cmake
+short_desc="WebP image format library and tools"
+home_page="https://developers.google.com/speed/webp"
+license="BSD-3-Clause"
+dist_files="https://github.com/webmproject/libwebp/archive/refs/tags/v${version}.tar.gz>libwebp-${version}.tar.gz"
+checksum="3124d8088b1ad55b79233aa0e32d8bdf9f0d2b5aee343dcdd034328f197ddfca"
+wrk_src="libwebp-${version}"
+make_depends="cmake
+ $(use_if tools "libjpeg-turbo libpng")"
+depends="$(use_if tools "libjpeg-turbo libpng")"
+
+use_flags="-tools"
+
+configure_args="
+    -DBUILD_SHARED_LIBS=ON
+    -DWEBP_LINK_STATIC=OFF
+    -DWEBP_BUILD_LIBWEBPMUX=ON
+    -DWEBP_BUILD_EXTRAS=OFF
+    -DWEBP_BUILD_ANIM_UTILS=OFF
+    -DWEBP_BUILD_GIF2WEBP=OFF
+    -DWEBP_BUILD_VWEBP=OFF
+    $(use_if tools -DWEBP_BUILD_CWEBP=ON -DWEBP_BUILD_CWEBP=OFF)
+    $(use_if tools -DWEBP_BUILD_DWEBP=ON -DWEBP_BUILD_DWEBP=OFF)
+    $(use_if tools -DWEBP_BUILD_IMG2WEBP=ON -DWEBP_BUILD_IMG2WEBP=OFF)
+    $(use_if tools -DWEBP_BUILD_WEBPINFO=ON -DWEBP_BUILD_WEBPINFO=OFF)
+    $(use_if tools -DWEBP_BUILD_WEBPMUX=ON -DWEBP_BUILD_WEBPMUX=OFF)"
+
+post_install() {
+    use man || brm /usr/share/man
+
+    blicense COPYING
+}

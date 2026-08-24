@@ -1,0 +1,51 @@
+pkg_name=imv
+version=5.0.1
+revision=1
+build_style=meson
+short_desc="Image viewer for tiling window manager users"
+home_page="https://sr.ht/~exec64/imv/"
+license="MIT"
+dist_files="https://git.sr.ht/~exec64/imv/archive/v${version}.tar.gz>imv-${version}.tar.gz"
+checksum="d8187bf24964664441c552e8168f76d77a197ff6cfa378ed6a68e8a0d727e06a"
+wrk_src="imv-v${version}"
+
+use_flags="man png jpeg webp -qoi -x11"
+
+depends="cairo glib inih libgrapheme libxkbcommon mesa pango wayland
+ $(use_if jpeg libjpeg-turbo)
+ $(use_if png libpng)
+ $(use_if x11 "libX11 libxcb")"
+make_depends="asciidoc cairo glib inih libgrapheme libxkbcommon meson mesa pango
+ pkgconf wayland wayland-protocols xorgproto
+ $(use_if jpeg libjpeg-turbo)
+ $(use_if png libpng)
+ $(use_if webp libwebp)
+ $(use_if x11 "libX11 libxcb")"
+
+# unicode=grapheme rather than icu
+configure_args="
+    -Dunicode=grapheme
+    -Dtest=disabled
+    -Dlibheif=disabled
+    -Dlibjxl=disabled
+    -Dlibnsbmp=disabled
+    -Dlibnsgif=disabled
+    -Dlibrsvg=disabled
+    -Dlibtiff=disabled
+    $(use_if webp -Dlibwebp=enabled -Dlibwebp=disabled)
+    $(use_if png -Dlibpng=enabled -Dlibpng=disabled)
+    $(use_if jpeg -Dlibjpeg=enabled -Dlibjpeg=disabled)
+    $(use_if qoi -Dqoi=enabled -Dqoi=disabled)
+    $(use_if x11 -Dwindows=all -Dwindows=wayland)
+    -Db_ndebug=false"
+
+pre_configure() {
+    export XML_CATALOG_FILES=/usr/share/xsl/docbook/catalog.xml
+}
+
+post_install() {
+    # asciidoc is not optional upstream
+    use man || brm /usr/share/man
+
+    blicense LICENSE
+}

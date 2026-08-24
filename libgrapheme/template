@@ -1,0 +1,33 @@
+pkg_name=libgrapheme
+version=2.0.2
+revision=1
+build_style=gnu-makefile
+short_desc="Unicode string library"
+home_page="https://libs.suckless.org/libgrapheme/"
+license="ISC, Unicode-DFS-2016"
+# upstream is dl.suckless.org, this is the authors github mirror
+dist_files="https://github.com/FRIGN/libgrapheme/archive/refs/tags/${version}.tar.gz>libgrapheme-${version}.tar.gz"
+checksum="25e505648bb9dfa55f4b663f19b8fa8893b3fbf5891382264eec943aa7a81679"
+
+use_flags="man static"
+
+do_build() {
+    $make_cmd $make_jobs \
+        CC="$CC" \
+        CFLAGS="$CFLAGS -std=c99" \
+        LDFLAGS="$LDFLAGS" \
+        LDCONFIG=
+}
+
+do_install() {
+    $make_cmd install \
+        DESTDIR="$DESTDIR" \
+        PREFIX=/usr \
+        MANPREFIX=/usr/share/man \
+        LDCONFIG=
+
+    use static || brm /usr/lib/libgrapheme.a
+    use man || brm /usr/share/man
+
+    blicense LICENSE
+}

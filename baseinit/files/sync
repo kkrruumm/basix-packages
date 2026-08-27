@@ -32,7 +32,7 @@ repo=$root/var/lib/s6-rc/repository
 bootdb=$root/etc/s6-rc/compiled/current
 live=$root/run/s6-rc
 stamp=$root/var/lib/s6-rc/stores.stamp
-set_name=${S6_RC_SET:-default}
+set_name=${S6_RC_SET:-current}
 
 warn() { printf 's6-rc: warning: %s\n' "$*" >&2; }
 

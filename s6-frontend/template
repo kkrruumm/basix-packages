@@ -1,0 +1,50 @@
+pkg_name=s6-frontend
+version=0.1.0.0
+revision=1
+build_style=configure
+short_desc="Friendlier user interface to the s6 init system"
+home_page="https://skarnet.org/software/s6-frontend"
+license="ISC"
+dist_files="https://skarnet.org/software/s6-frontend/s6-frontend-${version}.tar.gz"
+checksum="b5d88590ff8f9176bf602b8d1d487c996ef4578c1143e57c915a2559735b6035"
+
+# s6li here is "s6-linux-init," this is so s6-frontend can handle reboot/shutdown/poweroff
+# basix defaults to using almost the whole s6 stack so this is on by default
+#
+# util-linux here is only needed for colorized output through column, busybox doesn't
+# have column so this is off by default
+use_flags="-static -pkgconfig doc s6li -util-linux -nsss"
+
+depends="skalibs execline s6 s6-rc
+    $(use_if s6li s6-linux-init)
+    $(use_if util-linux util-linux)
+    $(use_if nsss nsss)"
+make_depends="skalibs execline s6 s6-rc
+    $(use_if s6li s6-linux-init)
+    $(use_if nsss nsss)"
+
+# same deal as the rest of the skarnet packages
+configure_args="
+    --sysconfdir=/etc
+    --bindir=/usr/bin
+    --libdir=/usr/lib
+    --dynlibdir=/usr/lib
+    --libexecdir=/usr/libexec
+    --includedir=/usr/include
+    --with-sysdeps=/usr/lib/skalibs/sysdeps
+    --with-store-list=/usr/share/s6-rc/sources:/etc/s6-rc/sources
+    --disable-rpath
+    $(use_if s6li --enable-s6li --disable-s6li)
+    $(use_if util-linux --enable-util-linux --disable-util-linux)
+    $(use_if nsss --enable-nsss --disable-nsss)
+    $(use_if pkgconfig --enable-pkgconfig --disable-pkgconfig)
+    $(use_if static --enable-static --disable-static)
+    $(use_if static --enable-allstatic --disable-allstatic)
+    $(use_if static --disable-shared --enable-shared)"
+
+post_install() {
+    if use doc; then
+        bcopy doc/. "/usr/share/doc/$pkg_name"
+    fi
+    blicense COPYING
+}

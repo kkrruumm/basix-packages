@@ -1,0 +1,45 @@
+pkg_name=brogue
+version=1.15.1
+revision=1
+build_style=gnu-makefile
+short_desc="Roguelike dungeon crawl with a focus on clarity over complexity"
+home_page="https://github.com/tmewett/BrogueCE"
+license="AGPL-3.0-only"
+dist_files="https://github.com/tmewett/BrogueCE/archive/refs/tags/v${version}.tar.gz>brogue-${version}.tar.gz"
+checksum="478e37be4c8ecfb568acd7bba355b85a4d59d98d2afa49e342fb867c0966f9aa"
+wrk_src="BrogueCE-${version}"
+depends="ncurses"
+make_depends="ncurses pkgconf"
+
+use_flags="doc"
+
+# GRAPHICS pulls in SDL2 and SDL2_image
+make_build_args="
+    SYSTEM=LINUXLIKE
+    TERMINAL=YES
+    GRAPHICS=NO
+    RELEASE=YES
+    DATADIR=/usr/share/brogue"
+
+pre_build() {
+    _libs=$(pkg-config --libs ncursesw tinfow) || die "pkg-config: no ncursesw"
+
+    bsed "s|-lncurses|$_libs|" Makefile
+}
+
+do_install() {
+    blibexec bin/brogue
+
+    # game save data is written to PWD so
+    # /usr/bin/brogue is a wrapper to kinda fix this 
+    bbin "$FILESDIR/brogue"
+
+    bdata bin/keymap.txt
+
+    if use doc; then
+        bdoc README.md
+        bdoc CHANGELOG.md
+    fi
+
+    blicense LICENSE.txt
+}

@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+: "${BROGUE_HOME:=${XDG_DATA_HOME:-$HOME/.local/share}/brogue}"
+
+mkdir -p "$BROGUE_HOME"
+cd "$BROGUE_HOME"
+
+exec /usr/libexec/brogue/brogue "$@"

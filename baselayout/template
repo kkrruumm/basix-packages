@@ -1,13 +1,13 @@
 pkg_name=baselayout
 version=1
-revision=1
+revision=2
 build_style=custom
 short_desc="Base filesystem layout and /etc defaults"
 home_page=""
 license=""
 
 do_install() {
-    for d in boot dev etc home mnt opt run usr usr/bin usr/include usr/lib \
+    for d in boot dev etc/modules-load.d etc home mnt opt run usr usr/bin usr/include usr/lib \
              usr/share var/cache var/local var/opt var/log var/log/old \
              var/lib var/lib/misc var/empty var/service var/spool; do
         bmkdir -m 0755 "/$d"

@@ -1,0 +1,23 @@
+pkg_name=xdg-desktop-portal-termfilechooser
+version=1.4.3
+revision=1
+build_style=meson
+short_desc="xdg-desktop-portal backend for terminal file choosers"
+home_page="https://github.com/hunkyburrito/xdg-desktop-portal-termfilechooser"
+license="MIT"
+dist_files="https://github.com/hunkyburrito/xdg-desktop-portal-termfilechooser/archive/v${version}.tar.gz>xdg-desktop-portal-termfilechooser-${version}.tar.gz"
+checksum="ae6dfffbe066807a2a516d02ccfab348c022f5fd1992b108964f776aeadee915"
+
+use_flags="man"
+
+depends="basu inih xdg-desktop-portal"
+make_depends="basu inih meson pkgconf $(use_if man scdoc)"
+
+configure_args="
+    -Dsd-bus-provider=basu
+    -Dsystemd=disabled
+    $(use_if man -Dman-pages=enabled -Dman-pages=disabled)"
+
+post_install() {
+    brm /usr/share/xdg-desktop-portal-termfilechooser/systemd
+}

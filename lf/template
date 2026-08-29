@@ -1,0 +1,34 @@
+pkg_name=lf
+version=r42
+revision=1
+build_style=go
+short_desc="Terminal file manager with vim-style keybindings"
+home_page="https://github.com/gokcehan/lf"
+license="MIT"
+dist_files="https://github.com/gokcehan/lf/archive/${version}.tar.gz>lf-${version}.tar.gz"
+checksum="9c102b4f81eb33591d60c783c875481164ea957830bd914543e2f9bf4454cb40"
+make_depends="go"
+
+allow_network=yes
+
+use_flags="man doc -desktop"
+
+go_package="."
+go_ldflags="-s -w -X main.gVersion=$version"
+
+# -s -w already strips
+no_strip=yes
+
+post_install() {
+    use man && bman lf.1
+
+    use desktop && binstall lf.desktop 0644 /usr/share/applications
+
+    if use doc; then
+        bdoc etc/lfrc.example
+        bdoc etc/colors.example
+        bdoc etc/icons.example
+        bdoc CHANGELOG.md
+    fi
+    :
+}

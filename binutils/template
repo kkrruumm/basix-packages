@@ -1,6 +1,6 @@
 pkg_name=binutils
 version=2.46.1
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="GNU binary utilities"
 home_page="https://www.gnu.org/software/binutils/"
@@ -16,6 +16,7 @@ configure_args="
     --with-lib-path=/usr/lib:/usr/local/lib
     --enable-targets=x86_64-pep
     --enable-deterministic-archives
+    --enable-compressed-debug-sections=none
     $(use_enable gold)
     $(use_enable lto)
     --enable-ld=default

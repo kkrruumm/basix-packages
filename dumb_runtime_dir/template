@@ -1,0 +1,25 @@
+pkg_name=dumb_runtime_dir
+version=1.0.4
+revision=1
+build_style=gnu-makefile
+short_desc="PAM module that creates an XDG_RUNTIME_DIR on login"
+home_page="https://github.com/ifreund/dumb_runtime_dir"
+license="0BSD"
+dist_files="https://github.com/ifreund/dumb_runtime_dir/archive/v${version}.tar.gz>dumb_runtime_dir-${version}.tar.gz"
+checksum="a1048280f23da9bf3e95cdea4956b6024dc85b4fecdbb86ede30fb957baa5ab4"
+depends="linux-pam"
+make_depends="linux-pam pkgconf"
+
+use_flags="services"
+
+pre_build() {
+    bsed 's/^CFLAGS = .*/CFLAGS ?=/' Makefile
+}
+
+post_install() {
+    if use services; then
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+    fi
+
+    blicense LICENSE
+}

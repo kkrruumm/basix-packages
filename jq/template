@@ -1,0 +1,30 @@
+pkg_name=jq
+version=1.8.2
+revision=1
+build_style=gnu-configure
+short_desc="Command-line JSON processor"
+home_page="https://jqlang.github.io/jq/"
+license="MIT"
+dist_files="https://github.com/jqlang/jq/releases/download/jq-${version}/jq-${version}.tar.gz"
+checksum="80f6569efea15b7445aa50fa4e85c4fecb6d5950be788b466b1cb87940af5903"
+wrk_src="jq-${version}"
+
+use_flags="man"
+
+configure_args="
+    --disable-static
+    --disable-maintainer-mode
+    --disable-docs"
+
+pre_configure() {
+    echo "echo $version" > scripts/version
+    chmod 0755 scripts/version
+}
+
+post_install() {
+    brm /usr/share/doc/jq
+
+    use man || brm /usr/share/man/man1/jq.1
+
+    blicense COPYING
+}

@@ -1,0 +1,23 @@
+pkg_name=wl-clipboard
+version=2.3.0
+revision=1
+build_style=meson
+short_desc="Command-line copy and paste for Wayland"
+home_page="https://github.com/bugaevc/wl-clipboard"
+license="GPL-3.0-or-later"
+dist_files="https://github.com/bugaevc/wl-clipboard/archive/refs/tags/v${version}.tar.gz>wl-clipboard-${version}.tar.gz"
+checksum="4becb8c6775b0c2e4ddd15b503ffee39d44c0a2ec79a2642fb16ef2f89aea639"
+wrk_src="wl-clipboard-${version}"
+
+depends="wayland"
+make_depends="meson pkgconf wayland wayland-protocols"
+
+configure_args="
+    -Dzshcompletiondir=no
+    -Dfishcompletiondir=no"
+
+post_install() {
+    brm /usr/share/bash-completion
+
+    blicense COPYING
+}

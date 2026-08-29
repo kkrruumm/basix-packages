@@ -1,0 +1,27 @@
+pkg_name=grim
+version=1.5.0
+revision=1
+build_style=meson
+short_desc="Grab images from a Wayland compositor"
+home_page="https://gitlab.freedesktop.org/emersion/grim"
+license="MIT"
+dist_files="https://gitlab.freedesktop.org/emersion/grim/-/archive/v${version}/grim-v${version}.tar.gz>grim-${version}.tar.gz"
+checksum="69f718894d59ddd6dcc7c963c4ea620b3307c9bd34b26a7eeedd071d5b713e09"
+wrk_src="grim-v${version}"
+
+use_flags="man jpeg"
+
+depends="libpng pixman wayland
+ $(use_if jpeg libjpeg-turbo)"
+make_depends="libpng meson pixman pkgconf wayland wayland-protocols
+ $(use_if man scdoc)
+ $(use_if jpeg libjpeg-turbo)"
+
+configure_args="
+    -Dwerror=false
+    $(use_if jpeg -Djpeg=enabled -Djpeg=disabled)
+    $(use_if man -Dman-pages=enabled -Dman-pages=disabled)"
+
+post_install() {
+    blicense LICENSE
+}

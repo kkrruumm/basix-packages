@@ -1,0 +1,35 @@
+pkg_name=libnotify
+version=0.8.8
+revision=1
+build_style=meson
+short_desc="Library for sending desktop notifications"
+home_page="https://gitlab.gnome.org/GNOME/libnotify"
+license="LGPL-2.1-or-later"
+dist_files="https://github.com/GNOME/libnotify/archive/refs/tags/${version}.tar.gz>libnotify-${version}.tar.gz"
+checksum="3d5f3340fe907670a14efbd34ec9166990ec697a096083ac9d402a41f517cd70"
+wrk_src="libnotify-${version}"
+
+use_flags="man"
+
+depends="gdk-pixbuf glib"
+make_depends="gdk-pixbuf glib meson pkgconf
+ $(use_if man docbook-xsl)
+ $(use_if man libxslt)"
+
+configure_args="
+    -Dtests=false
+    -Dintrospection=disabled
+    -Dgtk_doc=false
+    -Ddocbook_docs=disabled
+    $(use_bool man man)"
+
+
+pre_configure() {
+    export XML_CATALOG_FILES=/usr/share/xsl/docbook/catalog.xml
+    use man && bsed 's|release/xsl-ns/current|release/xsl/current|' meson.build
+}
+
+
+post_install() {
+    blicense COPYING
+}

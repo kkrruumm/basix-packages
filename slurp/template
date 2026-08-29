@@ -1,0 +1,24 @@
+pkg_name=slurp
+version=1.5.0
+revision=1
+build_style=meson
+short_desc="Select a region in a Wayland compositor"
+home_page="https://github.com/emersion/slurp"
+license="MIT"
+dist_files="https://github.com/emersion/slurp/archive/refs/tags/v${version}.tar.gz>slurp-${version}.tar.gz"
+checksum="39d4a6e641d8297d1eb54b1d730e628cdd3c314d08e0d6ab943eea2fe015a48d"
+wrk_src="slurp-${version}"
+
+use_flags="man"
+
+depends="cairo libxkbcommon wayland"
+make_depends="cairo libxkbcommon meson pkgconf wayland wayland-protocols
+ $(use_if man scdoc)"
+
+configure_args="
+    -Dwerror=false
+    $(use_if man -Dman-pages=enabled -Dman-pages=disabled)"
+
+post_install() {
+    blicense LICENSE
+}

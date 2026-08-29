@@ -1,0 +1,25 @@
+pkg_name=grimshot
+version=1.11
+revision=1
+build_style=custom
+short_desc="Helper for screenshots within sway"
+home_page="https://github.com/OctopusET/sway-contrib"
+license="MIT"
+dist_files="https://github.com/OctopusET/sway-contrib/archive/refs/tags/${version}.tar.gz>sway-contrib-${version}.tar.gz"
+checksum="1b148b5cb33390db7c92e8811bbc62ac3f96ea8f5ce6ae5b54a3baaf198afc00"
+wrk_src="sway-contrib-${version}"
+
+use_flags="man notify"
+
+depends="grim jq slurp sway wl-clipboard
+ $(use_if notify libnotify)"
+
+do_build() { :; }
+
+do_install() {
+    bbin grimshot/grimshot
+
+    use man && bman grimshot/grimshot.1
+
+    blicense LICENSE
+}

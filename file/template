@@ -1,0 +1,25 @@
+pkg_name=file
+version=5.48
+revision=1
+build_style=gnu-configure
+short_desc="File type identification utility"
+home_page="https://www.darwinsys.com/file/"
+license="BSD-2-Clause"
+dist_files="https://astron.com/pub/file/file-${version}.tar.gz"
+checksum="9b75907db0d23cc8e123acd137c88da627ab98e001ed05960a2fd871a5abe4f2"
+wrk_src="file-${version}"
+
+use_flags="seccomp"
+
+depends="zlib
+ $(use_if seccomp libseccomp)"
+make_depends="zlib
+ $(use_if seccomp libseccomp)"
+
+configure_args="
+    --disable-static
+    $(use_enable seccomp libseccomp)"
+
+post_install() {
+    blicense COPYING
+}

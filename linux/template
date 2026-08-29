@@ -3,7 +3,7 @@
 # release is probably chill
 pkg_name=linux
 version=6.18.40
-revision=2
+revision=3
 build_style=custom
 short_desc="The Linux kernel"
 home_page="https://kernel.org"
@@ -46,7 +46,7 @@ do_install() {
     binstall .config               0644 /boot "config-$_rel"
 
     if use modules; then
-        $make_cmd INSTALL_MOD_PATH="$DESTDIR/usr" modules_install
+        $make_cmd INSTALL_MOD_PATH="$DESTDIR/usr" INSTALL_MOD_STRIP=1 modules_install
         # These point into the build tree, which will not exist.
         rm -f "$DESTDIR/usr/lib/modules/$_rel/build" \
               "$DESTDIR/usr/lib/modules/$_rel/source"

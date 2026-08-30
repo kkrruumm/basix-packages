@@ -1,0 +1,2 @@
+#!/bin/sh
+s6-log -d3 -- n3 s1000000 T /var/log/snooze-monthly

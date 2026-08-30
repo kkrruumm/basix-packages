@@ -1,0 +1,26 @@
+pkg_name=snooze
+version=0.6
+revision=1
+build_style=gnu-makefile
+short_desc="run a command at a particular time"
+home_page="https://github.com/leahneukirchen/snooze"
+license="CC0-1.0"
+dist_files="https://github.com/leahneukirchen/snooze/archive/refs/tags/v${version}.tar.gz>snooze-${version}.tar.gz"
+checksum="c3f91ec5cd97a04e0f89710314210bb3885ce0f9da7043658b42b88eb2c4e6ba"
+wrk_src="snooze-$version"
+
+use_flags="services"
+
+post_install() {
+    # executables can be dropped in here and it runs at that interval
+    bmkdir /etc/periodic/15min /etc/periodic/hourly /etc/periodic/daily \
+           /etc/periodic/weekly /etc/periodic/monthly
+    # timestamp files, snooze looks at their mtime to know whether or not a run was missed
+    bmkdir /var/cache/snooze
+    binstall "$FILESDIR/run-periodic" 0755 /usr/lib/snooze
+
+    if use services; then
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+    fi
+}

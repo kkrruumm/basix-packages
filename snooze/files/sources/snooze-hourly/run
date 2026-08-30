@@ -1,0 +1,4 @@
+#!/bin/sh
+exec 2>&1
+exec snooze -H '*' -s 1d -t /var/cache/snooze/hourly -- \
+    /usr/lib/snooze/run-periodic /etc/periodic/hourly /var/cache/snooze/hourly

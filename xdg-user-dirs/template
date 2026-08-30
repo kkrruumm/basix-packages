@@ -1,0 +1,24 @@
+pkg_name=xdg-user-dirs
+version=0.20
+revision=1
+build_style=meson
+short_desc="Tool to manage well-known user directories"
+home_page="https://www.freedesktop.org/wiki/Software/xdg-user-dirs"
+license="GPL-2.0-or-later"
+dist_files="https://user-dirs.freedesktop.org/releases/xdg-user-dirs-${version}.tar.xz"
+checksum="cb95fa26bc741d1cea6abb3e15042deb89efe9a9ca41a0953da5a725c991f006"
+make_depends="meson pkgconf $(use_if man "docbook-xsl libxslt")"
+
+use_flags="man -nls"
+
+configure_args="
+    $(use_bool man docs)
+    $(use_bool nls)"
+
+pre_configure() {
+    export XML_CATALOG_FILES=/usr/share/xsl/docbook/catalog.xml
+}
+
+post_install() {
+    brm /usr/lib/systemd
+}

@@ -1,0 +1,31 @@
+pkg_name=senpai
+version=0.5.0
+revision=1
+build_style=go
+short_desc="IRC client that works best with bouncers"
+home_page="https://git.sr.ht/~delthas/senpai"
+license="ISC"
+dist_files="https://git.sr.ht/~delthas/senpai/archive/v${version}.tar.gz>senpai-${version}.tar.gz"
+checksum="c8f55c819326a4c9e93303304c45b5452193dc59eb79de8b639a8df59abf0403"
+make_depends="go $(use_if man scdoc)"
+wrk_src="senpai-v$version"
+
+allow_network=yes
+
+use_flags="man"
+
+go_package="./cmd/senpai"
+go_ldflags="-s -w"
+
+no_strip=yes
+
+post_install() {
+    if use man; then
+        scdoc < doc/senpai.1.scd > senpai.1
+        scdoc < doc/senpai.5.scd > senpai.5
+        bman senpai.1
+        bman senpai.5
+    fi
+
+    blicense LICENSE
+}

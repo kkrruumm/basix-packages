@@ -1,2 +1,2 @@
 #!/bin/sh
-exec acpid -f 2>&1
+exec acpid -d 2>&1

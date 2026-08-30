@@ -1,0 +1,19 @@
+pkg_name=efivar
+version=39
+revision=1
+build_style=gnu-makefile
+short_desc="Tools and library to manipulate EFI variables"
+home_page="https://github.com/rhboot/efivar"
+license="LGPL-2.1-or-later"
+dist_files="https://github.com/rhboot/efivar/archive/${version}.tar.gz>efivar-${version}.tar.gz"
+checksum="51adfa6d88e2768313a223d197f9edd88f15f3889fdae985b2222da87792e64a"
+make_depends="pkgconf $(use_if man mandoc)"
+
+use_flags="man"
+
+make_build_args="libdir=/usr/lib ERRORS= $(use_if man ENABLE_DOCS=1)"
+make_install_args="libdir=/usr/lib $(use_if man ENABLE_DOCS=1)"
+
+post_install() {
+    blicense COPYING
+}

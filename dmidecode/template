@@ -1,0 +1,27 @@
+pkg_name=dmidecode
+version=3.7
+revision=1
+build_style=gnu-makefile
+short_desc="Utilities to read the DMI/SMBIOS table"
+home_page="https://www.nongnu.org/dmidecode"
+license="GPL-2.0-or-later"
+dist_files="https://download-mirror.savannah.gnu.org/releases/dmidecode/dmidecode-${version}.tar.xz"
+checksum="6da97cb364d8e2948361dbf10eab08a541ecec6a110f6b0b02ef922d40ee3606"
+
+use_flags="man doc"
+
+# compdir is completion stuff
+make_build_args="sbindir=/usr/bin"
+make_install_args="sbindir=/usr/bin compdir="
+
+post_install() {
+    if ! use man; then
+        brm /usr/share/man/man8
+    fi
+
+    if ! use doc; then
+        brm /usr/share/doc/dmidecode
+    fi
+
+    blicense LICENSE
+}

@@ -1,0 +1,31 @@
+pkg_name=smartmontools
+version=7.5
+revision=1
+build_style=gnu-configure
+short_desc="Tools to monitor S.M.A.R.T. attributes of storage devices"
+home_page="https://www.smartmontools.org"
+license="GPL-2.0-or-later"
+dist_files="https://downloads.sourceforge.net/smartmontools/smartmontools-${version}.tar.gz"
+checksum="7fc754ded6c0b328c9fab281233cdfc5f2cd24311b3180ca026c4ef659a54940"
+
+use_flags="man doc services"
+
+configure_args="
+    --with-libcap-ng=no
+    --with-systemdsystemunitdir=no
+    --with-initscriptdir=no"
+
+post_install() {
+    if ! use man; then
+        brm /usr/share/man
+    fi
+
+    if ! use doc; then
+        brm /usr/share/doc/smartmontools
+    fi
+
+    if use services; then
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+    fi
+}

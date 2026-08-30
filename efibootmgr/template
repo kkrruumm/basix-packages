@@ -1,0 +1,28 @@
+pkg_name=efibootmgr
+version=18
+revision=1
+build_style=gnu-makefile
+short_desc="Tool to modify UEFI firmware boot manager variables"
+home_page="https://github.com/rhboot/efibootmgr"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/rhboot/efibootmgr/archive/${version}.tar.gz>efibootmgr-${version}.tar.gz"
+checksum="988f79f292427e7f5147db6f326a89b06380e2a0ccdfefeb89815da51975f885"
+depends="efivar popt"
+make_depends="efivar popt pkgconf"
+
+use_flags="man"
+
+make_build_args="EFIDIR=basix EFI_LOADER="
+make_install_args="EFIDIR=basix EFI_LOADER= sbindir=/usr/bin"
+
+pre_build() {
+    bsed 's/-Werror //' Make.defaults
+}
+
+post_install() {
+    if ! use man; then
+        brm /usr/share/man/man8
+    fi
+
+    blicense COPYING
+}

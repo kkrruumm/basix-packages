@@ -1,0 +1,26 @@
+pkg_name=tzdata
+version=2026c
+revision=1
+build_style=custom
+short_desc="IANA time zone database"
+home_page="https://www.iana.org/time-zones"
+license="Public-Domain"
+dist_files="
+ https://www.iana.org/time-zones/repository/releases/tzcode${version}.tar.gz
+ https://www.iana.org/time-zones/repository/releases/tzdata${version}.tar.gz"
+checksum="d6ad09688ffea7890d625f48853ffc893612fcb605966b14d79c196e58447503 cbe5cb115f46f3c1030ccc1207711edf3c78cec7622789c49e9861d73cfb52eb"
+
+do_build() {
+    $make_cmd $make_jobs CC="$CC" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" \
+        TZDIR=/usr/share/zoneinfo
+}
+
+do_install() {
+    $make_cmd install DESTDIR="$DESTDIR" \
+        TZDIR=/usr/share/zoneinfo ZICDIR=/usr/bin BINDIR=/usr/bin \
+        ZFLAGS="-b fat"
+
+    brm /etc /usr/lib/libtz.a /usr/share/man/man3
+
+    blicense LICENSE
+}

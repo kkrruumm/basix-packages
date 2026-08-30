@@ -1,10 +1,14 @@
 pkg_name=baselayout
 version=1
-revision=2
+revision=3
 build_style=custom
 short_desc="Base filesystem layout and /etc defaults"
 home_page=""
 license=""
+dist_files="
+ https://salsa.debian.org/md/netbase/-/raw/v6.4/etc/services>services-6.4
+ https://salsa.debian.org/md/netbase/-/raw/v6.4/etc/protocols>protocols-6.4"
+checksum="0e25bf33c6d8eb18e0dd4ba0fcb5995da6fbc6b1f7686f84ddfd73bb4f01e2a7 83b5e58aa5155806fc1dac7deaf8306a12a947f29da0a72fbb1fec265c80443a"
 
 do_install() {
     for d in boot dev etc/modules-load.d etc home mnt opt run usr usr/bin usr/include usr/lib \
@@ -33,6 +37,10 @@ do_install() {
     for f in "$FILESDIR"/*; do
         bconf "$f"
     done
+
+    binstall services-6.4  0644 /etc services
+    binstall protocols-6.4 0644 /etc protocols
+
     # these two carry credentials and must not be world readable
     binstall "$FILESDIR/crypttab" 0600 /etc
     binstall "$FILESDIR/shadow"   0600 /etc

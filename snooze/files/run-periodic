@@ -1,24 +1,48 @@
 #!/bin/sh
+# /usr/lib/snooze/run-periodic <dir> <timefile>
+#
 # run every executable in a periodic dir and then stamp the timefile
 #
 # snooze doesnt write the timefiles itself so this has to,
 # timestamp files are written even if the job fails because if the timestamp
-# doesn't move s6-supervise will restart the service and snooze will see
+# doesn't change s6-supervise will restart the service and snooze will see
 # the old mtime, think it's late, exec again, and create a loop
+set -u
+
+[ $# -eq 2 ] || { echo "run-periodic: usage: run-periodic <dir> <timefile>" >&2; exit 2; }
 dir=$1
 stamp=$2
 
+# deterministic job order, the glob below sorts by collation
+LC_ALL=C
+export LC_ALL
+
 if [ -d "$dir" ]; then
     for f in "$dir"/*; do
+        # accepts only [A-Za-z0-9_-], the documented run-parts name rule
+        #
+        # this is what skips the .new files bpm leaves behind when it preserves
+        # an edited config, also may apply to stuff like editor backups and whatnot
+        #
+        # note that busyboxs run-parts is a bit more lax than this and permits
+        # non-leading dots, don't assume the two filter identically
         case ${f##*/} in
-            *.bpmnew|*.disabled|*~|.*) continue ;;
+            *[!A-Za-z0-9_-]*) continue ;;
         esac
         [ -f "$f" ] && [ -x "$f" ] || continue
+
         printf '%s: start\n' "${f##*/}"
         "$f"; s=$?
         [ "$s" -eq 0 ] || printf '%s: exit %s\n' "${f##*/}" "$s"
     done
 fi
 
-mkdir -p "${stamp%/*}"
-exec touch "$stamp"
+case $stamp in
+    */*) mkdir -p "${stamp%/*}" ;;
+esac
+
+if ! touch "$stamp"; then
+    printf 'run-periodic: could not update %s, every restart will re-run %s\n' \
+        "$stamp" "$dir" >&2
+    exit 1
+fi

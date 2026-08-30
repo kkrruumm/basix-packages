@@ -1,0 +1,48 @@
+pkg_name=pciutils
+version=3.15.0
+revision=1
+build_style=custom
+short_desc="PCI bus related utilities"
+home_page="https://mj.ucw.cz/sw/pciutils/"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/pciutils/pciutils/archive/refs/tags/v${version}.tar.gz>pciutils-${version}.tar.gz"
+checksum="6618bdd7f2d30342d6dba6ece06396f7e979970116afba3204a00803a6885b4b"
+wrk_src="pciutils-${version}"
+
+use_flags="man"
+
+depends="hwdata zlib"
+make_depends="hwdata pkgconf zlib"
+
+_makeargs="
+    PREFIX=/usr
+    SBINDIR=/usr/bin
+    MANDIR=/usr/share/man
+    SHAREDIR=/usr/share/hwdata
+    IDSDIR=/usr/share/hwdata
+    SHARED=yes
+    ZLIB=yes
+    LIBKMOD=no
+    HWDB=no
+    DNS=no"
+
+do_build() {
+    $make_cmd $make_jobs all \
+        CC="$CC" OPT="$CFLAGS" LDFLAGS="$LDFLAGS" \
+        $_makeargs
+}
+
+do_install() {
+    # STRIP= because bpms post_process handles that
+    $make_cmd install install-lib \
+        DESTDIR="$DESTDIR" STRIP= \
+        $_makeargs
+
+    brm /usr/share/hwdata
+    brm /usr/bin/update-pciids
+    brm /usr/share/man/man8/update-pciids.8
+
+    use man || brm /usr/share/man
+
+    blicense COPYING
+}

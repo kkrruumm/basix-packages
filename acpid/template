@@ -1,0 +1,28 @@
+pkg_name=acpid
+version=2.0.34
+revision=1
+build_style=gnu-configure
+short_desc="ACPI Daemon (acpid) with netlink and input layer support"
+home_page="https://sourceforge.net/projects/acpid2/"
+license="GPL-2.0-or-later"
+dist_files="https://downloads.sourceforge.net/sourceforge/acpid2/acpid-${version}.tar.xz"
+checksum="c975822b75136f69b4ed1951d3a7dd9946e7876a036b50b30023594e4aca7faf"
+make_depends="linux-headers"
+
+use_flags="services"
+
+post_install() {
+    # every event goes to one handler script, treat it as a config
+    binstall "$FILESDIR/handler.sh" 0755 /etc/acpi
+    binstall "$FILESDIR/anything" 0644 /etc/acpi/events
+
+    # helpers the handler calls, it puts this directory on PATH itself
+    for h in lid-closed power-supply-ac suspend; do
+        binstall "$FILESDIR/$h" 0755 /usr/share/acpid
+    done
+
+    if use services; then
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+    fi
+}

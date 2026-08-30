@@ -1,0 +1,39 @@
+pkg_name=openntpd
+version=7.9p1
+revision=1
+build_style=gnu-configure
+short_desc="Lightweight NTP daemon ported from OpenBSD"
+home_page="https://www.openntpd.org/"
+license="ISC"
+dist_files="https://ftp.openbsd.org/pub/OpenBSD/OpenNTPD/openntpd-${version}.tar.gz"
+checksum="f72a718ddf5aca55fa6039dd7d7fbb085d1aad7819c770906c6508013fbdb4ad"
+use_flags="constraints services"
+
+depends="$(usev constraints libtls)"
+make_depends="linux-headers
+ $(usev constraints libtls)"
+
+configure_args="
+    --with-privsep-user=ntp
+    --with-cacert=/etc/ssl/cert.pem
+    $(use_enable constraints https-constraint)"
+
+# ntpd chroots its privsep child into this accounts home dir
+system_accounts="ntp"
+ntp_descr="OpenNTP daemon"
+ntp_homedir="/var/empty"
+
+post_install() {
+    brm /var/run /run
+
+    # upstream hardlinks ntpctl onto ntpd, a symlink reads better in the manifest
+    brm /usr/bin/ntpctl
+    bln ntpd /usr/bin/ntpctl
+
+    if use services; then
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+    fi
+
+    blicense COPYING
+}

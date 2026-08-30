@@ -1,0 +1,20 @@
+pkg_name=libtls
+version=4.3.2
+revision=1
+build_style=gnu-configure
+short_desc="libtls from LibreSSL, built standalone next to openssl"
+home_page="https://www.libressl.org/"
+license="ISC, OpenSSL"
+dist_files="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${version}.tar.gz"
+checksum="6364b58f037dd3ed4e0df5548ab28d7b93c11656e6eaa7c430db172dec12b69e"
+wrk_src="libressl-$version"
+depends="certs"
+
+configure_args="--enable-libtls-only"
+
+do_install() {
+    $make_cmd -C tls install DESTDIR="$DESTDIR"
+    binclude include/tls.h
+    bpkgconfig libtls.pc
+    blicense COPYING
+}

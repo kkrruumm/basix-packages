@@ -1,0 +1,29 @@
+#!/bin/sh
+# args: <pkg_name> <root>
+#
+# gschemas.compiled and giomodule.cache are built from every schema and gio module
+# that might be on the system so packages can't ship them without a collision
+#
+# packages that do this delete them in post_install and this rebuilds them from
+# whatever is present afterwards
+_r=${2%/}
+_schemas=$_r/usr/share/glib-2.0/schemas
+_modules=$_r/usr/lib/gio/modules
+
+if [ -d "$_schemas" ] && [ -x /usr/bin/glib-compile-schemas ]; then
+    for _f in "$_schemas"/*.gschema.xml; do
+        [ -f "$_f" ] || break
+        /usr/bin/glib-compile-schemas --quiet "$_schemas" 2>/dev/null || :
+        break
+    done
+fi
+
+if [ -d "$_modules" ] && [ -x /usr/bin/gio-querymodules ]; then
+    for _f in "$_modules"/*.so; do
+        [ -f "$_f" ] || break
+        /usr/bin/gio-querymodules "$_modules" 2>/dev/null || :
+        break
+    done
+fi
+
+exit 0

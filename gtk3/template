@@ -1,0 +1,53 @@
+pkg_name=gtk3
+version=3.24.52
+revision=1
+build_style=meson
+short_desc="GTK graphical user interface toolkit, version 3"
+home_page="https://www.gtk.org"
+license="LGPL-2.1-or-later"
+dist_files="https://download.gnome.org/sources/gtk/${version%.*}/gtk-${version}.tar.xz"
+checksum="01591a22d532a0f92fd980be43b3964d5430b7e0ccba07b49bc0446fa22f8040"
+wrk_src="gtk-$version"
+
+# x11 needs a bunch of libX* packages that havent been added yet and it needs cairo rebuilt
+# with -Dxlib=enabled and at-spi2-core rebuilt with x11
+use_flags="wayland man -x11 -introspection"
+
+depends="at-spi2-core cairo fontconfig freetype fribidi gdk-pixbuf glib harfbuzz
+ libepoxy pango
+ $(use_if wayland "libxkbcommon mesa wayland")
+ $(use_if x11 "libX11 libXcomposite libXcursor libXdamage libXext libXfixes libXi
+ libXrandr libXrender")"
+make_depends="at-spi2-core cairo fontconfig freetype fribidi gdk-pixbuf gettext-tiny
+ glib harfbuzz libepoxy meson pango pkgconf python xorgproto
+ $(use_if wayland "libxkbcommon mesa wayland wayland-protocols")
+ $(use_if x11 "libX11 libXcomposite libXcursor libXdamage libXext libXfixes libXi
+ libXrandr libXrender")
+ $(use_if man "docbook-xsl libxslt")"
+
+configure_args="
+    -Dbroadway_backend=false
+    -Dprint_backends=file,lpr
+    -Dcolord=no
+    -Dxinerama=no
+    -Dcloudproviders=false
+    -Dprofiler=false
+    -Dtracker3=false
+    -Dgtk_doc=false
+    -Ddemos=false
+    -Dexamples=false
+    -Dtests=false
+    -Dinstalled_tests=false
+    $(use_if wayland -Dwayland_backend=true -Dwayland_backend=false)
+    $(use_if x11 -Dx11_backend=true -Dx11_backend=false)
+    $(use_if man -Dman=true -Dman=false)
+    $(use_if introspection -Dintrospection=true -Dintrospection=false)"
+
+post_install() {
+    brm /usr/share/glib-2.0/schemas/gschemas.compiled
+    brm /usr/lib/gio/modules/giomodule.cache
+}
+
+pre_configure() {
+    export XML_CATALOG_FILES=/usr/share/xsl/docbook/catalog.xml
+}

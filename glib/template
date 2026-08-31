@@ -1,6 +1,6 @@
 pkg_name=glib
 version=2.88.0
-revision=1
+revision=2
 build_style=meson
 short_desc="GNU library of C routines"
 home_page="https://gitlab.gnome.org/GNOME/glib"
@@ -23,3 +23,8 @@ configure_args="
     $(use_if man -Dman-pages=enabled -Dman-pages=disabled)
     $(use_if nls -Dnls=enabled -Dnls=disabled)
     $(use_if introspection -Dintrospection=enabled -Dintrospection=disabled)"
+
+post_install() {
+    binstall "$FILESDIR/hooks/post-install" 0755 /etc/bpm/hooks/post-install 10-glib
+    binstall "$FILESDIR/hooks/post-remove" 0755 /etc/bpm/hooks/post-remove 10-glib
+}

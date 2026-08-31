@@ -1,0 +1,32 @@
+pkg_name=at-spi2-core
+version=2.56.5
+revision=1
+build_style=meson
+short_desc="Assistive technology service provider interface, also ships atk"
+home_page="https://gitlab.gnome.org/GNOME/at-spi2-core"
+license="LGPL-2.1-or-later"
+dist_files="https://download.gnome.org/sources/at-spi2-core/${version%.*}/at-spi2-core-${version}.tar.xz"
+checksum="23dd656cc46c31f3c57559b1c3b3ed2e2232fe19e2715a116e70802d9270b28d"
+
+# x11 wants libXi and libXtst which are not packaged yet
+use_flags="atspi -x11 -introspection"
+
+depends="glib
+ $(use_if atspi "dbus libxml2")
+ $(use_if x11 "libX11 libXi libXtst")"
+make_depends="gettext-tiny glib meson pkgconf python
+ $(use_if atspi "dbus libxml2")
+ $(use_if x11 "libX11 libXi libXtst")"
+
+configure_args="
+    -Ddefault_bus=dbus-daemon
+    -Duse_systemd=false
+    -Dgtk2_atk_adaptor=false
+    -Ddocs=false
+    $(use_if atspi -Datk_only=false -Datk_only=true)
+    $(use_if x11 -Dx11=enabled -Dx11=disabled)
+    $(use_if introspection -Dintrospection=enabled -Dintrospection=disabled)"
+
+post_install() {
+    brm /usr/lib/systemd
+}

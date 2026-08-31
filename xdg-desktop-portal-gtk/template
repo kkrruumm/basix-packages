@@ -1,0 +1,32 @@
+pkg_name=xdg-desktop-portal-gtk
+version=1.15.3
+revision=1
+build_style=meson
+short_desc="GTK backend for xdg-desktop-portal"
+home_page="https://github.com/flatpak/xdg-desktop-portal-gtk"
+license="LGPL-2.1-or-later"
+dist_files="https://github.com/flatpak/xdg-desktop-portal-gtk/releases/download/${version}/xdg-desktop-portal-gtk-${version}.tar.xz"
+checksum="bf38957daea6e06fc4189efe12c8dfac0a90184d6dae54cfde160430c1b67c08"
+
+# settings is the portal that gives the theme stuff and whatnot to
+# sandboxed apps from flatpak or whatever
+#
+# wallpaper needs gnome-desktop which isnt packaged (and probably doesnt need to be)
+use_flags="settings appchooser lockdown -wallpaper"
+
+depends="dbus glib gtk3 xdg-desktop-portal
+ $(use_if settings "fontconfig gsettings-desktop-schemas")
+ $(use_if wallpaper gnome-desktop)"
+make_depends="gettext-tiny glib gtk3 meson pkgconf python xdg-desktop-portal xorgproto
+ $(use_if settings "fontconfig gsettings-desktop-schemas")
+ $(use_if wallpaper gnome-desktop)"
+
+configure_args="
+    $(use_if settings -Dsettings=enabled -Dsettings=disabled)
+    $(use_if appchooser -Dappchooser=enabled -Dappchooser=disabled)
+    $(use_if lockdown -Dlockdown=enabled -Dlockdown=disabled)
+    $(use_if wallpaper -Dwallpaper=enabled -Dwallpaper=disabled)"
+
+post_install() {
+    brm /usr/lib/systemd
+}

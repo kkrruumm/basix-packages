@@ -1,0 +1,22 @@
+pkg_name=gsettings-desktop-schemas
+version=50.1
+revision=1
+build_style=meson
+short_desc="Collection of GSettings schemas for desktop settings"
+home_page="https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas"
+license="LGPL-2.1-or-later"
+dist_files="https://download.gnome.org/sources/gsettings-desktop-schemas/${version%.*}/gsettings-desktop-schemas-${version}.tar.xz"
+checksum="9c966b54eb832a5a0e79f4f947a9d34c7a7ad57b8958d50612d485f047dd9102"
+
+use_flags="-introspection"
+
+depends="glib"
+make_depends="gettext-tiny glib meson pkgconf python"
+
+configure_args="
+    $(use_if introspection -Dintrospection=true -Dintrospection=false)"
+
+post_install() {
+    # rebuilt by the post-install hook, see the gtk3 template
+    brm /usr/share/glib-2.0/schemas/gschemas.compiled
+}

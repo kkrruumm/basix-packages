@@ -1,7 +1,7 @@
 pkg_name=openrsync
 version=0.5.0.20260729
-revision=1
-build_style=custom
+revision=2
+build_style=configure
 short_desc="BSD licensed implementation of the rsync protocol"
 home_page="https://github.com/kristapsdz/openrsync"
 license="ISC"
@@ -18,7 +18,12 @@ use_flags="man rsync_symlink"
 do_configure() {
     printf 'HAVE_FTS=1\n' > configure.local
 
-    ./configure LDFLAGS="$LDFLAGS"
+    ./configure \
+        PREFIX=/usr \
+        MANDIR=/usr/share/man \
+        LDFLAGS="$LDFLAGS" \
+        INSTALL_PROGRAM="install -m 0755" \
+        INSTALL_MAN="install -m 0644"
 }
 
 pre_build() {
@@ -26,18 +31,8 @@ pre_build() {
     bsed '/^\.if.*FreeBSD/,/^\.endif$/d' Makefile
 }
 
-do_build() {
-    $make_cmd $make_jobs
-}
-
-do_install() {
-    bbin openrsync
-
-    if use man; then
-        bman openrsync.1
-        bman rsync.5
-        bman rsyncd.5
-    fi
+post_install() {
+    use man || brm /usr/share/man
 
     if use rsync_symlink; then
         bln openrsync /usr/bin/rsync

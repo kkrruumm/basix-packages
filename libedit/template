@@ -1,0 +1,29 @@
+# this package is just here for xfs
+pkg_name=libedit
+version=20260512.3.1
+revision=1
+build_style=gnu-configure
+short_desc="BSD command line editing and history library"
+home_page="https://www.thrysoee.dk/editline/"
+license="BSD-3-Clause"
+_distver="${version%%.*}-${version#*.}"
+dist_files="https://www.thrysoee.dk/editline/libedit-${_distver}.tar.gz"
+checksum="15450c80b565a836c88498e528066b90075583224ee9e17241cba0141b01bf94"
+wrk_src="libedit-${_distver}"
+
+depends="ncurses"
+make_depends="ncurses"
+
+use_flags="man static"
+
+configure_args="
+    ac_cv_path_NROFF=/bin/true
+    --disable-examples
+    --enable-shared
+    $(use_enable static)"
+
+post_install() {
+    use man || brm /usr/share/man
+
+    blicense COPYING
+}

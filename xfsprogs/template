@@ -1,0 +1,42 @@
+pkg_name=xfsprogs
+version=7.1.1
+revision=1
+build_style=gnu-configure
+short_desc="Utilities for managing the XFS filesystem"
+home_page="https://xfs.org/index.php/Main_Page"
+license="LGPL-2.1-or-later"
+dist_files="https://mirrors.edge.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-${version}.tar.xz"
+checksum="4123d19783212c46ad56af0a9ec60edf7fccc30792f9dfd3a1a41577c6781603"
+
+use_flags="editline"
+
+depends="util-linux inih userspace-rcu $(usev editline libedit)"
+make_depends="linux-headers pkgconf bash util-linux inih userspace-rcu
+ $(usev editline libedit)"
+
+configure_args="
+    --libexecdir=/usr/lib
+    --enable-lib64=no
+    --enable-lto
+    --enable-gettext=no
+    $(use_enable editline)"
+
+do_build() {
+    export DEBUG=-DNDEBUG
+
+    export CFLAGS="$CFLAGS -DOVERRIDE_SYSTEM_STATX -DSTATX__RESERVED=0x80000000U"
+
+    # parallel builds race
+    $make_cmd V=1 headers libhandle
+    $make_cmd $make_jobs V=1
+}
+
+do_install() {
+    $make_cmd -j1 install install-dev \
+        DIST_ROOT="$DESTDIR" \
+        PKG_ROOT_SBIN_DIR=/usr/bin \
+        PKG_ROOT_LIB_DIR=/usr/lib
+
+    brm /usr/lib/libhandle.la /usr/share/doc
+    blicense LICENSES/LGPL-2.1 LGPL-2.1
+}

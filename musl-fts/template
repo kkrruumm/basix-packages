@@ -1,0 +1,32 @@
+pkg_name=musl-fts
+version=1.2.7
+revision=1
+build_style=gnu-configure
+short_desc="Implementation of fts(3) for musl libc"
+home_page="https://github.com/void-linux/musl-fts"
+license="BSD-3-Clause"
+dist_files="https://github.com/void-linux/musl-fts/archive/refs/tags/v${version}.tar.gz>musl-fts-${version}.tar.gz"
+checksum="9396a514540b9f8e982a4b894c4153dec5eea82ee5de32b8a24d71642e95eb5c"
+make_depends="autoconf automake libtool"
+
+use_flags="man static"
+
+configure_args="$(use_enable static)"
+
+pre_configure() {
+    CFLAGS="$CFLAGS -fPIC"
+    export CFLAGS
+
+    bsed "/pkgconfig_DATA/i pkgconfigdir=\$(libdir)/pkgconfig" Makefile.am
+    bsed "/^PKG_INSTALLDIR$/d" configure.ac
+
+    ./bootstrap.sh
+}
+
+post_install() {
+    if use man; then
+        bman fts.3 musl-fts.3
+    fi
+
+    blicense COPYING
+}

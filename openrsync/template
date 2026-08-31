@@ -1,0 +1,47 @@
+pkg_name=openrsync
+version=0.5.0.20260729
+revision=1
+build_style=custom
+short_desc="BSD licensed implementation of the rsync protocol"
+home_page="https://github.com/kristapsdz/openrsync"
+license="ISC"
+_commit=8235c68f11b4fad5e24849a01d04ea153c29ee28
+dist_files="https://github.com/kristapsdz/openrsync/archive/${_commit}.tar.gz>openrsync-${version}.tar.gz"
+checksum="39d328cb435adae02e708f1deada41e06a0f55ce7f2e41bc67b63a138b1cce2a"
+wrk_src="openrsync-${_commit}"
+
+depends="musl-fts zlib"
+make_depends="musl-fts pkgconf zlib"
+
+use_flags="man rsync_symlink"
+
+do_configure() {
+    printf 'HAVE_FTS=1\n' > configure.local
+
+    ./configure LDFLAGS="$LDFLAGS"
+}
+
+pre_build() {
+    # this is so i dont need to package bmake for the time being
+    bsed '/^\.if.*FreeBSD/,/^\.endif$/d' Makefile
+}
+
+do_build() {
+    $make_cmd $make_jobs
+}
+
+do_install() {
+    bbin openrsync
+
+    if use man; then
+        bman openrsync.1
+        bman rsync.5
+        bman rsyncd.5
+    fi
+
+    if use rsync_symlink; then
+        bln openrsync /usr/bin/rsync
+    fi
+
+    blicense LICENSE.md
+}

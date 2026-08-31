@@ -1,0 +1,26 @@
+pkg_name=libtool
+version=2.6.2
+revision=1
+build_style=gnu-configure
+short_desc="Generic library building and linking support script"
+home_page="https://www.gnu.org/software/libtool/"
+license="GPL-2.0-or-later, LGPL-2.0-or-later"
+dist_files="https://ftp.gnu.org/gnu/libtool/libtool-${version}.tar.xz"
+checksum="192e13e53f967411844ff7fc264910cd10b599b4413e4926223b6dd6b68b0936"
+make_depends="m4"
+
+use_flags="man ltdl static"
+
+configure_args="
+    lt_cv_shlibpath_overrides_runpath=yes
+    $(use_enable ltdl ltdl-install)
+    $(use_enable static)"
+
+post_install() {
+    brm /usr/share/info
+
+    use man || brm /usr/share/man
+
+    blicense COPYING
+    blicense libltdl/COPYING.LIB
+}

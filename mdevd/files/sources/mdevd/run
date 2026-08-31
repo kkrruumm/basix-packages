@@ -1,0 +1,8 @@
+#!/bin/sh
+# -D 3 is the readiness notification, without it s6-rc wont know that
+# mdevd is up and actually being on the netlink and mdevd-coldplug would
+# send uevents into the shadow realm
+#
+# -O 4 rebroadcasts every handled uevent on netlink group 4 which lets
+# mdevd-coldplug -O4 block until the last coldplug event
+exec mdevd -D 3 -O 4 2>&1

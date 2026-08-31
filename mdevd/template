@@ -1,0 +1,44 @@
+pkg_name=mdevd
+version=0.1.8.2
+revision=1
+build_style=configure
+short_desc="Mdev-compatible Linux hotplug manager daemon"
+home_page="https://skarnet.org/software/mdevd"
+license="ISC"
+dist_files="https://skarnet.org/software/mdevd/mdevd-${version}.tar.gz"
+checksum=""
+
+depends="skalibs"
+make_depends="skalibs"
+
+use_flags="-static -nsss services doc"
+
+configure_args="
+    --sysconfdir=/etc
+    --bindir=/usr/bin
+    --libdir=/usr/lib
+    --dynlibdir=/usr/lib
+    --libexecdir=/usr/libexec
+    --includedir=/usr/include
+    --with-sysdeps=/usr/lib/skalibs/sysdeps
+    --disable-rpath
+    $(use_if nsss --enable-nsss --disable-nsss)
+    $(use_if static --enable-static --disable-static)
+    $(use_if static --enable-allstatic --disable-allstatic)
+    $(use_if static --disable-shared --enable-shared)"
+
+post_install() {
+    if use doc; then
+        bcopy doc/. "/usr/share/doc/$pkg_name"
+    fi
+    blicense COPYING
+
+    bconf "$FILESDIR/mdev.conf"
+
+    if use services; then
+        # both of these flag-recommended so the service is started by default
+        # so that, yknow, shit will work
+        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+    fi
+}

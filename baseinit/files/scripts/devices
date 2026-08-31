@@ -1,8 +1,11 @@
 #!/bin/sh
-# device nodes come from devtmpfs, which the kernel mounts on its own, so all
-# this does is load the modules that apply to the hardware
-# and then hand over to whatever device manager is in use
-# TODO: mdevd
+# the kernel should mount devtmpfs stuff by itself so all this does is
+# load the modules that apply to this hardware and fuck off so the
+# device manager can pick up
+#
+# coldplugging doesn't happen here, mdevd-coldplug tells the kernel to reemit
+# uevents, the mdevd longrun depends on this oneshot and the mdevd-coldplug oneshot
+# depends on the longrun being ready
 . /usr/lib/s6-rc/rc.lib
 case $1 in
 up)
@@ -20,11 +23,10 @@ up)
         done < "$f"
     done
 
-    # apply the mdev rules (permissions, symlinks, firmware) to everything
-    # that already exists and then the mdev service picks up hotplug from here
-    if command -v mdev >/dev/null; then
-        log "applying device rules..."
-        mdev -s || :
+    # mdevd reads the netlink itself so a hotplug helper left
+    # behind by an initramfs needs to be cleaned up
+    if [ -w /proc/sys/kernel/hotplug ]; then
+        printf '\n' > /proc/sys/kernel/hotplug 2>/dev/null || :
     fi
     ;;
 esac

@@ -1,6 +1,8 @@
+# busybox doesn't provide any services on basix,
+# this is *strictly* a coreutils implementation
 pkg_name=busybox
 version=1.38.0
-revision=3
+revision=4
 build_style=custom
 short_desc="Swiss army knife of embedded Linux"
 home_page="https://busybox.net"
@@ -9,7 +11,7 @@ dist_files="https://busybox.net/downloads/busybox-${version}.tar.bz2"
 checksum="04de7affa61579a9f495eb84d35305ba7f9d21760d717a8fabdee3749bf653e902"
 make_depends="linux-headers"
 
-use_flags="suid services"
+use_flags="suid"
 
 do_build() {
     # drop the hardcoded gcc so the build works on gccless systems (this is super unsupported tho)
@@ -38,12 +40,4 @@ do_install() {
             bln busybox-suid "/usr/bin/$b"
         done
     fi
-
-    if use services; then
-        # s6-rc service definitions, installing them does not switch them on
-        # use s6-rc-set-change to turn them on, see /usr/lib/s6-rc/sync
-        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
-        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
-    fi
-    bconf "$FILESDIR/mdev.conf"
 }

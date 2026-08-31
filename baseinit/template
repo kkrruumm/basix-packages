@@ -1,13 +1,14 @@
 # this package has no upstream, everything it ships lives in files/
 pkg_name=baseinit
 version=2.0.0
-revision=2
+revision=3
 build_style=custom
 short_desc="the base basix boot sequence, s6-linux-init skeleton and the s6-rc boot services"
 home_page="https://github.com/kkrruumm/basix-packages"
 license="MIT"
 
-depends="s6 s6-rc s6-linux-init execline skalibs busybox"
+# mdevd is the only device manager basix supports for the time being
+depends="s6 s6-rc s6-linux-init execline skalibs busybox mdevd"
 
 use_flags="gettys"
 

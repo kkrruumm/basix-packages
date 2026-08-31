@@ -1,2 +1,0 @@
-#!/bin/sh
-exec mdev -df 2>&1

@@ -1,6 +1,6 @@
 pkg_name=mdevd
 version=0.1.8.2
-revision=2
+revision=3
 build_style=configure
 short_desc="Mdev-compatible Linux hotplug manager daemon"
 home_page="https://skarnet.org/software/mdevd"

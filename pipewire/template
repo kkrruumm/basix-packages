@@ -1,6 +1,6 @@
 pkg_name=pipewire
 version=1.6.8
-revision=1
+revision=2
 build_style=meson
 short_desc="Server and user space API to deal with multimedia pipelines"
 home_page="https://pipewire.org"

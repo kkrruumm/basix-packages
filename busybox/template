@@ -2,7 +2,7 @@
 # this is *strictly* a coreutils implementation
 pkg_name=busybox
 version=1.38.0
-revision=4
+revision=5
 build_style=custom
 short_desc="Swiss army knife of embedded Linux"
 home_page="https://busybox.net"

@@ -1,4 +1,4 @@
-#!/bin/sh
-exec 2>&1
-exec snooze -H '*' -s 1d -t /var/cache/snooze/hourly -- \
+#!/bin/execlineb -P
+fdmove -c 2 1
+snooze -H "*" -s 1d -t /var/cache/snooze/hourly --
     /usr/lib/snooze/run-periodic /etc/periodic/hourly /var/cache/snooze/hourly

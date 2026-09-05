@@ -1,1 +1,2 @@
-/bin/sh -c "mkdir -p /run/user && chmod 0755 /run/user"
+if { mkdir -p /run/user }
+chmod 0755 /run/user

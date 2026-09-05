@@ -1,6 +1,6 @@
 pkg_name=greetd
 version=0.10.3
-revision=1
+revision=2
 build_style=cargo
 short_desc="Minimal and flexible login manager daemon"
 home_page="https://kl.wtf/projects/greetd"

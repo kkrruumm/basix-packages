@@ -1,5 +1,5 @@
-#!/bin/sh
-exec 2>&1
-mkdir -p /run/dbus
-[ -f /var/lib/dbus/machine-id ] || dbus-uuidgen --ensure
-exec dbus-daemon --system --nofork --nopidfile
+#!/bin/execlineb -P
+fdmove -c 2 1
+foreground { mkdir -p /run/dbus }
+foreground { if -n { test -f /var/lib/dbus/machine-id } dbus-uuidgen --ensure }
+dbus-daemon --system --nofork --nopidfile

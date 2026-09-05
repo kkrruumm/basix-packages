@@ -1,6 +1,6 @@
 pkg_name=seatd
 version=0.9.3
-revision=1
+revision=2
 build_style=meson
 short_desc="Minimal seat management daemon and libseat library"
 home_page="https://git.sr.ht/~kennylevinsen/seatd"

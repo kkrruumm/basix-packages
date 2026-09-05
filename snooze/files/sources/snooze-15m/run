@@ -1,4 +1,4 @@
-#!/bin/sh
-exec 2>&1
-exec snooze -H '*' -M /15 -s 1d -t /var/cache/snooze/15m -- \
+#!/bin/execlineb -P
+fdmove -c 2 1
+snooze -H "*" -M /15 -s 1d -t /var/cache/snooze/15m --
     /usr/lib/snooze/run-periodic /etc/periodic/15m /var/cache/snooze/15m

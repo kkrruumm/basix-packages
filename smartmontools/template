@@ -1,6 +1,6 @@
 pkg_name=smartmontools
 version=7.5
-revision=2
+revision=3
 build_style=gnu-configure
 short_desc="Tools to monitor S.M.A.R.T. attributes of storage devices"
 home_page="https://www.smartmontools.org"

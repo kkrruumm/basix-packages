@@ -1,4 +1,4 @@
-#!/bin/sh
-exec 2>&1
-exec snooze -H 2 -s 1d -t /var/cache/snooze/daily -- \
+#!/bin/execlineb -P
+fdmove -c 2 1
+snooze -H 2 -s 1d -t /var/cache/snooze/daily --
     /usr/lib/snooze/run-periodic /etc/periodic/daily /var/cache/snooze/daily

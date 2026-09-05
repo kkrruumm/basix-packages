@@ -1,6 +1,6 @@
 pkg_name=dumb_runtime_dir
 version=1.0.4
-revision=1
+revision=2
 build_style=gnu-makefile
 short_desc="PAM module that creates an XDG_RUNTIME_DIR on login"
 home_page="https://github.com/ifreund/dumb_runtime_dir"

@@ -1,6 +1,6 @@
 pkg_name=snooze
 version=0.6
-revision=2
+revision=3
 build_style=gnu-makefile
 short_desc="run a command at a particular time"
 home_page="https://github.com/leahneukirchen/snooze"

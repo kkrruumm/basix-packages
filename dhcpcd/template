@@ -1,6 +1,6 @@
 pkg_name=dhcpcd
 version=10.3.2
-revision=1
+revision=2
 build_style=configure
 short_desc="DHCP and IPv6 router advertisement client"
 home_page="https://github.com/NetworkConfiguration/dhcpcd"

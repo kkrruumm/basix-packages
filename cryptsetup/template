@@ -1,14 +1,14 @@
 pkg_name=cryptsetup
 version=2.8.6
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Setup virtual encryption devices under Linux dm-crypt"
 home_page="https://gitlab.com/cryptsetup/cryptsetup"
 license="GPL-2.0-or-later"
 dist_files="https://www.kernel.org/pub/linux/utils/cryptsetup/v2.8/cryptsetup-${version}.tar.xz"
 checksum="a922e6ef93df6ebc89b0a8a136b54a80995622a28dcd95a7ee68806415be2dd2"
-depends="json-c lvm2 openssl popt util-linux"
-make_depends="json-c lvm2 openssl popt util-linux"
+depends="json-c libressl lvm2 popt util-linux"
+make_depends="json-c libressl lvm2 popt util-linux"
 
 use_flags="static -asciidoc -external_tokens -nls -ssh_token -udev"
 

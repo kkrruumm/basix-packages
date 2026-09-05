@@ -1,14 +1,14 @@
 pkg_name=wget
 version=1.25.0
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Non-interactive network downloader"
 home_page="https://www.gnu.org/software/wget"
 license="GPL-3.0-or-later"
 dist_files="https://ftp.gnu.org/gnu/wget/wget-${version}.tar.gz"
 checksum="be2581f92173acf6d7e74f0c167b5c59da21b1f44a468b4608dd243a10c0857e"
-depends="openssl util-linux zlib"
-make_depends="openssl perl util-linux zlib"
+depends="libressl util-linux zlib"
+make_depends="libressl perl util-linux zlib"
 
 use_flags="ssl ipv6 -nls -iri -psl -pcre2 -metalink uuid static"
 
@@ -30,13 +30,6 @@ pre_configure() {
     use static || return 0
     LDFLAGS="$LDFLAGS -static"
     export LDFLAGS
-}
-
-pre_build() {
-    # openssl 4 removed SSLv3_client_method but doesn't define OPENSSL_NO_SSL3_METHOD
-    # so wgets check never fires
-    # i dont think this warrants a patch(?) so just fixing here
-    bsed 's/^#ifndef OPENSSL_NO_SSL3_METHOD$/#if !defined OPENSSL_NO_SSL3_METHOD \&\& (!defined OPENSSL_VERSION_MAJOR || OPENSSL_VERSION_MAJOR < 4)/' src/openssl.c
 }
 
 post_install() {

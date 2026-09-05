@@ -1,0 +1,9 @@
+--- a/openssl-compat.h
++++ b/openssl-compat.h
+@@ -42,4 +42,5 @@
+ 
+-#if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x20700000L
++#if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x20700000L && \
++	LIBRESSL_VERSION_NUMBER < 0x30500000L
+ #define BIO_get_init(b) (b)->init
+ #endif

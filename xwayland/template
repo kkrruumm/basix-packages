@@ -1,7 +1,7 @@
 # this is another package that fucking sucked, btw
 pkg_name=xwayland
 version=24.1.13
-revision=1
+revision=2
 build_style=meson
 short_desc="X server that runs rootless inside a Wayland compositor"
 home_page="https://gitlab.freedesktop.org/xorg/xserver"
@@ -10,10 +10,10 @@ dist_files="https://www.x.org/releases/individual/xserver/xwayland-${version}.ta
 checksum="76ca3242b88a794e0b7c6104e1833e813788b45a0090abc43ef060205ff95375"
 use_flags="glamor -listen_tcp"
 
-depends="libdrm libXfont2 libxcvt libxshmfence mesa openssl pixman wayland
+depends="libdrm libressl libXfont2 libxcvt libxshmfence mesa pixman wayland
  xkbcomp xkeyboard-config $(use_if glamor libepoxy)"
-make_depends="font-util libdrm libxcvt libXfont2 libxkbfile libxshmfence mesa meson
- openssl pixman pkgconf python wayland wayland-protocols xorgproto xtrans
+make_depends="font-util libdrm libressl libxcvt libXfont2 libxkbfile libxshmfence mesa meson
+ pixman pkgconf python wayland wayland-protocols xorgproto xtrans
  $(use_if glamor libepoxy)"
 
 configure_args="

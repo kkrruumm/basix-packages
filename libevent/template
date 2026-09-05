@@ -1,6 +1,6 @@
 pkg_name=libevent
 version=2.1.13
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Asynchronous event notification library"
 home_page="https://libevent.org"
@@ -11,8 +11,8 @@ wrk_src="libevent-${version}-stable"
 
 use_flags="ssl static -rpcgen -samples"
 
-depends="$(use_if ssl openssl)"
-make_depends="pkgconf $(use_if ssl openssl)"
+depends="$(use_if ssl libressl)"
+make_depends="pkgconf $(use_if ssl libressl)"
 
 configure_args="
     --enable-thread-support

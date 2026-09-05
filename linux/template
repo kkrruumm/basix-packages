@@ -3,7 +3,7 @@
 # release is probably chill
 pkg_name=linux
 version=6.18.40
-revision=3
+revision=4
 build_style=custom
 short_desc="The Linux kernel"
 home_page="https://kernel.org"
@@ -11,9 +11,9 @@ license="GPL-2.0-only"
 dist_files="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${version}.tar.xz"
 checksum="5872889203a682796f960f6217e5e7cdc9c60bf81daad1934cbfd12e581af2bb"
 
-# bison and flex build kconfig, libelf builds objtool, openssl signs modules
+# bison and flex build kconfig, libelf builds objtool, libressl signs modules
 # and builds the trusted keyring, perl is used by several scripts for whatever fuckin reason
-make_depends="bison flex libelf openssl perl gtar"
+make_depends="bison flex libelf libressl perl gtar"
 
 use_flags="modules"
 

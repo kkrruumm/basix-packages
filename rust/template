@@ -6,7 +6,7 @@
 # into at build time
 pkg_name=rust
 version=1.97.1
-revision=1
+revision=2
 build_style=custom
 short_desc="Rust programming language compiler and cargo"
 home_page="https://www.rust-lang.org"
@@ -31,8 +31,8 @@ skip_extract="rust-std-${_rust_boot}-${_rust_triple}.tar.xz
 
 wrk_src="rustc-${version}-src"
 
-depends="llvm openssl xz zlib"
-make_depends="curl llvm openssl pkgconf python xz zlib"
+depends="libressl llvm xz zlib"
+make_depends="curl libressl llvm pkgconf python xz zlib"
 
 use_flags="rustfmt -clippy -docs"
 

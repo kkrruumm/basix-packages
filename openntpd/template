@@ -1,6 +1,6 @@
 pkg_name=openntpd
 version=7.9p1
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Lightweight NTP daemon ported from OpenBSD"
 home_page="https://www.openntpd.org/"
@@ -9,9 +9,9 @@ dist_files="https://ftp.openbsd.org/pub/OpenBSD/OpenNTPD/openntpd-${version}.tar
 checksum="f72a718ddf5aca55fa6039dd7d7fbb085d1aad7819c770906c6508013fbdb4ad"
 use_flags="constraints services"
 
-depends="$(usev constraints libtls)"
+depends="$(usev constraints libressl)"
 make_depends="linux-headers
- $(usev constraints libtls)"
+ $(usev constraints libressl)"
 
 configure_args="
     --with-privsep-user=ntp

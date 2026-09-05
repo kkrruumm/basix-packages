@@ -1,0 +1,30 @@
+pkg_name=libressl
+version=4.3.2
+revision=1
+build_style=gnu-configure
+short_desc="TLS/SSL and crypto library, OpenBSD's fork of OpenSSL"
+home_page="https://www.libressl.org/"
+license="ISC, OpenSSL, Apache-2.0"
+dist_files="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${version}.tar.gz"
+checksum="6364b58f037dd3ed4e0df5548ab28d7b93c11656e6eaa7c430db172dec12b69e"
+depends="certs"
+
+use_flags="asm man static -nc"
+
+configure_args="
+    --with-openssldir=/etc/ssl
+    --disable-tests
+    $(use_enable asm)
+    $(use_enable nc)
+    $(use_if static --enable-static --disable-static)"
+
+config_files="/etc/ssl/openssl.cnf /etc/ssl/x509v3.cnf"
+
+post_install() {
+    brm /etc/ssl/cert.pem
+    rmdir "$DESTDIR/etc/ssl/certs" 2>/dev/null || :
+
+    use man || brm /usr/share/man
+
+    blicense COPYING
+}

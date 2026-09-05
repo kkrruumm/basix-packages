@@ -1,14 +1,14 @@
 pkg_name=curl
 version=8.21.0
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Command line URL transfer tool"
 home_page="https://curl.se"
 license="curl"
 dist_files="https://curl.haxx.se/download/curl-${version}.tar.xz"
 checksum="38e77a6e73698e5390c0acfa441ce7b6d15e6cb2b07efea8f12087a08543ed5bb2"
-depends="openssl zlib"
-make_depends="openssl zlib"
+depends="libressl zlib"
+make_depends="libressl zlib"
 
 use_flags="ipv6 ssl -ldap -ares -psl -idn -brotli -zstd static"
 

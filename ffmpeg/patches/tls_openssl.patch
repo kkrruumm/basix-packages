@@ -1,0 +1,83 @@
+Index: libavformat/tls_openssl.c
+--- libavformat/tls_openssl.c.orig
++++ libavformat/tls_openssl.c
+@@ -39,6 +39,8 @@
+ #endif
+ #include <string.h>
+ 
++#define TLS_ST_OK SSL_ST_OK
++
+ #define DTLS_HANDSHAKE_TIMEOUT_US 30000000
+ /**
+  * Convert an EVP_PKEY to a PEM string.
+@@ -46,6 +48,8 @@
+ static int pkey_to_pem_string(EVP_PKEY *pkey, char *out, size_t out_sz)
+ {
+     BIO *mem = NULL;
++    char *data = NULL;
++    long data_len;
+     size_t read_bytes = 0;
+ 
+     if (!pkey || !out || !out_sz)
+@@ -57,9 +61,13 @@ static int pkey_to_pem_string(EVP_PKEY *pkey, char *ou
+     if (!PEM_write_bio_PrivateKey(mem, pkey, NULL, NULL, 0, NULL, NULL))
+         goto done;
+ 
+-    if (!BIO_read_ex(mem, out, out_sz - 1, &read_bytes))
++    data_len = BIO_get_mem_data(mem, &data);
++    if (data_len <= 0)
+         goto done;
+ 
++    read_bytes = FFMIN((size_t)data_len, out_sz - 1);
++    memcpy(out, data, read_bytes);
++
+ done:
+     BIO_free(mem);
+     if (out && out_sz)
+@@ -73,6 +81,8 @@ done:
+ static int cert_to_pem_string(X509 *cert, char *out, size_t out_sz)
+ {
+     BIO *mem = NULL;
++    char *data = NULL;
++    long data_len;
+     size_t read_bytes = 0;
+ 
+     if (!cert || !out || !out_sz)
+@@ -84,9 +94,13 @@ static int cert_to_pem_string(X509 *cert, char *out, s
+     if (!PEM_write_bio_X509(mem, cert))
+         goto done;
+ 
+-    if (!BIO_read_ex(mem, out, out_sz - 1, &read_bytes))
++    data_len = BIO_get_mem_data(mem, &data);
++    if (data_len <= 0)
+         goto done;
+ 
++    read_bytes = FFMIN((size_t)data_len, out_sz - 1);
++    memcpy(out, data, read_bytes);
++
+ done:
+     BIO_free(mem);
+     if (out && out_sz)
+@@ -847,7 +861,9 @@ static int tls_open(URLContext *h, const char *uri, in
+             s->mtu = 1096;
+         SSL_set_options(c->ssl, SSL_OP_NO_QUERY_MTU);
+         SSL_set_mtu(c->ssl, s->mtu);
++#ifdef DTLS_set_link_mtu
+         DTLS_set_link_mtu(c->ssl, s->mtu);
++#endif
+     }
+ 
+     init_bio_method(h);
+@@ -960,10 +976,12 @@ static int tls_write(URLContext *h, const uint8_t *buf
+     uc->flags &= ~AVIO_FLAG_NONBLOCK;
+     uc->flags |= h->flags & AVIO_FLAG_NONBLOCK;
+ 
++#ifdef DTLS_get_data_mtu
+     if (s->is_dtls) {
+         const size_t mtu_size = DTLS_get_data_mtu(c->ssl);
+         size = FFMIN(size, mtu_size);
+     }
++#endif
+ 
+     ret = SSL_write(c->ssl, buf, size);
+     if (ret > 0)

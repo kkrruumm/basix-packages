@@ -1,6 +1,6 @@
 pkg_name=python
 version=3.14.6
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Python programming language interpreter"
 home_page="https://www.python.org"
@@ -8,8 +8,8 @@ license="Python-2.0"
 dist_files="https://www.python.org/ftp/python/${version}/Python-${version}.tar.xz"
 checksum="5380441c1be9eb181266b6b8e89d8d2e0db658d0eebdf8131a1d8bbdcb63ec83b6"
 wrk_src="Python-$version"
-depends="bzip2 expat libffi openssl zlib"
-make_depends="bzip2 expat libffi openssl zlib"
+depends="bzip2 expat libffi libressl zlib"
+make_depends="bzip2 expat libffi libressl zlib"
 
 configure_args="
     --enable-shared
@@ -22,6 +22,9 @@ cat >> Modules/Setup <<EOF
 *disabled*
 _uuid nis ossaudiodev
 EOF
+
+    # see patches/libressl.patch
+    export ac_cv_working_openssl_hashlib=yes
 
     # see upstreams PythonNoSemanticInterposition notes
     CFLAGS="$CFLAGS -fno-semantic-interposition"

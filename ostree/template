@@ -1,6 +1,6 @@
 pkg_name=ostree
 version=2026.1
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Git-like content addressed filesystem tree store"
 home_page="https://github.com/ostreedev/ostree"
@@ -11,9 +11,9 @@ wrk_src="libostree-$version"
 
 use_flags="fuse man"
 
-depends="curl e2fsprogs glib gpgme libarchive openssl util-linux xz zlib
+depends="curl e2fsprogs glib gpgme libarchive libressl util-linux xz zlib
  $(use_if fuse fuse3)"
-make_depends="bison curl e2fsprogs glib gpgme libarchive openssl pkgconf python
+make_depends="bison curl e2fsprogs glib gpgme libarchive libressl pkgconf python
  util-linux xz zlib
  $(use_if fuse fuse3)
  $(use_if man "docbook-xsl libxslt")"

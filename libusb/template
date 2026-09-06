@@ -1,0 +1,26 @@
+pkg_name=libusb
+version=1.0.30
+revision=1
+build_style=gnu-configure
+short_desc="Library that enables userspace access to USB devices"
+home_page="https://libusb.info"
+license="LGPL-2.1-or-later"
+dist_files="https://github.com/libusb/libusb/releases/download/v${version}/libusb-${version}.tar.bz2"
+checksum="c89df8556447d6db37cb1a25353aba2ce483fbbff0a017da78859cc48eca6ecb"
+
+# probably leave udev off unless you're a stinker
+use_flags="-udev -static"
+
+depends="$(use_if udev libudev-zero)"
+make_depends="linux-headers pkgconf
+ $(use_if udev libudev-zero)"
+
+configure_args="
+    --disable-examples-build
+    --disable-tests-build
+    $(use_if udev --enable-udev --disable-udev)
+    $(use_if static --enable-static --disable-static)"
+
+post_install() {
+    blicense COPYING
+}

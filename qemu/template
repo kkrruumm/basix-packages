@@ -1,0 +1,177 @@
+# this is x86_64 only for the time being
+# (the only arch that matters anyway)
+pkg_name=qemu
+version=11.1.1
+revision=1
+build_style=configure
+short_desc="Generic machine emulator and virtualizer"
+home_page="https://www.qemu.org"
+license="GPL-2.0-only, LGPL-2.1-only"
+dist_files="https://download.qemu.org/qemu-${version}.tar.xz"
+checksum="9cda9512c997d0ec176add30ff4f4531d4882681eb12e98ba5c7d11cb4cf610c"
+
+use_flags="slirp curses vnc gnutls png jpeg zstd curl bzip2 aio seccomp usb
+ cap-ng xkbcommon gtk opengl alsa tpm
+ -pipewire -bridge-helper -guest-agent -i386 -nls"
+
+depends="glib pixman zlib
+ $(use_if aio libaio)
+ $(use_if alsa alsa-lib)
+ $(use_if bzip2 bzip2)
+ $(use_if cap-ng libcap-ng)
+ $(use_if curl curl)
+ $(use_if curses ncurses)
+ $(use_if gnutls "gnutls nettle")
+ $(use_if gtk gtk3)
+ $(use_if vnc "$(use_if jpeg libjpeg-turbo)")
+ $(use_if opengl "libdrm libepoxy mesa")
+ $(use_if pipewire pipewire)
+ $(use_if png libpng)
+ $(use_if seccomp libseccomp)
+ $(use_if slirp libslirp)
+ $(use_if usb libusb)
+ $(use_if xkbcommon libxkbcommon)
+ $(use_if zstd zstd)"
+
+make_depends="bzip2 glib linux-headers meson pixman pkgconf python
+ python-setuptools python-wheel zlib bash
+ $(use_if aio libaio)
+ $(use_if alsa alsa-lib)
+ $(use_if cap-ng libcap-ng)
+ $(use_if curl curl)
+ $(use_if curses ncurses)
+ $(use_if gnutls "gnutls nettle")
+ $(use_if gtk "gtk3 xorgproto")
+ $(use_if vnc "$(use_if jpeg libjpeg-turbo)")
+ $(use_if nls gettext-tiny)
+ $(use_if opengl "libdrm libepoxy mesa xorgproto")
+ $(use_if pipewire pipewire)
+ $(use_if png libpng)
+ $(use_if seccomp libseccomp)
+ $(use_if slirp libslirp)
+ $(use_if usb libusb)
+ $(use_if xkbcommon libxkbcommon)
+ $(use_if zstd zstd)"
+
+system_groups="$(usev bridge-helper qemu)"
+qemu_gid=36
+
+configure_args="
+    --sysconfdir=/etc
+    --localstatedir=/var
+    --libdir=lib
+    --libexecdir=/usr/libexec
+    --python=/usr/bin/python3
+    --target-list=x86_64-softmmu$(usev i386 ,i386-softmmu)
+    --disable-download
+    --disable-werror
+    --disable-debug-info
+    --disable-docs
+    --disable-linux-user
+    --disable-bsd-user
+    --disable-modules
+    --disable-plugins
+    --enable-kvm
+    --enable-tcg
+    --enable-system
+    --enable-tools
+    --enable-pie
+    --enable-pixman
+    --enable-vhost-kernel
+    --enable-vhost-net
+    --enable-vhost-user
+    --enable-vhost-vdpa
+    --disable-af-xdp
+    --disable-auth-pam
+    --disable-blkio
+    --disable-bpf
+    --disable-brlapi
+    --disable-canokey
+    --disable-capstone
+    --disable-dbus-display
+    --disable-fdt
+    --disable-gcrypt
+    --disable-jack
+    --disable-libcbor
+    --disable-libdaxctl
+    --disable-libdw
+    --disable-libiscsi
+    --disable-libnfs
+    --disable-libpmem
+    --disable-libssh
+    --disable-libudev
+    --disable-linux-io-uring
+    --disable-lzo
+    --disable-netmap
+    --disable-numa
+    --disable-oss
+    --disable-pa
+    --disable-passt
+    --disable-rbd
+    --disable-rdma
+    --disable-rust
+    --disable-sdl
+    --disable-selinux
+    --disable-smartcard
+    --disable-snappy
+    --disable-sndio
+    --disable-spice
+    --disable-spice-protocol
+    --disable-u2f
+    --disable-usb-redir
+    --disable-vde
+    --disable-virglrenderer
+    --disable-virtfs
+    --disable-vnc-sasl
+    --disable-vte
+    --disable-xen
+    $(use_if aio --enable-linux-aio --disable-linux-aio)
+    $(use_if alsa --enable-alsa --disable-alsa)
+    $(use_if bzip2 --enable-bzip2 --disable-bzip2)
+    $(use_if cap-ng --enable-cap-ng --disable-cap-ng)
+    $(use_if curl --enable-curl --disable-curl)
+    $(use_if curses --enable-curses --disable-curses)
+    $(use_if gnutls "--enable-gnutls --enable-nettle" "--disable-gnutls --disable-nettle")
+    $(use_if gtk --enable-gtk --disable-gtk)
+    $(use_if guest-agent --enable-guest-agent --disable-guest-agent)
+    $(use_if vnc "$(use_if jpeg --enable-vnc-jpeg --disable-vnc-jpeg)")
+    $(use_if nls --enable-gettext --disable-gettext)
+    $(use_if opengl --enable-opengl --disable-opengl)
+    $(use_if pipewire --enable-pipewire --disable-pipewire)
+    $(use_if png --enable-png --disable-png)
+    $(use_if seccomp --enable-seccomp --disable-seccomp)
+    $(use_if slirp --enable-slirp --disable-slirp)
+    $(use_if tpm --enable-tpm --disable-tpm)
+    $(use_if usb --enable-libusb --disable-libusb)
+    $(use_if vnc --enable-vnc --disable-vnc)
+    $(use_if xkbcommon --enable-xkbcommon --disable-xkbcommon)
+    $(use_if zstd --enable-zstd --disable-zstd)"
+
+pre_configure() {
+    # alsa isnt in meson.builds default audio driver prio list so
+    # every backend that gets built needs to be put here explicitly
+    _audio=
+    if use alsa; then _audio="$_audio,alsa"; fi
+    if use pipewire; then _audio="$_audio,pipewire"; fi
+    configure_args="$configure_args --audio-drv-list=${_audio#,}"
+}
+
+post_install() {
+    if use bridge-helper; then
+        binstall "$FILESDIR/bridge.conf" 0640 /etc/qemu
+        chown root:36 "$DESTDIR/etc/qemu/bridge.conf"
+        chown root:36 "$DESTDIR/usr/libexec/qemu-bridge-helper"
+        chmod 4750 "$DESTDIR/usr/libexec/qemu-bridge-helper"
+    else
+        brm /usr/libexec/qemu-bridge-helper
+    fi
+
+    if ! use guest-agent; then
+        brm /usr/bin/qemu-ga
+    fi
+
+    brm /usr/share/doc
+    blicense COPYING
+    blicense COPYING.LIB
+    return 0
+}

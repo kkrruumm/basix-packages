@@ -1,0 +1,26 @@
+pkg_name=libnl
+version=3.12.0
+revision=1
+build_style=gnu-configure
+short_desc="Library for applications dealing with netlink sockets"
+home_page="https://www.infradead.org/~tgr/libnl"
+license="LGPL-2.1-only"
+_tag=libnl3_12_0
+dist_files="https://github.com/thom311/libnl/releases/download/${_tag}/libnl-${version}.tar.gz"
+checksum="e2905e07eedd9100fb1d3e49625e0d27f9c855cfbc33845bbb65336c8a991ea1"
+
+use_flags="-cli -static"
+make_depends="bison flex linux-headers pkgconf"
+
+configure_args="
+    --disable-debug
+    $(use_if cli --enable-cli --disable-cli)
+    $(use_if static --enable-static --disable-static)"
+
+pre_build() {
+    bsed '/<linux\/if_bridge.h>/i#define _LINUX_IN6_H' lib/route/link/bridge.c
+}
+
+post_install() {
+    blicense COPYING
+}

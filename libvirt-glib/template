@@ -1,0 +1,25 @@
+pkg_name=libvirt-glib
+version=5.0.0
+revision=1
+build_style=meson
+short_desc="Glib integration with libvirt"
+home_page="https://libvirt.org"
+license="LGPL-2.1-or-later"
+dist_files="https://libvirt.org/sources/glib/libvirt-glib-${version}.tar.xz"
+checksum="826432075e5b0a11c2d48fdbbbf22bf6cfad885937526b1b7ec3d08ab47cc9f2"
+
+use_flags="-introspection -vala -docs -tests"
+
+depends="glib libvirt libxml2"
+make_depends="gettext-tiny glib libvirt libxml2 meson pkgconf
+ $(use_if introspection gobject-introspection)"
+
+configure_args="
+    $(use_if docs -Ddocs=enabled -Ddocs=disabled)
+    $(use_if introspection -Dintrospection=enabled -Dintrospection=disabled)
+    $(use_if tests -Dtests=enabled -Dtests=disabled)
+    $(use_if vala -Dvapi=enabled -Dvapi=disabled)"
+
+post_install() {
+    blicense COPYING
+}

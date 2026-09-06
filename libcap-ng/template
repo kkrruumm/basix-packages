@@ -1,0 +1,37 @@
+pkg_name=libcap-ng
+version=0.9.5
+revision=1
+build_style=gnu-configure
+short_desc="Library for making the POSIX capabilities API easier to use"
+home_page="https://github.com/stevegrubb/libcap-ng"
+license="LGPL-2.1-or-later, GPL-2.0-or-later"
+dist_files="https://github.com/stevegrubb/libcap-ng/archive/refs/tags/v${version}.tar.gz>libcap-ng-${version}.tar.gz"
+checksum="5996c750399536207b59f39f50bd77f0d3819fb7cab721e873ae035e68dc1642"
+
+use_flags="utils -static"
+
+make_depends="autoconf automake libtool m4 linux-headers pkgconf"
+
+# python bindings need swig and cap-audit needs clang and bpftool
+configure_args="
+    --without-python
+    --without-python3
+    --disable-cap-audit
+    $(use_if static --enable-static --disable-static)"
+
+pre_configure() {
+    touch NEWS
+    autoreconf -fi
+}
+
+post_install() {
+    if ! use utils; then
+        brm /usr/bin/captest
+        brm /usr/bin/filecap
+        brm /usr/bin/netcap
+        brm /usr/bin/pscap
+        brm /usr/share/man/man8
+    fi
+    blicense COPYING
+    blicense COPYING.LIB
+}

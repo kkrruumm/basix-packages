@@ -1,0 +1,40 @@
+pkg_name=dnsmasq
+version=2.93
+revision=1
+build_style=gnu-makefile
+short_desc="Lightweight DNS forwarder and DHCP server"
+home_page="https://thekelleys.org.uk/dnsmasq/doc.html"
+license="GPL-2.0-only, GPL-3.0-only"
+dist_files="https://thekelleys.org.uk/dnsmasq/dnsmasq-${version}.tar.xz"
+checksum="1f105a064239a1abc406c6fb0f2c727826074ef0441ae81b536f8985ae177790"
+
+# libvirt doesnt need any of these
+# and libvirt is the reason this package is here at all
+use_flags="-dbus -dnssec"
+
+depends="$(use_if dbus dbus)
+ $(use_if dnssec nettle)"
+make_depends="linux-headers pkgconf"
+
+make_install_args="BINDIR=/usr/bin"
+
+pre_build() {
+    printf '%s\n' "$version" > VERSION
+    if use dbus; then printf '#define HAVE_DBUS\n' >> src/config.h; fi
+    if use dnssec; then printf '#define HAVE_DNSSEC\n' >> src/config.h; fi
+}
+
+do_build() {
+    $make_cmd $make_jobs CC="$CC" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" all
+}
+
+do_install() {
+    $make_cmd CC="$CC" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" \
+        DESTDIR="$DESTDIR" PREFIX=/usr BINDIR=/usr/bin install
+}
+
+post_install() {
+    bconf dnsmasq.conf.example dnsmasq.conf
+    blicense COPYING
+    blicense COPYING-v3
+}

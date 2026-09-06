@@ -1,0 +1,25 @@
+pkg_name=gtk-vnc
+version=1.3.1
+revision=1
+build_style=meson
+short_desc="VNC client widget for GTK"
+home_page="https://gitlab.gnome.org/GNOME/gtk-vnc"
+license="LGPL-2.1-or-later"
+dist_files="https://download.gnome.org/sources/gtk-vnc/${version%.*}/gtk-vnc-${version}.tar.xz"
+checksum="60db27754837e4c53e7ce6db181db558bb0a3ea0523be6c2cb47c2437e81761d"
+
+use_flags="-introspection -pulseaudio -sasl -vala"
+
+depends="glib gnutls gtk3 libgcrypt"
+make_depends="gettext-tiny glib gnutls gtk3 libgcrypt meson perl pkgconf
+ $(use_if introspection gobject-introspection)"
+
+configure_args="
+    $(use_if introspection -Dintrospection=enabled -Dintrospection=disabled)
+    $(use_if pulseaudio -Dpulseaudio=enabled -Dpulseaudio=disabled)
+    $(use_if sasl -Dsasl=enabled -Dsasl=disabled)
+    $(use_if vala -Dwith-vala=enabled -Dwith-vala=disabled)"
+
+post_install() {
+    blicense COPYING.LIB
+}

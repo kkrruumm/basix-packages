@@ -1,0 +1,161 @@
+# todo: find or make a replacement for this dogshit stack
+pkg_name=libvirt
+version=12.7.0
+revision=1
+build_style=meson
+short_desc="Virtualization API for controlling virtualization engines"
+home_page="https://libvirt.org"
+license="LGPL-2.1-or-later"
+dist_files="https://libvirt.org/sources/libvirt-${version}.tar.xz"
+checksum="2c0c6f20cc9f2afebacca8c1196bf56e057be96a45383d23fdf85d522596612c"
+
+patch_args="-p0"
+
+# readline isnt packaged atm so virsh has no line editing
+# no libattr so the xattr sec labeling is off
+# docs are manpages, they need python-docutils and xsltproc
+use_flags="qemu network storage udev docs -lvm -nls -sasl -numa"
+
+depends="dmidecode glib gnutls json-c libcap-ng libnl libpciaccess libtirpc
+ libxml2 libxslt lvm2
+ $(use_if qemu qemu)
+ $(use_if udev libudev-zero)"
+
+make_depends="glib gnutls json-c libcap-ng libnl libpciaccess libtirpc libxml2
+ libxslt linux-headers lvm2 meson perl pkgconf python
+ $(use_if docs python-docutils)
+ $(use_if nls gettext-tiny)
+ $(use_if udev libudev-zero)"
+
+system_accounts="libvirt"
+libvirt_uid=61
+libvirt_gid=61
+libvirt_descr="libvirt qemu instances"
+libvirt_homedir="/var/lib/libvirt"
+libvirt_groups="kvm disk"
+
+configure_args="
+    -Dsystem=false
+    -Drunstatedir=/run
+    -Dinit_script=none
+    -Drunstatedir=/run
+    -Dinit_script=none
+    -Dpolkit=disabled
+    -Dqemu_user=libvirt
+    -Dqemu_group=libvirt
+    -Dfirewall_backend_priority=nftables
+    -Ddriver_remote=enabled
+    -Ddriver_libvirtd=enabled
+    -Ddriver_secrets=enabled
+    -Dlibvirtd=enabled
+    -Dcapng=enabled
+    -Djson_c=enabled
+    -Dlibnl=enabled
+    -Dpciaccess=enabled
+    -Dhost_validate=enabled
+    -Dtests=disabled
+    -Dexpensive_tests=disabled
+    -Ddriver_bhyve=disabled
+    -Ddriver_ch=disabled
+    -Ddriver_esx=disabled
+    -Ddriver_hyperv=disabled
+    -Ddriver_libxl=disabled
+    -Ddriver_lxc=disabled
+    -Ddriver_openvz=disabled
+    -Ddriver_test=disabled
+    -Ddriver_vbox=disabled
+    -Ddriver_vmware=disabled
+    -Ddriver_vz=disabled
+    -Dstorage_gluster=disabled
+    -Dstorage_iscsi=disabled
+    -Dstorage_iscsi_direct=disabled
+    -Dstorage_mpath=disabled
+    -Dstorage_rbd=disabled
+    -Dstorage_scsi=disabled
+    -Dstorage_vstorage=disabled
+    -Dstorage_zfs=disabled
+    -Dstorage_disk=disabled
+    -Dstorage_fs=disabled
+    -Dapparmor=disabled
+    -Dattr=disabled
+    -Daudit=disabled
+    -Dbash_completion=disabled
+    -Dblkid=disabled
+    -Dcurl=disabled
+    -Ddtrace=disabled
+    -Dfirewalld=disabled
+    -Dfuse=disabled
+    -Dglusterfs=disabled
+    -Dlibiscsi=disabled
+    -Dlibpcap=disabled
+    -Dlibssh=disabled
+    -Dlibssh2=disabled
+    -Dlogin_shell=disabled
+    -Dnbdkit=disabled
+    -Dnetcf=disabled
+    -Dnss=disabled
+    -Dnumad=disabled
+    -Dopenwsman=disabled
+    -Dpm_utils=disabled
+    -Dreadline=disabled
+    -Dsanlock=disabled
+    -Dsecdriver_apparmor=disabled
+    -Dsecdriver_selinux=disabled
+    -Dselinux=disabled
+    -Dssh_proxy=disabled
+    -Dsysctl_config=disabled
+    -Dwireshark_dissector=disabled
+    $(use_if docs -Ddocs=enabled -Ddocs=disabled)
+    $(use_if network -Ddriver_network=enabled -Ddriver_network=disabled)
+    $(use_if network -Ddriver_interface=enabled -Ddriver_interface=disabled)
+    $(use_if nls -Dnls=enabled -Dnls=disabled)
+    $(use_if numa -Dnumactl=enabled -Dnumactl=disabled)
+    $(use_if qemu -Ddriver_qemu=enabled -Ddriver_qemu=disabled)
+    $(use_if sasl -Dsasl=enabled -Dsasl=disabled)
+    $(use_if storage -Dstorage_dir=enabled -Dstorage_dir=disabled)
+    $(use_if lvm -Dstorage_lvm=enabled -Dstorage_lvm=disabled)
+    $(use_if udev -Dudev=enabled -Dudev=disabled)"
+
+pre_build() {
+    # the protocol and keycode table gens are racey
+    # and eat shit with a parallel ninja build, thank you void template
+    ninja -C build \
+        src/remote/lxc_protocol.h \
+        src/remote/qemu_protocol.h \
+        src/remote/remote_protocol.h \
+        src/util/virkeycodetable_linux.h \
+        src/util/virkeycodetable_osx.h \
+        src/util/virkeycodetable_win32.h \
+        src/util/virkeynametable_linux.h \
+        src/util/virkeynametable_osx.h \
+        src/util/virkeynametable_win32.h
+}
+
+post_install() {
+    # basix is no polkit so the libvirt group is used
+    bsed 's|^#unix_sock_group = .*|unix_sock_group = "libvirt"|' \
+        "$DESTDIR/etc/libvirt/libvirtd.conf"
+    bsed 's|^#unix_sock_rw_perms = .*|unix_sock_rw_perms = "0770"|' \
+        "$DESTDIR/etc/libvirt/libvirtd.conf"
+    bsed 's|^#auth_unix_rw = .*|auth_unix_rw = "none"|' \
+        "$DESTDIR/etc/libvirt/libvirtd.conf"
+
+    # musl ships no utmpx, so libvirts owner remembering does not work
+    printf '\n# musl has no utmpx implementation\nremember_owner = 0\n' \
+        >> "$DESTDIR/etc/libvirt/qemu.conf"
+
+    # meson does not create the state directories the drivers expect
+    bmkdir /var/lib/libvirt/boot
+    bmkdir /var/lib/libvirt/dnsmasq
+    bmkdir /var/lib/libvirt/images
+    bmkdir /var/lib/libvirt/network
+    bmkdir /var/lib/libvirt/qemu/channel/target
+    bmkdir /var/lib/libvirt/qemu/nvram
+    bmkdir /var/cache/libvirt/qemu
+
+    brm /etc/sysconfig
+    brm /var/log
+
+    bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+    find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+}

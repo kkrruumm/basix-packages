@@ -1,0 +1,15 @@
+pkg_name=bsd-compat-headers
+version=0.7.2
+revision=1
+build_style=custom
+short_desc="BSD compatibility headers (cdefs, queue, tree)"
+home_page="https://gitlab.alpinelinux.org/alpine/aports"
+license="BSD-2-Clause, BSD-3-Clause"
+
+do_build() { :; }
+
+do_install() {
+    binstall "$FILESDIR/cdefs.h" 0644 /usr/include/sys
+    binstall "$FILESDIR/queue.h" 0644 /usr/include/sys
+    binstall "$FILESDIR/tree.h" 0644 /usr/include/sys
+}

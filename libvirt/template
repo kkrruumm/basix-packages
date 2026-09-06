@@ -14,7 +14,7 @@ patch_args="-p0"
 # readline isnt packaged atm so virsh has no line editing
 # no libattr so the xattr sec labeling is off
 # docs are manpages, they need python-docutils and xsltproc
-use_flags="qemu network storage udev docs -lvm -nls -sasl -numa"
+use_flags="qemu network storage udev man -doc -lvm -nls -sasl -numa"
 
 depends="dmidecode glib gnutls json-c libcap-ng libnl libpciaccess libtirpc
  libxml2 libxslt lvm2
@@ -105,7 +105,7 @@ configure_args="
     -Dssh_proxy=disabled
     -Dsysctl_config=disabled
     -Dwireshark_dissector=disabled
-    $(use_if docs -Ddocs=enabled -Ddocs=disabled)
+    $(use_if man -Ddocs=enabled -Ddocs=disabled)
     $(use_if network -Ddriver_network=enabled -Ddriver_network=disabled)
     $(use_if network -Ddriver_interface=enabled -Ddriver_interface=disabled)
     $(use_if nls -Dnls=enabled -Dnls=disabled)
@@ -155,6 +155,10 @@ post_install() {
 
     brm /etc/sysconfig
     brm /var/log
+
+    if ! use doc; then
+        brm /usr/share/doc/libvirt/html
+    fi
 
     bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
     find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +

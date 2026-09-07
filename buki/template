@@ -1,0 +1,14 @@
+pkg_name=buki
+version=0.1
+revision=1
+build_style=custom
+short_desc="Simple POSIX shell UKI builder"
+home_page="https://github.com/kkrruumm/buki"
+dist_files="https://github.com/kkrruumm/buki/archive/refs/tags/${version}.tar.gz"
+checksum="1be8ba05c80a5c558a6c7d8a7f94d64c67a7be741f6f7e7b27f86b6f8dfddfdf"
+
+do_build() { :; }
+
+do_install() {
+    bbin buki
+}

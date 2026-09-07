@@ -1,0 +1,114 @@
+# this is a temporary package until i've audited
+# alternatives like https://git.pinkro.se/Rose/gardenhouse/stem.git
+# TODO: ^
+pkg_name=systemd-boot-efistub
+version=261
+revision=1
+build_style=meson
+short_desc="EFI stub loader from systemd-boot, for building UKIs"
+home_page="https://systemd.io"
+license="LGPL-2.1-or-later"
+dist_files="https://github.com/systemd/systemd/archive/refs/tags/v${version}.tar.gz>systemd-${version}.tar.gz"
+checksum="395984ba3f741ae8805fd1c10baf24ab067de12d2929ffcfaa05e54be93e2138"
+wrk_src="systemd-$version"
+
+depends=""
+make_depends="gperf meson python python-jinja2 python-pyelftools bash libucontext"
+
+make_build_args="src/boot/linuxx64.efi.stub"
+
+configure_args="
+    -Dlibc=musl
+    -Dmode=release
+    -Dsbat-distro=basix
+    -Dbootloader=enabled
+    -Defi=true
+    -Dblkid=disabled
+    -Dlibmount=disabled
+    -Dopenssl=disabled
+    -Dgcrypt=disabled
+    -Dlibcurl=disabled
+    -Dzlib=disabled
+    -Dxz=disabled
+    -Dlz4=disabled
+    -Dzstd=disabled
+    -Dbzip2=disabled
+    -Dpam=disabled
+    -Dseccomp=disabled
+    -Dselinux=disabled
+    -Dapparmor=disabled
+    -Daudit=disabled
+    -Delfutils=disabled
+    -Dlibidn2=disabled
+    -Dlibiptc=disabled
+    -Dmicrohttpd=disabled
+    -Dqrencode=disabled
+    -Ddbus=disabled
+    -Dman=disabled
+    -Dtranslations=false
+    -Dtests=false
+    -Dadm-group=false
+    -Danalyze=false
+    -Dbacklight=false
+    -Dbinfmt=false
+    -Dcompat-mutable-uid-boundaries=false
+    -Dcoredump=false
+    -Ddns-over-tls=false
+    -Denvironment-d=false
+    -Dfexecve=false
+    -Dfirstboot=false
+    -Dfirst-boot-full-preset=false
+    -Dgshadow=false
+    -Dhibernate=false
+    -Dhomed=disabled
+    -Dhostnamed=false
+    -Dhwdb=false
+    -Didn=false
+    -Dima=false
+    -Dimportd=disabled
+    -Dinitrd=false
+    -Dkernel-install=false
+    -Dldconfig=false
+    -Dlocaled=false
+    -Dlogind=false
+    -Dmachined=false
+    -Dnetworkd=false
+    -Dnss-myhostname=false
+    -Dnss-mymachines=disabled
+    -Dnss-resolve=disabled
+    -Dnss-systemd=false
+    -Doomd=false
+    -Dpolkit=disabled
+    -Dportabled=false
+    -Dpstore=false
+    -Dquotacheck=false
+    -Drandomseed=false
+    -Dremote=disabled
+    -Drepart=disabled
+    -Dresolve=false
+    -Drfkill=false
+    -Dsmack=false
+    -Dstoragetm=false
+    -Dsysext=false
+    -Dsysupdate=disabled
+    -Dsysusers=false
+    -Dtimedated=false
+    -Dtimesyncd=false
+    -Dtmpfiles=false
+    -Dtpm=false
+    -Dukify=disabled
+    -Durlify=false
+    -Duserdb=false
+    -Dutmp=false
+    -Dvconsole=false
+    -Dvmspawn=disabled
+    -Dwheel-group=false
+    -Dxdg-autostart=false"
+
+do_install() {
+    binstall build/src/boot/linuxx64.efi.stub 0644 /usr/lib/systemd/boot/efi
+}
+
+post_install() {
+    blicense LICENSE.LGPL2.1
+}

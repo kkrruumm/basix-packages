@@ -1,0 +1,17 @@
+pkg_name=libucontext
+version=1.2
+revision=1
+build_style=meson
+short_desc="Standalone ucontext implementation for musl"
+home_page="https://github.com/kaniini/libucontext"
+license="ISC"
+dist_files="https://github.com/kaniini/libucontext/archive/refs/tags/v${version}.tar.gz>libucontext-${version}.tar.gz"
+checksum="adb240a6b7f71fb1ec03bf825a6aa2ecdda7a9bebcd9328c35bc8bb2d11bd5da"
+wrk_src="libucontext-$version"
+
+depends=""
+make_depends="meson"
+
+post_install() {
+    blicense LICENSE
+}

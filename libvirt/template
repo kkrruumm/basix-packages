@@ -1,7 +1,6 @@
-# todo: find or make a replacement for this dogshit stack
 pkg_name=libvirt
 version=12.7.0
-revision=1
+revision=2
 build_style=meson
 short_desc="Virtualization API for controlling virtualization engines"
 home_page="https://libvirt.org"
@@ -23,7 +22,7 @@ depends="dmidecode glib gnutls json-c libcap-ng libnl libpciaccess libtirpc
 
 make_depends="glib gnutls json-c libcap-ng libnl libpciaccess libtirpc libxml2
  libxslt linux-headers lvm2 meson perl pkgconf python
- $(use_if docs python-docutils)
+ $(use_if man python-docutils)
  $(use_if nls gettext-tiny)
  $(use_if udev libudev-zero)"
 
@@ -34,7 +33,11 @@ libvirt_descr="libvirt qemu instances"
 libvirt_homedir="/var/lib/libvirt"
 libvirt_groups="kvm disk"
 
+# TODO: remote_default_mode=legacy should be revisited later
+# yessir we're cutting corners "temporarily"
 configure_args="
+    -Dremote_default_mode=legacy
+    -Dsbindir=bin
     -Dsystem=false
     -Drunstatedir=/run
     -Dinit_script=none

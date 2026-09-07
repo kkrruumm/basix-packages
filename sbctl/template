@@ -1,0 +1,52 @@
+# this package is one version behind intentionally
+# sbctl 0.18 pulls in pcsc and i just cba,
+# TODO: look into writing a shell or execline replacement for this
+# with preexisting utilities
+pkg_name=sbctl
+version=0.17
+revision=1
+build_style=go
+short_desc="Secure Boot key manager"
+home_page="https://github.com/Foxboron/sbctl"
+license="MIT"
+dist_files="https://github.com/Foxboron/sbctl/releases/download/${version}/sbctl-${version}.tar.gz"
+checksum="616026661eb9d679944e4da671207d5d8931be0e9e3bd8fa7d6e027b046091e6"
+wrk_src="sbctl-$version"
+
+depends="binutils util-linux"
+make_depends="go $(use_if man asciidoc)"
+allow_network=yes
+
+use_flags="man completions"
+
+go_package="./cmd/sbctl"
+go_ldflags="-s -w -X github.com/foxboron/sbctl.Version=$version"
+no_strip=yes
+
+pre_build() {
+    export GOFLAGS="${GOFLAGS:--trimpath} -buildmode=pie"
+}
+
+post_build() {
+    use man && make man
+    :
+}
+
+post_install() {
+    blicense LICENSE
+
+    bmkdir -m 0700 /var/lib/sbctl
+
+    if use man; then
+        bman docs/sbctl.8
+        bman docs/sbctl.conf.5
+    fi
+
+    if use completions; then
+        for _sh in bash zsh fish; do
+            "$DESTDIR/usr/bin/sbctl" completion "$_sh" > "sbctl.$_sh"
+            bcompletion "sbctl.$_sh" "$_sh"
+        done
+    fi
+    :
+}

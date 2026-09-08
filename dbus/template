@@ -1,6 +1,6 @@
 pkg_name=dbus
 version=1.16.2
-revision=2
+revision=3
 build_style=cmake # at some point should probably switch to meson for this but fuck it
 short_desc="Freedesktop.org message bus system"
 home_page="https://www.freedesktop.org/wiki/Software/dbus"
@@ -31,6 +31,7 @@ configure_args="
     -DDBUS_DISABLE_ASSERT=ON"
 
 post_install() {
+    brm /var/run /run
     bmkdir /var/lib/dbus
 
     # as of 1.16 the build no longer sets this itself

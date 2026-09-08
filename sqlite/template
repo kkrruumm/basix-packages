@@ -1,0 +1,38 @@
+pkg_name=sqlite
+version=3.53.4
+revision=1
+build_style=custom
+short_desc="Self-contained, serverless, transactional SQL database engine"
+home_page="https://sqlite.org"
+license="blessing"
+_amalg=$(echo "$version" | awk -F. '{printf "%d%02d%02d%02d", $1, $2, $3, $4}')
+dist_files="https://sqlite.org/2026/sqlite-autoconf-${_amalg}.tar.gz"
+checksum="e74b1d27f5053bd29ee7e930ad71d99126b59e4f1a45493440c72d2228e32412"
+wrk_src="sqlite-autoconf-$_amalg"
+
+use_flags="cli"
+
+depends="zlib $(use_if cli libedit)"
+make_depends="pkgconf zlib $(use_if cli libedit)"
+
+CPPFLAGS="${CPPFLAGS:-} -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_SECURE_DELETE=1 -DSQLITE_ENABLE_FTS3_TOKENIZER=1"
+export CPPFLAGS
+
+do_configure() {
+    ./configure \
+        --prefix=/usr \
+        --bindir=/usr/bin \
+        --libdir=/usr/lib \
+        --includedir=/usr/include \
+        --mandir=/usr/share/man \
+        --sysconfdir=/etc \
+        --disable-static \
+        --enable-fts4 \
+        --enable-fts5 \
+        --enable-rtree \
+        --disable-readline \
+        $(use_if cli --enable-editline --disable-editline)
+}
+
+do_build() { $make_cmd $make_jobs; }
+do_install() { $make_cmd DESTDIR="$DESTDIR" install; }

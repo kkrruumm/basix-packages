@@ -13,7 +13,7 @@ _modules=$_r/usr/lib/gio/modules
 if [ -d "$_schemas" ] && [ -x /usr/bin/glib-compile-schemas ]; then
     for _f in "$_schemas"/*.gschema.xml; do
         [ -f "$_f" ] || break
-        /usr/bin/glib-compile-schemas --quiet "$_schemas" 2>/dev/null || :
+        /usr/bin/glib-compile-schemas "$_schemas" 2>/dev/null || :
         break
     done
 fi

@@ -1,0 +1,34 @@
+pkg_name=sshfs
+version=3.7.6
+revision=1
+build_style=meson
+short_desc="FUSE filesystem client based on the SSH File Transfer Protocol"
+home_page="https://github.com/libfuse/sshfs"
+license="GPL-2.0-only"
+dist_files="https://github.com/libfuse/sshfs/releases/download/sshfs-${version}/sshfs-${version}.tar.xz"
+checksum="5324253d4201b285fae954074887265d1b52cc1e7d1b0a9f84b4bd2931dcc76f"
+wrk_src="sshfs-$version"
+
+depends="fuse3 glib openssh"
+make_depends="fuse3 glib meson pkgconf $(use_if man python-docutils)"
+
+use_flags="man"
+
+configure_args="-Dsbindir=bin"
+
+pre_configure() {
+    # this just replaces busybox incompatible ln with a compatible invocation
+    cat > utils/install_helper.sh <<-'EOF'
+	#!/bin/sh
+	set -e
+	sbindir="$1"
+	prefix="${MESON_INSTALL_DESTDIR_PREFIX}"
+	mkdir -p "${prefix}/${sbindir}"
+	ln -sf sshfs "${prefix}/${sbindir}/mount.sshfs"
+	ln -sf sshfs "${prefix}/${sbindir}/mount.fuse.sshfs"
+	EOF
+}
+
+post_install() {
+    blicense COPYING
+}

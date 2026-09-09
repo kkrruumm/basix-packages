@@ -1,0 +1,21 @@
+--- a/Makefile
++++ b/Makefile
+@@ -549,7 +549,7 @@
+ LZ4		= lz4
+ XZ		= xz
+ ZSTD		= zstd
+-TAR		= tar
++TAR		= gtar
+ 
+ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
+ 		  -Wbitwise -Wno-return-void -Wno-unknown-attribute $(CF)
+--- a/scripts/Makefile.package
++++ b/scripts/Makefile.package
+@@ -171,7 +171,7 @@
+ compress-tar.zst = -I "$(ZSTD)"
+ 
+ quiet_cmd_tar = TAR     $@
+-      cmd_tar = cd $<; tar cf ../$@ $(compress-tar$(suffix $@)) --owner=root --group=root --sort=name *
++      cmd_tar = cd $<; $(TAR) cf ../$@ $(compress-tar$(suffix $@)) --owner=root --group=root --sort=name *
+ 
+ dir-tarballs := $(addprefix linux-$(KERNELRELEASE)-$(ARCH), .tar .tar.gz .tar.bz2 .tar.xz .tar.zst)

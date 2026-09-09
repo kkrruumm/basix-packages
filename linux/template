@@ -2,14 +2,14 @@
 # this is run through 'make olddefconfig' so a config from an older
 # release is probably chill
 pkg_name=linux
-version=6.18.40
-revision=4
+version=6.18.50
+revision=1
 build_style=custom
 short_desc="The Linux kernel"
 home_page="https://kernel.org"
 license="GPL-2.0-only"
 dist_files="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${version}.tar.xz"
-checksum="5872889203a682796f960f6217e5e7cdc9c60bf81daad1934cbfd12e581af2bb"
+checksum="ba206830c57add1c3f72f74f82051dafcc0a55f76664915b403be86305666a86"
 
 # bison and flex build kconfig, libelf builds objtool, libressl signs modules
 # and builds the trusted keyring, perl is used by several scripts for whatever fuckin reason

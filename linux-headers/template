@@ -1,12 +1,12 @@
 pkg_name=linux-headers
-version=6.18.39
+version=6.18.50
 revision=1
 build_style=custom
 short_desc="Linux kernel headers"
 home_page="https://kernel.org"
 license="GPL-2.0-only"
 dist_files="https://mirrors.edge.kernel.org/pub/linux/kernel/v6.x/linux-${version}.tar.xz"
-checksum="288a4623fea10e351f8612987aea7e69542e76fbd60e9fbf1d96beaae61fa726"
+checksum="ba206830c57add1c3f72f74f82051dafcc0a55f76664915b403be86305666a86"
 wrk_src="linux-${version}"
 
 do_build() { $make_cmd HOSTCC="$CC" headers; }

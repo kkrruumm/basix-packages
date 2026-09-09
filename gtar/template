@@ -1,6 +1,6 @@
 pkg_name=gtar
 version=1.35
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="GNU tar archiving utility"
 home_page="https://www.gnu.org/software/tar/"
@@ -16,6 +16,7 @@ configure_args="--program-prefix=g"
 
 pre_configure() {
     if use static; then CFLAGS="$CFLAGS -static"; fi
+    export FORCE_UNSAFE_CONFIGURE=1
     export CFLAGS
 }
 

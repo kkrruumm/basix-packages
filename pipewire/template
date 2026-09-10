@@ -1,6 +1,6 @@
 pkg_name=pipewire
 version=1.6.8
-revision=2
+revision=3
 build_style=meson
 short_desc="Server and user space API to deal with multimedia pipelines"
 home_page="https://pipewire.org"
@@ -78,6 +78,12 @@ configure_args="
     $(use_if x11 -Dx11-xfixes=enabled -Dx11-xfixes=disabled)"
 
 post_install() {
+    if use alsa; then
+        bmkdir /etc/alsa/conf.d
+        bln /usr/share/alsa/alsa.conf.d/50-pipewire.conf /etc/alsa/conf.d/50-pipewire.conf
+        bln /usr/share/alsa/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d/99-pipewire-default.conf
+    fi
+
     # there isnt a meson option for this but some people may want to "turn it off"
     # to "force pipewire" (albeit in a really shit way)
     if ! use pulse; then

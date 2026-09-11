@@ -1,0 +1,136 @@
+# The semicolon separator used in xterm+256color does not follow the ECMA-48
+# standard.  Since patch #282 (in 2012), xterm has supported both the legacy
+# subparameter separator (semicolon) and the standard (colon).
+#
+# The xterm FAQ gives some of the history:
+#	https://invisible-island.net/xterm/xterm.faq.html#color_by_number
+xterm+256color2|xterm 256-color feature,
+	setab=\E[%?%p1%{8}%<%t4%p1%d%e%p1%{16}%<%t10%p1%{8}%-%d%e48:
+	      5:%p1%d%;m,
+	setaf=\E[%?%p1%{8}%<%t3%p1%d%e%p1%{16}%<%t9%p1%{8}%-%d%e38:5
+	      :%p1%d%;m,
+	use=xterm+256color,
+
+att610+cvis|AT&T 610 cursor-visibility with blink,
+	civis=\E[?25l, cnorm=\E[?12l\E[?25h, cvvis=\E[?12;25h,
+
+ansi+rca2|ANSI relative cursor-addressing,
+	hpa=\E[%i%p1%dG, vpa=\E[%i%p1%dd,
+
+# ECMA-48 does not include the VT100 indexing and scroll-margins.  It has its
+# own variation.
+ecma+index|ECMA-48 scroll up/down,
+	indn=\E[%p1%dS, rin=\E[%p1%dT,
+
+ecma+italics|ECMA-48 italics,
+	ritm=\E[23m, sitm=\E[3m,
+
+ecma+strikeout|ECMA-48 strikeout/crossed-out,
+	rmxx=\E[29m, smxx=\E[9m,
+
+xterm+alt+title|xterm 90 and 251 features combined,
+	rmcup=\E[?1049l\E[23;0;0t, smcup=\E[?1049h\E[22;0;0t,
+
+xterm+tmux2|advanced xterm features used in tmux,
+	Cr=\E]112\E\\, Cs=\E]12;%p1%s\E\\,
+	Ms=\E]52;%p1%s;%p2%s\E\\, Se=\E[ q, Ss=\E[%p1%d q,
+
+xterm+sl-alt|alternate access X title line,
+	hs,
+	dsl=\E]2;\E\\, fsl=\E\\, tsl=\E]2;, TS=\E]2;,
+
+# https://invisible-island.net/xterm/xterm-paste64.html
+#
+# Bracketed paste was introduced by xterm patch #203 in May 2005, as part of a
+# larger feature for manipulating the clipboard selection.  Few terminals aside
+# from xterm fully implement the clipboard feature, but several copy this
+# detail.  The names for the extended capabilities here were introduced by vim
+# in January 2017, but used internally.  In 2023, vim patch 9.0.1117 is needed
+# to work with this change.
+bracketed+paste|xterm bracketed paste,
+	BD=\E[?2004l, BE=\E[?2004h, PE=\E[201~, PS=\E[200~,
+
+# Vim uses RV to denote the secondary device attributes.  Xterm documents the
+# - first parameter as the terminal type (extending it to VT100),
+# - the second as the patch number for xterm, and
+# - the third parameter as zero.
+# Other terminals may provide useful responses, though few are documented.
+report+da2|report secondary device attributes (DA2),
+	RV=\E[>c, rv=\E\\[[0-9]+;[0-9]+;[0-9]+c,
+
+# https://invisible-island.net/xterm/xterm.log.html#xterm_354
+#
+# The response is a DSR sequence identifying the version: DCS > | text ST
+# For example:
+#	^[P>|XTerm(354)^[\
+report+version|Report xterm name and version (XTVERSION),
+	XR=\E[>0q, xr=\EP>\\|[ -~]+\E\\\\, use=report+da2,
+
+foot+base|foot base fragment,
+	am, bce, bw, hs, mir, msgr, npc, xenl, AX, XT,
+	cols#80, it#8, lines#24,
+	acsc=``aaffggiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~,
+	bel=^G, blink=\E[5m, bold=\E[1m, clear=\E[H\E[2J, cr=\r,
+	cub1=^H, cud1=\n, dim=\E[2m, ech=\E[%p1%dX, ed=\E[J, el=\E[K,
+	el1=\E[1K, flash=\E]555\E\\, ind=\n, invis=\E[8m,
+	is2=\E[!p\E[?3;4l\E[4l\E>, kbs=^?, kcbt=\E[Z,
+	oc=\E]104\E\\, op=\E[39;49m, rev=\E[7m, ri=\EM, rmacs=\E(B,
+	rmam=\E[?7l, rmkx=\E[?1l\E>, rmso=\E[27m, rmul=\E[24m,
+	rs1=\Ec, rs2=\E[!p\E[?3;4l\E[4l\E>,
+	sgr=%?%p9%t\E(0%e\E(B%;\E[0%?%p6%t;1%;%?%p5%t;2%;%?%p2%t;4%;
+	    %?%p1%p3%|%t;7%;%?%p4%t;5%;%?%p7%t;8%;m,
+	sgr0=\E(B\E[m, smacs=\E(0, smam=\E[?7h, smkx=\E[?1h\E=,
+	smso=\E[7m, smul=\E[4m, E3=\E[3J, use=att610+cvis,
+	use=ansi+csr, use=ansi+cup, use=ansi+enq, use=ansi+local,
+	use=ansi+idc, use=ansi+idl, use=ansi+rca2, use=ansi+rep,
+	use=ansi+tabs, use=ecma+index, use=ecma+italics,
+	use=ecma+strikeout, use=xterm+alt+title,
+	use=xterm+pcfkeys, use=xterm+sm+1006, use=xterm+tmux2,
+	use=xterm+sl-alt, use=bracketed+paste,
+	use=report+version,
+
+#### Foot
+# https://codeberg.org/dnkl/foot/
+# Version 1.8.2
+#
+# This identifies as a VT220 with 4=sixel and 22=color, however:
+# tack:
+#	bell does not work
+#	status-line does not work because foot does not set the window title
+#	sends escape when meta key is used, whether or not smm/rmm enabled
+# vttest:
+#	wrap-test fails
+#	no application-mode for numeric keypad (unless private mode 1035 is set)
+#	no NRCS
+#	no VT52
+#	no SRM
+#	protected areas do not work
+#	SU/SD work, SL/SR do not
+#	DECRPM responds, but not the corresponding ANSI reports.
+#	otherwise few reports, except cursor-position and mouse and some dtterm
+#	VT520 cursor-movement works, except for left/right margins
+#	supports xterm/DECSCUSR, though default case in vttest does not blink
+#		Send: <27> [ 0 <32> q 
+#		Text: The cursor should be a blinking rectangle
+#	partial support for xterm mouse any-event mode and button-event mode:
+#	+ does not report focus-in/focus-out
+#	+ does not report buttons 6/7
+#	alternate-screen works
+foot|foot terminal emulator,
+	oc=\E]104\E\\, use=xterm+256color2, use=foot+base,
+
+# That in turn had a problem: in the original patch submitted for KDE konsole
+# in 2006, the submitter and the developer alike overlooked a "color space
+# identifier" parameter.  This version provides for that parameter:
+xterm+direct|xterm with direct-color indexing (building-block),
+	RGB,
+	colors#0x1000000, pairs#0x10000, CO#8,
+	initc@, op=\E[39;49m,
+	setab=\E[%?%p1%{8}%<%t4%p1%d%e48:2::%p1%{65536}%/%d:%p1
+	      %{256}%/%{255}%&%d:%p1%{255}%&%d%;m,
+	setaf=\E[%?%p1%{8}%<%t3%p1%d%e38:2::%p1%{65536}%/%d:%p1
+	      %{256}%/%{255}%&%d:%p1%{255}%&%d%;m,
+	setb@, setf@,
+
+foot-direct|foot with direct color indexing,
+	use=xterm+direct, use=foot+base,

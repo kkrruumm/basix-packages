@@ -1,6 +1,6 @@
 pkg_name=perl-curses
 version=1.46
-revision=2
+revision=3
 build_style=perl-module
 short_desc="Perl bindings for the curses terminal library"
 home_page="https://metacpan.org/dist/Curses"
@@ -8,8 +8,8 @@ license="Artistic-1.0-Perl OR GPL-1.0-or-later"
 dist_files="https://cpan.metacpan.org/authors/id/G/GI/GIRAFFED/Curses-${version}.tar.gz"
 checksum="c7be31e08a4aa1cb98150d9bc1e1e57d425d5ba8a01f3ae421406876dcb1d5f4"
 wrk_src="Curses-${version}"
-depends="ncurses perl"
-make_depends="ncurses perl pkgconf"
+depends="netbsd-curses perl"
+make_depends="netbsd-curses perl pkgconf"
 
 pre_configure() {
     CURSES_LIBTYPE="ncursesw"

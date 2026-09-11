@@ -2,7 +2,7 @@
 # (the only arch that matters anyway)
 pkg_name=qemu
 version=11.1.1
-revision=1
+revision=2
 build_style=configure
 short_desc="Generic machine emulator and virtualizer"
 home_page="https://www.qemu.org"
@@ -20,7 +20,7 @@ depends="glib pixman zlib
  $(use_if bzip2 bzip2)
  $(use_if cap-ng libcap-ng)
  $(use_if curl curl)
- $(use_if curses ncurses)
+ $(use_if curses netbsd-curses)
  $(use_if gnutls "gnutls nettle")
  $(use_if gtk gtk3)
  $(use_if vnc "$(use_if jpeg libjpeg-turbo)")
@@ -39,7 +39,7 @@ make_depends="bzip2 glib linux-headers meson pixman pkgconf python
  $(use_if alsa alsa-lib)
  $(use_if cap-ng libcap-ng)
  $(use_if curl curl)
- $(use_if curses ncurses)
+ $(use_if curses netbsd-curses)
  $(use_if gnutls "gnutls nettle")
  $(use_if gtk "gtk3 xorgproto")
  $(use_if vnc "$(use_if jpeg libjpeg-turbo)")

@@ -1,6 +1,6 @@
 pkg_name=pinentry
 version=1.3.2
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Collection of passphrase entry dialogs"
 home_page="https://gnupg.org/related_software/pinentry"
@@ -8,8 +8,8 @@ license="GPL-2.0-or-later"
 dist_files="https://gnupg.org/ftp/gcrypt/pinentry/pinentry-${version}.tar.bz2"
 checksum="ee79d79f130955d5e96b94d86ba31c2709ccbe7f0218b38f9a736b68ee3ed498"
 
-depends="libassuan libgpg-error ncurses"
-make_depends="libassuan libgpg-error ncurses pkgconf"
+depends="libassuan libgpg-error netbsd-curses"
+make_depends="libassuan libgpg-error netbsd-curses pkgconf"
 
 configure_args="
     --enable-pinentry-tty

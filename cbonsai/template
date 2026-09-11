@@ -1,6 +1,6 @@
 pkg_name=cbonsai
 version=1.4.2
-revision=1
+revision=3
 build_style=gnu-makefile
 short_desc="Grow bonsai trees in your terminal"
 home_page="https://gitlab.com/jallbrit/cbonsai"
@@ -8,8 +8,8 @@ license="GPL-3.0-only"
 dist_files="https://gitlab.com/jallbrit/cbonsai/-/archive/v${version}/cbonsai-v${version}.tar.gz"
 checksum="727a0553ab357619b9fa0f3dc71614f11ad8ff51120b83dc9567abbc0d520997"
 wrk_src="cbonsai-v${version}"
-depends="ncurses"
-make_depends="ncurses pkgconf
+depends="netbsd-curses"
+make_depends="netbsd-curses pkgconf
  $(use_if man scdoc)"
 
 use_flags="man bashcomp"

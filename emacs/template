@@ -1,6 +1,6 @@
 pkg_name=emacs
 version=30.2
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Extensible, customizable, self-documenting text editor"
 home_page="https://www.gnu.org/software/emacs"
@@ -10,7 +10,7 @@ checksum="51101a26553420ee445adfbb537a8572750e3c21b9024569ef543c3f3508c3ca"
 
 use_flags="xml gnutls -dbus -lcms2 -tree_sitter modules inotify"
 
-depends="ncurses gmp zlib"
+depends="netbsd-curses gmp zlib"
 if use xml; then depends="$depends libxml2"; fi
 if use gnutls; then depends="$depends gnutls"; fi
 if use dbus; then depends="$depends dbus"; fi

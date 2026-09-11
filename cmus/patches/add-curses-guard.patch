@@ -1,0 +1,22 @@
+--- a/ui_curses.c
++++ b/ui_curses.c
+@@ -1481,6 +1481,9 @@
+ 
+ void update_titleline(void)
+ {
++	if (!ui_initialized)
++		return;
++
+ 	curs_set(0);
+ 	do_update_titleline();
+ 	post_update();
+@@ -1503,6 +1506,9 @@
+ 
+ static void update_commandline(void)
+ {
++	if (!ui_initialized)
++		return;
++
+ 	curs_set(0);
+ 	do_update_commandline();
+ 	post_update();

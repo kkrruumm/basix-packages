@@ -1,0 +1,89 @@
+pkg_name=netbsd-curses
+version=0.3.2.20240116
+revision=2
+build_style=gnu-makefile
+short_desc="NetBSD curses, terminfo, panel, menu and form libraries"
+home_page="https://github.com/sabotage-linux/netbsd-curses"
+license="BSD-2-Clause, BSD-3-Clause"
+# the last tag is v0.3.2 from 2021, everything after it is build fixes and a
+# termdb lookup fix for newer GNU screen, so this is pinned to a commit
+_commit=51d179dad861640caeb76674b5908ccd79f04fae
+dist_files="https://github.com/sabotage-linux/netbsd-curses/archive/${_commit}.tar.gz>netbsd-curses-${version}.tar.gz"
+checksum="a528a1cd9094045a4238d3c6eee17ec316490b529bcceeb8a034f20428ec7c2d"
+wrk_src="netbsd-curses-${_commit}"
+
+# the termdb useflag will compile the full like 1700 entry terminfo db
+# and install it to /usr/share/terminfo.cdb, without it just a handful
+# of terminals compiled into libterminfo work
+use_flags="man static termdb"
+
+pre_build() {
+    # the makefile checks for -fPIC, when its there the same objects
+    # get used for the static and shared libs both instead of double compiling
+    CFLAGS="$CFLAGS -fPIC"
+    export CFLAGS
+}
+
+post_build() {
+    use termdb || return 0
+
+    # right now the only terminal in the basix core repo is foot and netbsds
+    # terminfo source doesnt have an entry for it
+    #
+    # netbsd-curses reads just the one system db so anything extra needs to be put
+    # here instead of dropped in afterwards so put additional entries
+    # in files/ as *terminfo
+    for _t in "$FILESDIR"/*.terminfo; do
+        if [ -f "$_t" ]; then cat "$_t" >> terminfo/terminfo.src; fi
+    done
+
+    # -a will keep comments, -x will keep user defined caps that tmux and stuff need
+    tic/host_tic -ax -o terminfo/terminfo.cdb terminfo/terminfo.src
+}
+
+do_install() {
+    $make_cmd DESTDIR="$DESTDIR" PREFIX=/usr install-dynamic
+    if use static; then
+        $make_cmd DESTDIR="$DESTDIR" PREFIX=/usr install-stalibs
+    fi
+    if use man; then
+        $make_cmd DESTDIR="$DESTDIR" PREFIX=/usr install-manpages
+    fi
+}
+
+post_install() {
+    # install.sh installs these as 0644, this would hide them from bpms strip
+    chmod 755 "$DESTDIR"/usr/lib/*.so
+
+    # compatibility symlinks
+    bln libterminfo.so /usr/lib/libtinfo.so
+    bln libterminfo.so /usr/lib/libtinfow.so
+    bln libcurses.so /usr/lib/libcursesw.so
+    if use static; then
+        bln libterminfo.a /usr/lib/libtinfo.a
+        bln libterminfo.a /usr/lib/libtinfow.a
+        bln libcurses.a /usr/lib/libcursesw.a
+    fi
+
+    bln curses.h /usr/include/ncursesw.h
+
+    # more compat stuff, some stuff in the repo like perl-curses
+    # wuery for specifically tinfow
+    ./genpc tinfo "terminfo library" "-lterminfo" \
+        > "$DESTDIR/usr/lib/pkgconfig/tinfo.pc"
+    ./genpc tinfow "terminfo library" "-lterminfo" \
+        > "$DESTDIR/usr/lib/pkgconfig/tinfow.pc"
+    ./genpc cursesw "curses terminal library" "-lcurses -lterminfo" \
+        > "$DESTDIR/usr/lib/pkgconfig/cursesw.pc"
+    chmod 644 "$DESTDIR"/usr/lib/pkgconfig/*.pc
+
+    # lie about ncursesw >= 6, should be close enough that it enables
+    # more than it breaks
+    bsed 's/^Version: .*/Version: 6.6/' "$DESTDIR"/usr/lib/pkgconfig/*.pc
+
+    if use termdb; then
+        binstall terminfo/terminfo.cdb 0644 /usr/share
+    fi
+
+    blicense COPYING
+}

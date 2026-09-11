@@ -1,0 +1,17 @@
+$NetBSD: patch-Makefile,v 1.2 2024/11/10 16:23:49 bsiegert Exp $
+
+Respect LDFLAGS.
+
+--- Makefile.orig	2014-06-16 07:27:59.000000000 +0000
++++ Makefile
+@@ -9,5 +9,8 @@
+ CC=gcc
+ CFLAGS=-O
+ 
+-sl: sl.c sl.h
+-	$(CC) $(CFLAGS) -o sl sl.c -lncurses
++sl.o: sl.c sl.h
++	$(CC) $(CFLAGS) -c sl.c
++
++sl: sl.o
++	$(CC) $(LDFLAGS) -o sl sl.o -lcurses

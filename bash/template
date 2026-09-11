@@ -1,14 +1,14 @@
 pkg_name=bash
 version=5.3
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="GNU Bourne Again Shell"
 home_page="https://www.gnu.org/software/bash/"
 license="GPL-3.0-or-later"
 dist_files="https://ftp.gnu.org/gnu/bash/bash-${version}.tar.gz"
 checksum="5bf3ac6c18f3dc3fe3e049a1e10ea5ae5c5b39dac2356cd796730f49b273fd0f"
-depends="ncurses"
-make_depends="bison ncurses"
+depends="netbsd-curses"
+make_depends="bison netbsd-curses"
 
 use_flags="-net-redirections -nls"
 
@@ -16,7 +16,6 @@ use_flags="-net-redirections -nls"
 # why the fuck these exist i have no idea
 configure_args="
     --without-bash-malloc
-    --with-curses
     --without-installed-readline
     $(use_enable net-redirections)
     $(use_enable nls)"

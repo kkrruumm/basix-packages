@@ -1,0 +1,21 @@
+--- a/libcurses/curses.h
++++ b/libcurses/curses.h
+@@ -714,6 +714,18 @@
+ int	 keypad(WINDOW *, bool);
+ char	*keyname(int);
+ char     killchar(void);
++
++/* netbsd-curses only declares these in <term.h> so anything including just
++ * <curses.h> gets an implicit declaration which gcc14+ do not likey */
++int	 setupterm(const char *, int, int *);
++char	*termname(void);
++char	*longname(void);
++int	 tigetflag(const char *);
++int	 tigetnum(const char *);
++char	*tigetstr(const char *);
++char	*tparm(const char *, long, long, long, long, long,
++		long, long, long, long);
++char	*tiparm(const char *, ...);
+ int	 leaveok(WINDOW *, bool);
+ int	 meta(WINDOW *, bool);
+ int	 mvcur(int, int, int, int);

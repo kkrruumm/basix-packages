@@ -1,6 +1,6 @@
 pkg_name=virt-viewer
 version=11.0
-revision=1
+revision=2
 build_style=meson
 short_desc="Graphical console client for virtual machines"
 home_page="https://virt-manager.org"
@@ -8,13 +8,15 @@ license="GPL-2.0-or-later"
 dist_files="https://releases.pagure.org/virt-viewer/virt-viewer-${version}.tar.xz"
 checksum="fec81588b29b75a5b35005094a93b469a70547eb7b795eca0df26224558d9e96"
 
-use_flags="libvirt vnc -spice -ovirt -vte"
+use_flags="libvirt spice -vnc -ovirt -vte"
 
 depends="glib gtk3 libxml2
  $(use_if libvirt "libvirt libvirt-glib")
+ $(use_if spice spice-gtk)
  $(use_if vnc gtk-vnc)"
 make_depends="gettext-tiny glib gtk3 libxml2 meson perl pkgconf
  $(use_if libvirt "libvirt libvirt-glib")
+ $(use_if spice "spice-gtk spice-protocol xorgproto")
  $(use_if vnc gtk-vnc)"
 
 configure_args="

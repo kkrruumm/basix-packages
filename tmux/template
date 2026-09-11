@@ -1,6 +1,6 @@
 pkg_name=tmux
 version=3.7c
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Terminal multiplexer"
 home_page="https://tmux.github.io"
@@ -11,9 +11,9 @@ checksum="83a68d1180368750aaadd30750c95b304455f1faf6d2d38e8471284ab39daa9b"
 # if you want emojis for some reason or CJK fonts, enable utf8proc
 use_flags="-utf8proc sixel man doc -static"
 
-depends="libevent ncurses
+depends="libevent netbsd-curses
  $(use_if utf8proc libutf8proc)"
-make_depends="bison libevent ncurses pkgconf
+make_depends="bison libevent netbsd-curses pkgconf
  $(use_if utf8proc libutf8proc)"
 
 configure_args="

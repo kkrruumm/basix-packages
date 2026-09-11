@@ -1,6 +1,6 @@
 pkg_name=cmus
 version=2.12.0
-revision=1
+revision=2
 build_style=gnu-makefile
 short_desc="Feature-rich ncurses-based music player"
 home_page="https://cmus.github.io/"
@@ -10,14 +10,14 @@ checksum="142c818fb92554f8fbcc2fa8129d5e6e28e87f43339f3324c61c2d7e30c70a53"
 
 use_flags="alsa flac mad mpris opus vorbis"
 
-depends="ncurses
+depends="netbsd-curses
  $(use_if alsa alsa-lib)
  $(use_if flac "flac libogg")
  $(use_if mad libmad)
  $(use_if mpris basu)
  $(use_if opus "libogg opus opusfile")
  $(use_if vorbis "libogg libvorbis")"
-make_depends="ncurses pkgconf
+make_depends="netbsd-curses pkgconf
  $(use_if alsa alsa-lib)
  $(use_if flac "flac libogg")
  $(use_if mad libmad)

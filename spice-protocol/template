@@ -1,0 +1,14 @@
+pkg_name=spice-protocol
+version=0.14.5
+revision=1
+build_style=meson
+short_desc="SPICE protocol header files"
+home_page="https://www.spice-space.org"
+license="BSD-3-Clause, LGPL-2.1-or-later"
+dist_files="https://www.spice-space.org/download/releases/spice-protocol-${version}.tar.xz"
+checksum="4af2657ce282a14401f28fa6f08758d3913d7eb776a67e0e092b4bd434894454"
+make_depends="meson pkgconf"
+
+post_install() {
+    blicense COPYING
+}

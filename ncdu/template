@@ -1,15 +1,15 @@
 pkg_name=ncdu
 version=1.22
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Disk usage analyzer with an ncurses interface"
 home_page="https://dev.yorhel.nl/ncdu"
 license="MIT"
 dist_files="https://dev.yorhel.nl/download/ncdu-${version}.tar.gz"
 checksum="b7838c03ded7207a328a26c840ec3d62d3be6bbf7269a70ea3430c6cbf065960"
-depends="ncurses"
+depends="netbsd-curses"
 
-make_depends="linux-headers ncurses pkgconf"
+make_depends="linux-headers netbsd-curses pkgconf"
 
 use_flags="man"
 

@@ -1,6 +1,6 @@
 pkg_name=pipewire
 version=1.6.8
-revision=3
+revision=4
 build_style=meson
 short_desc="Server and user space API to deal with multimedia pipelines"
 home_page="https://pipewire.org"
@@ -10,7 +10,7 @@ checksum="a04d69477e9ac071ae1fc0920440334c5735f20d88119ad928dddaf3fc8e6f1a"
 
 use_flags="alsa -bluetooth -camera -echo-cancel -gstreamer -jack pulse -sndfile -v4l2 -vulkan -x11"
 
-depends="dbus glib libudev-zero ncurses
+depends="dbus glib libudev-zero netbsd-curses
  $(use_if alsa alsa-lib)
  $(use_if bluetooth bluez)
  $(use_if camera libcamera)
@@ -19,7 +19,7 @@ depends="dbus glib libudev-zero ncurses
  $(use_if sndfile libsndfile)
  $(use_if vulkan vulkan-loader)
  $(use_if x11 "libX11 libXfixes")"
-make_depends="dbus glib libudev-zero meson ncurses pkgconf python
+make_depends="dbus glib libudev-zero meson netbsd-curses pkgconf python
  $(use_if alsa alsa-lib)
  $(use_if bluetooth bluez)
  $(use_if camera libcamera)

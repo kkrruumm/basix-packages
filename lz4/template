@@ -1,0 +1,16 @@
+pkg_name=lz4
+version=1.10.0
+revision=1
+build_style=gnu-makefile
+short_desc="Extremely fast lossless compression algorithm"
+home_page="https://lz4.org"
+license="BSD-2-Clause, GPL-2.0-or-later"
+dist_files="https://github.com/lz4/lz4/archive/refs/tags/v${version}.tar.gz>lz4-${version}.tar.gz"
+checksum="3e69fd475e7852e17594985528b5232afeba7d3d56cfebe2e89071768b2ab36a"
+
+make_depends="make"
+
+post_install() {
+    blicense lib/LICENSE LICENSE.lib
+    blicense programs/COPYING COPYING.programs
+}

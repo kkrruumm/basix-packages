@@ -1,0 +1,18 @@
+pkg_name=python-six
+version=1.17.0
+revision=1
+build_style=python3-pep517
+short_desc="Python 2 and 3 compatibility library"
+home_page="https://github.com/benjaminp/six"
+license="MIT"
+dist_files="https://files.pythonhosted.org/packages/source/s/six/six-${version}.tar.gz"
+checksum="472f39674e8d27fd054ea0c43f7ded21438d37cb690f152924cde0430acb05ca"
+wrk_src="six-$version"
+depends="python"
+
+make_build_args="--skip-dependency-check"
+make_depends="python python-build python-installer python-setuptools python-wheel"
+
+post_install() {
+    blicense LICENSE
+}

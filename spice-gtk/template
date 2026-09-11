@@ -1,0 +1,53 @@
+pkg_name=spice-gtk
+version=0.42
+revision=1
+build_style=meson
+short_desc="GTK widget and GLib client library for the SPICE protocol"
+home_page="https://www.spice-space.org"
+license="LGPL-2.1-or-later"
+dist_files="https://www.spice-space.org/download/gtk/spice-gtk-${version}.tar.xz"
+checksum="82b8d3f02fcd47f92bd5ce1ff3b1fd5a3fbdd5177b08019c80377ac4de3fc810"
+
+use_flags="gtk wayland mjpeg opus -usbredir lz4
+ -introspection -vala -sasl -smartcard -webdav -polkit -docs"
+
+depends="glib gst-plugins-base gstreamer json-glib libjpeg-turbo libressl
+ pixman zlib
+ $(use_if gtk "cairo gtk3 libepoxy libX11")
+ $(use_if lz4 lz4)
+ $(use_if opus opus)
+ $(use_if usbredir "hwdata libusb usbredir")
+ $(use_if wayland wayland)"
+make_depends="gettext-tiny glib gst-plugins-base gstreamer json-glib
+ libjpeg-turbo libressl meson perl pixman pkgconf python python-pyparsing
+ python-six spice-protocol zlib
+ $(use_if gtk "cairo gtk3 libepoxy libX11 xorgproto")
+ $(use_if lz4 lz4)
+ $(use_if opus opus)
+ $(use_if usbredir "hwdata libusb usbredir")
+ $(use_if wayland "wayland wayland-protocols")"
+
+configure_args="
+    -Dcoroutine=gthread
+    -Dpie=true
+    -Dlibcap-ng=disabled
+    -Dvalgrind=false
+    -Drecorder=false
+    $(use_if docs -Dgtk_doc=enabled -Dgtk_doc=disabled)
+    $(use_if gtk -Dgtk=enabled -Dgtk=disabled)
+    $(use_if introspection -Dintrospection=enabled -Dintrospection=disabled)
+    $(use_if lz4 -Dlz4=enabled -Dlz4=disabled)
+    $(use_if mjpeg -Dbuiltin-mjpeg=true -Dbuiltin-mjpeg=false)
+    $(use_if opus -Dopus=enabled -Dopus=disabled)
+    $(use_if polkit -Dpolkit=enabled -Dpolkit=disabled)
+    $(use_if sasl -Dsasl=enabled -Dsasl=disabled)
+    $(use_if smartcard -Dsmartcard=enabled -Dsmartcard=disabled)
+    $(use_if usbredir -Dusbredir=enabled -Dusbredir=disabled)
+    $(use_if usbredir -Dusb-ids-path=/usr/share/hwdata/usb.ids)
+    $(use_if vala -Dvapi=enabled -Dvapi=disabled)
+    $(use_if wayland -Dwayland-protocols=enabled -Dwayland-protocols=disabled)
+    $(use_if webdav -Dwebdav=enabled -Dwebdav=disabled)"
+
+post_install() {
+    blicense COPYING
+}

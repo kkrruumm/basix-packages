@@ -1,0 +1,20 @@
+pkg_name=openresolv
+version=3.17.4
+revision=1
+build_style=configure
+short_desc="Framework for managing multiple DNS configurations"
+home_page="https://github.com/NetworkConfiguration/openresolv"
+license="BSD-2-Clause"
+dist_files="https://github.com/NetworkConfiguration/openresolv/archive/refs/tags/v${version}.tar.gz>openresolv-${version}.tar.gz"
+checksum="b8b2780b9ba2e1948344ecd187de424def6fd2c8e8143fe7e0e782245def3e77"
+
+configure_args="
+    --sbindir=/usr/bin
+    --sysconfdir=/etc
+    --libexecdir=/usr/lib/resolvconf
+    --rundir=/run"
+
+post_install() {
+    blicense LICENSE
+    brm /usr/lib/resolvconf/systemd-resolved /usr/lib/resolvconf/resolvectl
+}

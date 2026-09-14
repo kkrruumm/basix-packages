@@ -1,0 +1,46 @@
+# this is largely here as a stopgap for wg-quick
+# being incompatible with busyboxs ip
+pkg_name=iproute2
+version=7.2.0
+revision=1
+build_style=configure
+short_desc="Utilities for controlling TCP/IP networking and traffic control"
+home_page="https://wiki.linuxfoundation.org/networking/iproute2"
+license="GPL-2.0-only"
+dist_files="https://github.com/iproute2/iproute2/archive/refs/tags/v${version}.tar.gz>iproute2-${version}.tar.gz"
+checksum="c112d0cb9c8095f8f4618b0fe4e9d0ce872540e65f7bbfe7de0cca4009855cfa"
+
+# mnl here is tpic, devlink, rdma, dcb, vdpa, netshaper, and dpll
+# without it, this will build ip/tc/bridge/ss and nothing else
+use_flags="elf cap -mnl -completions -color -routel -rpc"
+
+depends="$(usev mnl libmnl)
+ $(usev elf libelf)
+ $(usev cap libcap)
+ $(usev rpc libtirpc)
+ $(usev routel python)"
+
+make_depends="$depends bison flex linux-headers pkgconf"
+
+# libbpf is not packaged
+configure_args="
+    --libbpf_force off
+    --color=$(use_if color auto never)"
+
+make_build_args="NETNS_RUN_DIR=/run/netns"
+make_install_args="NETNS_RUN_DIR=/run/netns SBINDIR=/usr/bin"
+
+post_install() {
+    blicense COPYING
+
+    # arpd needs berkeley db which isn't packaged and never gets built
+    brm /usr/share/man/man8/arpd.8
+
+    if ! use routel; then
+        brm /usr/bin/routel /usr/share/man/man8/routel.8
+    fi
+
+    if ! use completions; then
+        brm /usr/share/bash-completion
+    fi
+}

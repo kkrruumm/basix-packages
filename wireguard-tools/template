@@ -1,0 +1,32 @@
+pkg_name=wireguard-tools
+version=1.0.20260223
+revision=1
+build_style=gnu-makefile
+short_desc="Userspace tools for the WireGuard VPN tunnel"
+home_page="https://www.wireguard.com"
+license="GPL-2.0-only"
+dist_files="https://github.com/WireGuard/wireguard-tools/archive/refs/tags/v${version}.tar.gz>wireguard-tools-${version}.tar.gz"
+checksum="f8f687b07491d17390ad303500c964779d6726c648e3edca09516514a9e9b75d"
+build_wrk_src=src
+
+# wg_quick is a bash script that expects iproute2 ip
+use_flags="-wg_quick -completions"
+
+depends="$(use_if wg_quick "bash iproute2 nftables")"
+make_depends="$depends linux-headers"
+make_build_args="RUNSTATEDIR=/run WITH_SYSTEMDUNITS=no"
+
+make_install_args="
+    WITH_WGQUICK=$(use_if wg_quick yes no)
+    WITH_BASHCOMPLETION=$(use_if completions yes no)
+    WITH_SYSTEMDUNITS=no
+    SYSTEMDUNITDIR=/usr/lib/systemd/system
+    BINDIR=/usr/bin
+    SYSCONFDIR=/etc
+    MANDIR=/usr/share/man
+    BASHCOMPDIR=/usr/share/bash-completion/completions
+    RUNSTATEDIR=/run"
+
+post_install() {
+    blicense ../COPYING
+}

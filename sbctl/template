@@ -4,7 +4,7 @@
 # with preexisting utilities
 pkg_name=sbctl
 version=0.17
-revision=1
+revision=2
 build_style=go
 short_desc="Secure Boot key manager"
 home_page="https://github.com/Foxboron/sbctl"
@@ -17,11 +17,15 @@ depends="binutils util-linux"
 make_depends="go $(use_if man asciidoc)"
 allow_network=yes
 
-use_flags="man completions"
+use_flags="man -completions"
 
 go_package="./cmd/sbctl"
 go_ldflags="-s -w -X github.com/foxboron/sbctl.Version=$version"
 no_strip=yes
+
+pre_configure() {
+    export XML_CATALOG_FILES=/usr/share/xsl/docbook/catalog.xml
+}
 
 pre_build() {
     export GOFLAGS="${GOFLAGS:--trimpath} -buildmode=pie"

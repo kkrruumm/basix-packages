@@ -1,17 +1,17 @@
 pkg_name=openssh
-version=10.4p1
-revision=3
+version=10.5p1
+revision=1
 build_style=gnu-configure
 short_desc="OpenBSD secure shell, portable release"
 home_page="https://www.openssh.com"
 license="BSD-2-Clause, ISC, MIT"
 dist_files="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${version}.tar.gz"
-checksum="0534deadf94e03b8ed6f1ab8a4e22600f20e2042bdb40be61d2289eac7d25d737a"
+checksum="60c9bdc9997dbd78d6011b4d52705fb9cd412104078020832c0f0154403615c1"
 
 depends="libressl zlib"
 make_depends="libressl zlib"
 
-use_flags="-security_key -utmp services"
+use_flags="client server -security_key -utmp services"
 
 configure_args="
     --datadir=/usr/share/openssh
@@ -28,11 +28,46 @@ configure_args="
     $(use_enable utmp wtmp)
     $(use_enable security_key security-key)"
 
-post_install() {
-    bbin contrib/ssh-copy-id
-    bman contrib/ssh-copy-id.1
+pre_configure() {
+    if ! use client && ! use server; then
+        die "openssh: at least one of the client or server use flags is required"
+    fi
+}
 
-    if use services; then
+post_install() {
+    if use client; then
+        bbin contrib/ssh-copy-id
+        bman contrib/ssh-copy-id.1
+    fi
+
+    if ! use client; then
+        brm /usr/bin/ssh /usr/bin/scp /usr/bin/sftp \
+            /usr/bin/ssh-add /usr/bin/ssh-agent /usr/bin/ssh-keyscan \
+            /usr/lib/openssh/ssh-keysign /usr/lib/openssh/ssh-pkcs11-helper \
+            /etc/ssh/ssh_config \
+            /usr/share/man/man1/ssh.1 /usr/share/man/man1/scp.1 \
+            /usr/share/man/man1/sftp.1 /usr/share/man/man1/ssh-add.1 \
+            /usr/share/man/man1/ssh-agent.1 /usr/share/man/man1/ssh-keyscan.1 \
+            /usr/share/man/man5/ssh_config.5 \
+            /usr/share/man/man8/ssh-keysign.8 \
+            /usr/share/man/man8/ssh-pkcs11-helper.8
+    fi
+
+    if ! use server; then
+        brm /usr/bin/sshd \
+            /usr/lib/openssh/sshd-session /usr/lib/openssh/sshd-auth \
+            /usr/lib/openssh/sftp-server \
+            /etc/ssh/sshd_config /etc/ssh/moduli \
+            /usr/share/man/man5/sshd_config.5 /usr/share/man/man5/moduli.5 \
+            /usr/share/man/man8/sshd.8 /usr/share/man/man8/sftp-server.8 \
+            /var/empty
+    fi
+
+    # the makefile builds and installs this unconditionally
+    use security_key || brm /usr/lib/openssh/ssh-sk-helper \
+        /usr/share/man/man8/ssh-sk-helper.8
+
+    if use server && use services; then
         bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
         find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
     fi

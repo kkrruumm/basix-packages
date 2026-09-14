@@ -1,6 +1,6 @@
 pkg_name=util-linux
 version=2.42.2
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Miscellaneous Linux system utilities"
 home_page="https://github.com/util-linux/util-linux"
@@ -28,11 +28,6 @@ configure_args="
     $(use_with systemd)"
 
 post_install() {
-    if [ -d "$DESTDIR/usr/sbin" ]; then
-        mv -f "$DESTDIR/usr/sbin/"* "$DESTDIR/usr/bin"
-        rmdir "$DESTDIR/usr/sbin"
-    fi
-
     brm /usr/share/doc
     brm /usr/share/bash-completion
 }

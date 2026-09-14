@@ -1,12 +1,12 @@
 pkg_name=bpm
-version=0.8
+version=0.8.2
 revision=1
 build_style=custom
 short_desc="basix package manager"
 home_page="https://github.com/kkrruumm/bpm"
 license="MIT"
 dist_files="https://github.com/kkrruumm/bpm/archive/refs/tags/${version}.tar.gz"
-checksum="ef7b6e4c85b85f0ed24fbb07a22e3fe36af80d80c2b25e05f78b2eb618577f7c"
+checksum="cc4e76981feaf87910a01b8b37c8d0018fce25d947107b0a6f80ba0af9b7e0a3"
 
 depends="b3sum curl git"
 

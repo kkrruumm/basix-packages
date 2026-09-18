@@ -1,0 +1,47 @@
+pkg_name=lowdown
+version=3.1.1
+revision=1
+build_style=configure
+short_desc="Simple markdown translator and library"
+home_page="https://kristaps.bsd.lv/lowdown/"
+license="ISC"
+dist_files="https://kristaps.bsd.lv/lowdown/snapshots/lowdown-${version}.tar.gz"
+checksum="629643c1d1167c2def87f410b164b23fd8fe25aacd69fc22d936a1d2bc49a036"
+
+make_check_target=regress
+
+use_flags="man static"
+
+do_configure() {
+    ./configure \
+        PREFIX=/usr \
+        MANDIR=/usr/share/man \
+        CFLAGS="$CFLAGS" \
+        LDFLAGS="$LDFLAGS" \
+        INSTALL_PROGRAM="install -m 0755" \
+        INSTALL_LIB="install -m 0755" \
+        INSTALL_MAN="install -m 0644" \
+        INSTALL_DATA="install -m 0644"
+}
+
+pre_build() {
+    # strip out bmake stuff TODO: add bmake
+    bsed '/SANDBOX_INIT_ERROR_IGNORE/d; /^LIB_LOWDOWN.*(LIB_SO)$/d; /^MAIN_OBJS.*(COMPAT_OBJS)/d' Makefile
+    bsed '/^\.if/d; /^\.else$/d; /^\.endif$/d' Makefile
+}
+
+do_install() {
+    $make_cmd -j1 DESTDIR="$DESTDIR" install install_libs
+}
+
+post_install() {
+    if use static; then
+        chmod 0644 "$DESTDIR/usr/lib/liblowdown.a"
+    else
+        brm /usr/lib/liblowdown.a
+    fi
+
+    use man || brm /usr/share/man
+
+    blicense LICENSE.md
+}

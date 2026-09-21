@@ -1,0 +1,54 @@
+pkg_name=sfeed
+version=2.4
+revision=1
+build_style=gnu-makefile
+short_desc="RSS and Atom feed parser with a curses reader"
+home_page="https://codemadness.org/sfeed-simple-feed-parser.html"
+license="ISC"
+dist_files="https://codemadness.org/releases/sfeed/sfeed-${version}.tar.gz"
+checksum="f167080b762102e539e1a75321ba12846a90f01e882e4d759a7328cedb205b04"
+
+# curses=sfeed_curses, the terminal reader, without it you just get the parser
+# and format/import/export tools
+#
+# minicurses=sfeed_curses with hardcoded escape sequences
+# instead of terminfo lookups, drops the ncurses/netbsd-curses dep
+use_flags="curses man doc -minicurses"
+
+# themes/ has mono, mono_highlight, newsboat, and templeos
+_theme=mono
+
+depends="curl
+ $(use_if curses "$(use_if minicurses "" netbsd-curses)")"
+make_depends="$(use_if curses "$(use_if minicurses "" "netbsd-curses pkgconf")")"
+
+# these have to match between the build and the install, the install rule
+# copies ${BIN} and that list contains ${SFEED_CURSES}
+make_build_args="SFEED_THEME=$_theme $(use_if curses "" SFEED_CURSES=)"
+make_install_args="$make_build_args"
+
+pre_build() {
+    use curses || return 0
+
+    if use minicurses; then
+        bsed 's|^SFEED_CURSES_CFLAGS = .*|SFEED_CURSES_CFLAGS = ${CFLAGS} -DSFEED_MINICURSES|' Makefile
+        bsed 's|^SFEED_CURSES_LDFLAGS = .*|SFEED_CURSES_LDFLAGS = ${LDFLAGS}|' Makefile
+    else
+        # upstream links bare -lcurses, netbsd-curses keeps its terminfo in its
+        # own library
+        _libs=$(pkg-config --libs ncursesw tinfow) || die "pkg-config: no ncursesw"
+        bsed "s|^SFEED_CURSES_LDFLAGS = .*|SFEED_CURSES_LDFLAGS = \${LDFLAGS} $_libs|" Makefile
+    fi
+}
+
+post_install() {
+    if ! use man; then
+        brm /usr/share/man
+    fi
+
+    if ! use doc; then
+        brm "/usr/share/doc/$pkg_name"
+    fi
+
+    blicense LICENSE
+}

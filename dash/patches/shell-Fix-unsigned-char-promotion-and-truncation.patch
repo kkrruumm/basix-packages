@@ -1,0 +1,49 @@
+--- a/src/expand.c	2026-06-13 15:08:11.000000000 +0300
++++ b/src/expand.c	2026-08-17 17:56:10.316246724 +0300
+@@ -1892,21 +1892,21 @@
+ 
+ 	if (FNMATCH_IS_ENABLED)
+ 		return !fnmatch(pattern, string, 0);
+ 
+ 	p = pattern;
+ 	q = string;
+ 	for (;;) {
+ 		switch ((signed char)(c = *p++)) {
+ 		case '\0':
+ 			goto breakloop;
+-		case CTLESC:
++		case ((signed char) CTLESC):
+ 			c = *p++;
+ 			break;
+ 		case '?':
+ 			if (*q == '\0')
+ 				return 0;
+ 			mb = mbnext(q);
+ 			q += (mb >> 8) + (mb & 0xff);
+ 			continue;
+ 		case '*':
+ 			c = *p;
+@@ -1916,21 +1916,21 @@
+ 				return 1;
+ 			if (c == '?' || c == '[')
+ 				c = CTLESC;
+ 			for (;;) {
+ 				if (c != (char)CTLESC) {
+ 					/* Stop should be null-terminated
+ 					 * as it is passed as a string to
+ 					 * strpbrk(3).
+ 					 */
+ 					const char stop[] = {
+-						c, CTLESC, CTLMBCHAR, 0,
++						c, (signed char) CTLESC, (signed char) CTLMBCHAR, 0,
+ 					};
+ 					q = strpbrk(q, stop);
+ 					if (!q)
+ 						return 0;
+ 				}
+ 				if (pmatch(p, q))
+ 					return 1;
+ 				if (!*q)
+ 					break;
+ 				mb = mbnext(q);
+

@@ -1,6 +1,6 @@
 pkg_name=glslang
 version=16.3.0
-revision=1
+revision=2
 build_style=cmake
 short_desc="Khronos reference front end for GLSL, ESSL and SPIR-V"
 home_page="https://github.com/KhronosGroup/glslang"
@@ -9,6 +9,11 @@ dist_files="https://github.com/KhronosGroup/glslang/archive/${version}.tar.gz>gl
 checksum="5ef6be9b19c33bafdffbe8e7cc44d640e96a9da0effd8b4e2e68a2238966317c2e"
 depends="spirv-tools"
 make_depends="cmake python spirv-tools"
+
+pre_configure() {
+    LDFLAGS="$LDFLAGS -Wl,-z,stack-size=2097152"
+    export LDFLAGS
+}
 
 configure_args="
     -DALLOW_EXTERNAL_SPIRV_TOOLS=ON

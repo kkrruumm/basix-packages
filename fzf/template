@@ -1,0 +1,59 @@
+pkg_name=fzf
+version=0.74.4
+revision=1
+build_style=go
+short_desc="Command-line fuzzy finder"
+home_page="https://github.com/junegunn/fzf"
+license="MIT"
+dist_files="https://github.com/junegunn/fzf/archive/refs/tags/v${version}.tar.gz>fzf-${version}.tar.gz"
+checksum="f8ca99ea8e78366b72f0d340986e413f349e86031fc886316fef57fcea7e7a50"
+wrk_src="fzf-$version"
+
+# shell: keybinds and ** completion scripts for bash/zsh/fish
+# these are not normal shell completions
+#
+# tmux: the fzf-tmux wrapper script
+# the base fzf.vim plugin + its help file
+
+use_flags="man -shell -tmux -vim -doc"
+
+# fzf-tmux is a bash script that drives tmux
+depends="$(use_if tmux "bash tmux")"
+make_depends="go"
+
+allow_network=yes
+
+go_package="."
+go_ldflags="-s -w -X main.version=$version -X main.revision=basix"
+
+# -s -w already strips
+no_strip=yes
+
+post_install() {
+    if use man; then
+        bman man/man1/fzf.1
+        use tmux && bman man/man1/fzf-tmux.1
+    fi
+
+    use tmux && bbin bin/fzf-tmux
+
+    if use shell; then
+        for _f in shell/completion.bash shell/completion.zsh shell/completion.fish \
+                  shell/key-bindings.bash shell/key-bindings.zsh shell/key-bindings.fish; do
+            bdata "$_f"
+        done
+    fi
+
+    if use vim; then
+        binstall plugin/fzf.vim 0644 /usr/share/vim/vimfiles/plugin
+        binstall doc/fzf.txt 0644 /usr/share/vim/vimfiles/doc
+    fi
+
+    if use doc; then
+        bdoc README.md
+        bdoc ADVANCED.md
+        bdoc CHANGELOG.md
+    fi
+
+    blicense LICENSE
+}

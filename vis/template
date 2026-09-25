@@ -1,0 +1,35 @@
+pkg_name=vis
+version=0.9.20260819
+revision=1
+build_style=configure
+short_desc="Modern, legacy free, simple yet efficient vim-like editor"
+home_page="https://github.com/martanne/vis"
+license="ISC"
+_commit=254329d9f4f1df1158397080d403f3f112918aff
+dist_files="https://github.com/martanne/vis/archive/${_commit}.tar.gz>vis-${version}.tar.gz"
+checksum="53644c6c7d8c8511537c329aa145d73c2989e30298e13039f73833d4792c1205"
+wrk_src="vis-${_commit}"
+
+use_flags="lua man doc"
+
+depends="ncurses $(usev lua lua-lpeg)"
+make_depends="ncurses pkgconf $(usev lua)"
+
+configure_args="
+    --enable-curses
+    $(use_enable lua)
+    --disable-lpeg-static
+    --disable-tre
+    --disable-selinux
+    --disable-acl"
+
+_vis_version=v0.9-501-g254329d9
+_vis_api=3234
+make_build_args="VERSION=${_vis_version} API=${_vis_api}"
+make_install_args="VERSION=${_vis_version} API=${_vis_api}"
+
+post_install() {
+    use man || brm /usr/share/man
+    use doc || brm /usr/share/doc
+    blicense LICENSE
+}

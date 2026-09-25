@@ -1,0 +1,35 @@
+pkg_name=lua-lpeg
+version=1.1.0
+revision=1
+build_style=custom
+short_desc="Pattern-matching library for Lua based on parsing expression grammars"
+home_page="https://www.inf.puc-rio.br/~roberto/lpeg/"
+license="MIT"
+dist_files="https://www.inf.puc-rio.br/~roberto/lpeg/lpeg-${version}.tar.gz"
+checksum="69fc6eaa1a1749937b7216e3d655cf47a7802ffe407f8f857664e999a7b7377b"
+wrk_src="lpeg-${version}"
+
+depends="lua"
+make_depends="lua"
+
+use_flags="doc"
+
+# the lua abi the module is built for, has to match the lua package
+_lua_ver=5.5
+
+do_build() {
+    $make_cmd $make_jobs CC="$CC" DLLFLAGS="-shared -fPIC" LUADIR=/usr/include
+}
+
+do_install() {
+    binstall lpeg.so 0755 "/usr/lib/lua/$_lua_ver"
+    binstall re.lua 0644 "/usr/share/lua/$_lua_ver"
+}
+
+post_install() {
+    if use doc; then
+        bdoc lpeg.html
+        bdoc re.html
+        bdoc HISTORY
+    fi
+}

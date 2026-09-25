@@ -1,6 +1,6 @@
 pkg_name=loksh
 version=7.9
-revision=1
+revision=2
 build_style=meson
 short_desc="Linux port of OpenBSD's ksh"
 home_page="https://github.com/dimkr/loksh"
@@ -8,14 +8,14 @@ license="Public Domain"
 dist_files="https://github.com/dimkr/loksh/releases/download/${version}/loksh-${version}.tar.xz"
 checksum="46b1951763c857368e3441c6a28f6392c95c00256efc68536a4b16f2acea8d36"
 
-# static needs netbsd-curses built with its static flag when curses is on
+# static needs ncurses static libs when curses is on
 #
 # vi-mode here is just a default to either set +o emacs or set +o vi
 # this is off by default so the shell at least feels normal
 use_flags="man curses -vi-mode -static -doc"
 
-depends="$(usev curses netbsd-curses)"
-make_depends="meson $(use_if curses "netbsd-curses pkgconf")"
+depends="$(usev curses ncurses)"
+make_depends="meson $(use_if curses "ncurses pkgconf")"
 
 meson_args="$(use_if static -Dprefer_static=true)"
 

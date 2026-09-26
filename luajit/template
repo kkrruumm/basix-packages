@@ -1,0 +1,30 @@
+pkg_name=luajit
+version=2.1.1785192264
+revision=1
+_commit=faaf663340347a78b22ed94c63c24fe090bd9784
+build_style=gnu-makefile
+short_desc="Just-In-Time Compiler for Lua"
+home_page="https://www.luajit.org"
+license="MIT"
+dist_files="https://github.com/LuaJIT/LuaJIT/archive/${_commit}.tar.gz"
+checksum="a69ee6b07920d11822f25f55f0ae7da380b009e6f756d2266f4ff27dbbaed940"
+wrk_src="LuaJIT-${_commit}"
+
+use_flags="man -lua52compat -static"
+
+make_build_target="amalg"
+make_build_args="
+    $(use_if lua52compat XCFLAGS=-DLUAJIT_ENABLE_LUA52COMPAT)
+    $(use_if static TARGET_LDFLAGS=-static)"
+
+pre_build() {
+    make_build_args="$make_build_args CC=$CC"
+
+    [ "$(cat .relver)" = "${version##*.}" ] ||
+        die "luajit: .relver is $(cat .relver), version says ${version##*.}"
+}
+
+post_install() {
+    use man || brm /usr/share/man
+    blicense COPYRIGHT
+}

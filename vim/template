@@ -1,12 +1,12 @@
 pkg_name=vim
-version=9.2.0506
-revision=3
+version=9.2.1031
+revision=1
 build_style=gnu-configure
 short_desc="Vi Improved, a highly configurable text editor"
 home_page="https://www.vim.org"
 license="Vim"
 dist_files="https://github.com/vim/vim/archive/refs/tags/v${version}.tar.gz>vim-${version}.tar.gz"
-checksum="13d3418343bca356cac6cf75f66ec3a9328d8a300265474a51ad626219029c33c2"
+checksum="c9e369b907f2bc6fd9cfe318abb573da90cb37b6b4acd5460a576b4ae38478c9"
 depends="ncurses"
 make_depends="ncurses"
 

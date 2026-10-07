@@ -1,7 +1,10 @@
 # place your kernel configuration at files/dotconfig
+# the use flags here are largely just broad strokes ways to cut down build time
+# use flags here only disable stuff so if you override this stuff
+# in your custom kernel config, it'll stick as long as these are left "enabled"
 pkg_name=linux-stable
 version=7.2.9
-revision=1
+revision=2
 build_style=custom
 short_desc="The Linux kernel"
 home_page="https://kernel.org"
@@ -12,27 +15,114 @@ wrk_src="linux-$version"
 
 # bison and flex build kconfig, libelf builds objtool, libressl signs modules
 # and builds the trusted keyring, perl is used by several scripts for whatever fuckin reason
-make_depends="bison flex libelf libressl perl gtar"
+# bash runs scripts/config for the use flags below
+make_depends="bison flex libelf libressl perl gtar bash"
 
-use_flags="modules"
+use_flags="modules -debug -localmodconfig
+    gpu_amd gpu_intel -gpu_nvidia gpu_virt
+    wifi -bluetooth sound sound_soc -media
+    -nic_server -infiniband -scsi_hba -server wwan
+    virt_guest kvm -embedded sensors -input_extra -staging thunderbolt"
 
 # vmlinuz is a compressed image and modules carry relocations, stripping
 # either of them produces something that does not boot or does not load
 no_strip=yes
 
+_kdisable() {
+    ./scripts/config $(printf -- '-d %s ' "$@")
+}
+
 do_configure() {
     [ -f "$FILESDIR/dotconfig" ] || die "no kernel config at files/dotconfig"
     cp -f "$FILESDIR/dotconfig" .config
 
-    # accept defaults for anything the config predates without prompting
+    # tie the kernel release to the package revision so not everything is like
+    # 7.2.9_1 despite revision bumps
+    ./scripts/config --set-str LOCALVERSION "_$revision" -d LOCALVERSION_AUTO
+
+    # modules are installed stripped and only bzImage is shipped, so debug
+    # info is thrown away anyway, skip generating it unless asked for
+    if ! use debug; then
+        _kdisable DEBUG_INFO DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT \
+                  DEBUG_INFO_DWARF4 DEBUG_INFO_DWARF5 DEBUG_INFO_BTF
+        ./scripts/config -e DEBUG_INFO_NONE
+    fi
+
+    use gpu_amd || _kdisable DRM_AMDGPU DRM_RADEON HSA_AMD
+    use gpu_intel || _kdisable DRM_I915 DRM_XE DRM_GMA500
+    use gpu_nvidia || _kdisable DRM_NOUVEAU DRM_NOVA
+    use gpu_virt || _kdisable DRM_VMWGFX DRM_QXL DRM_VIRTIO_GPU DRM_VBOXVIDEO \
+        DRM_BOCHS DRM_CIRRUS_QEMU DRM_HYPERV DRM_XEN_FRONTEND
+
+    use wifi || _kdisable WLAN CFG80211 MAC80211
+    use bluetooth || _kdisable BT
+    # this disables ALL sound stuff
+    use sound || _kdisable SOUND
+    # sof/asoc, needed by a lot of newer laptops but not really by much else
+    use sound_soc || _kdisable SND_SOC
+    # webcams, tv/dvb tuners, ir receivers
+    # RC_CORE is kept because amdgpu and some DRM stuff needs it
+    use media || _kdisable MEDIA_SUPPORT STAGING_MEDIA RC_DECODERS RC_DEVICES RC_MAP
+
+    # datacenter and a bunch of dead nic drivers, normal ones like the intel e1000e,
+    # realtek, etc are left alone
+    use nic_server || _kdisable \
+        NET_VENDOR_MELLANOX NET_VENDOR_CHELSIO NET_VENDOR_QLOGIC NET_VENDOR_CAVIUM \
+        NET_VENDOR_HUAWEI NET_VENDOR_EMULEX NET_VENDOR_SOLARFLARE NET_VENDOR_NETRONOME \
+        NET_VENDOR_PENSANDO NET_VENDOR_AMAZON NET_VENDOR_MICROSOFT NET_VENDOR_GOOGLE \
+        NET_VENDOR_FUNGIBLE NET_VENDOR_ENGLEDER NET_VENDOR_META NET_VENDOR_WANGXUN \
+        NET_VENDOR_MARVELL NET_VENDOR_CISCO NET_VENDOR_BROCADE NET_VENDOR_SUN \
+        NET_VENDOR_DEC NET_VENDOR_ADAPTEC NET_VENDOR_3COM NET_VENDOR_ALTEON \
+        NET_VENDOR_8390 NET_VENDOR_NI NET_VENDOR_NATSEMI NET_VENDOR_RDC NET_VENDOR_SIS \
+        NET_VENDOR_VIA NET_VENDOR_TEHUTI NET_VENDOR_DLINK NET_VENDOR_ARC NET_VENDOR_AGERE \
+        NET_VENDOR_ALACRITECH NET_VENDOR_SMSC NET_VENDOR_SOCIONEXT NET_VENDOR_XILINX \
+        NET_VENDOR_VERTEXCOM NET_VENDOR_LITEX NET_VENDOR_MICREL NET_VENDOR_MICROCHIP \
+        NET_VENDOR_MICROSEMI NET_VENDOR_MYRI NET_VENDOR_OKI NET_VENDOR_PACKET_ENGINES \
+        NET_VENDOR_SEEQ NET_VENDOR_STMICRO NET_VENDOR_TI NET_VENDOR_WIZNET \
+        NET_VENDOR_XIRCOM NET_VENDOR_ADI NET_VENDOR_DAVICOM NET_VENDOR_CORTINA \
+        NET_VENDOR_FARADAY NET_VENDOR_HISILICON \
+        BNXT BNX2X I40E ICE IXGBE IAVF IDPF FM10K NET_DSA
+
+    use infiniband || _kdisable INFINIBAND
+    # raid and hba cards, plain ahci/nvme/usb storage are not affected
+    use scsi_hba || _kdisable SCSI_LOWLEVEL FUSION
+    use server || _kdisable EDAC NUMA NVME_TARGET TARGET_CORE ISCSI_TCP \
+        DM_MULTIPATH SCSI_FC_ATTRS OCFS2_FS GFS2_FS CEPH_FS DLM
+    use wwan || _kdisable WWAN ATM IEEE802154 6LOWPAN CAN NFC HAMRADIO WAN
+
+    use virt_guest || _kdisable HYPERV XEN VMWARE_VMCI VMWARE_BALLOON VMXNET3 VBOXGUEST
+    use kvm || _kdisable KVM VFIO
+
+    use embedded || _kdisable IIO COMEDI MTD W1 USB_GADGET PARPORT FIREWIRE GREYBUS \
+        SPMI MOST SIOX SLIMBUS MCB IPACK NTB FPGA SOUNDWIRE \
+        CHROME_PLATFORMS SURFACE_PLATFORMS GNSS COUNTER
+
+    # hwmon is used by too much shit to turn it off, can drop the sensors though
+    use sensors || _kdisable $(sed -n 's/^CONFIG_\(SENSORS_[A-Z0-9_]*\)=[ym]$/\1/p' .config)
+    # legacy gameport/serial/parport joysticks, embedded touchscreen controllers
+    # and old serial tablets
+    use input_extra || _kdisable INPUT_TOUCHSCREEN INPUT_TABLET \
+        $(sed -n 's/^CONFIG_\(JOYSTICK_[A-Z0-9_]*\)=[ym]$/\1/p' .config | grep -v '^JOYSTICK_XPAD')
+    use staging || _kdisable STAGING
+    use thunderbolt || _kdisable USB4
+
+    # accept defaults for anything the config predates without prompting,
+    # and drop whatever depended on the options turned off above
     $make_cmd olddefconfig
+
+    # trim to the modules loaded on this machine right now, anything not
+    # plugged in at build time will be missing from the result. reads
+    # /proc/modules directly so kmod is not needed in the build root
+    if use localmodconfig; then
+        [ -r /proc/modules ] || die "localmodconfig needs a running modular kernel (/proc/modules)"
+        $make_cmd LSMOD=/proc/modules localmodconfig
+        $make_cmd olddefconfig
+    fi
 }
 
 do_build() {
+    # with CONFIG_MODULES=y the default target builds modules too
     $make_cmd $make_jobs
-    if use modules; then
-        $make_cmd $make_jobs modules
-    fi
 }
 
 do_install() {

@@ -1,0 +1,25 @@
+# this package is for non busybox setups that otherwise will have no provider of seedrng
+pkg_name=seedrng
+version=1.0
+revision=1
+_commit=f68fee47892fc528847682afc003097dcee9a765
+build_style=custom
+short_desc="seed the kernel rng from seed files across reboots"
+home_page="https://git.zx2c4.com/seedrng/about/"
+license="GPL-2.0-only OR Apache-2.0 OR MIT OR BSD-1-Clause OR CC0-1.0"
+dist_files="https://git.zx2c4.com/seedrng/snapshot/seedrng-${_commit}.tar.xz"
+checksum="3d6674618743588aad951c18a9dcc68c5306309f6dc4f2366a1755d0dd1d4e54"
+wrk_src="seedrng-${_commit}"
+
+use_flags="-static"
+
+do_build() {
+    use static && LDFLAGS="$LDFLAGS -static"
+    $CC $CFLAGS -std=gnu99 -o seedrng seedrng.c $LDFLAGS
+}
+
+do_install() {
+    bbin seedrng
+    [ -f COPYING ] && blicense COPYING
+    :
+}

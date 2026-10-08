@@ -1,33 +1,40 @@
 pkg_name=docbook-xsl
 version=1.79.2
-revision=2
+revision=3
 build_style=custom
 short_desc="Docbook XSL modular stylesheets"
 home_page="https://github.com/docbook/xslt10-stylesheets"
 license="MIT"
-dist_files="https://github.com/docbook/xslt10-stylesheets/releases/download/release/${version}/docbook-xsl-nons-${version}.tar.bz2"
-checksum="43108052fa95ac65959cb22e8650e816bf8f60cc2cde50beb791102a7a03921725"
+dist_files="https://github.com/docbook/xslt10-stylesheets/releases/download/release/${version}/docbook-xsl-nons-${version}.tar.bz2
+ https://github.com/docbook/xslt10-stylesheets/releases/download/release/${version}/docbook-xsl-${version}.tar.bz2"
+checksum="43108052fa95ac65959cb22e8650e816bf8f60cc2cde50beb791102a7a03921725 474377c6e37c7d04e21d6d04843d94f10e6da119a95c21b35c74037d270a6c7c"
 wrk_src="docbook-xsl-nons-$version"
 depends="docbook-xml libxml2"
 make_depends="libxml2"
 
 do_build() { :; }
 
-do_install() {
-    bmkdir /usr/share/xsl/docbook
-    for _d in common eclipse epub fo highlighting html htmlhelp javahelp \
-              lib manpages params profiling roundtrip template website \
-              xhtml xhtml-1_1 xhtml5 catalog.xml VERSION VERSION.xsl; do
-        [ -e "$_d" ] && cp -R "$_d" "$DESTDIR/usr/share/xsl/docbook/"
+_dbx_install() {
+    bmkdir "$2"
+    for _d in assembly common eclipse epub epub3 fo highlighting html htmlhelp \
+              javahelp lib manpages params profiling roundtrip slides template \
+              webhelp website xhtml xhtml-1_1 xhtml5 catalog.xml VERSION VERSION.xsl; do
+        [ -e "$1/$_d" ] && cp -R "$1/$_d" "$DESTDIR$2/"
     done
-
     for _t in rewriteURI rewriteSystem; do
-        xmlcatalog --noout --add "$_t" \
-            "http://docbook.sourceforge.net/release/xsl/current/" \
-            "file:///usr/share/xsl/docbook/" \
-            "$DESTDIR/usr/share/xsl/docbook/catalog.xml"
+        xmlcatalog --noout --add "$_t" "$3" "file://$2/" "$DESTDIR$2/catalog.xml"
     done
-    :
+}
+
+do_install() {
+    _dbx_install . /usr/share/xsl/docbook \
+        http://docbook.sourceforge.net/release/xsl/current/
+    _dbx_install "$build_dir/docbook-xsl-$version" /usr/share/xsl/docbook-ns \
+        http://docbook.sourceforge.net/release/xsl-ns/current/
+
+    xmlcatalog --noout --add nextCatalog "" \
+        "file:///usr/share/xsl/docbook-ns/catalog.xml" \
+        "$DESTDIR/usr/share/xsl/docbook/catalog.xml"
 }
 
 post_install() {

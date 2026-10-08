@@ -1,0 +1,18 @@
+#!/bin/sh
+# args: <pkg_name> <root> <version>
+#
+# this is just here to put CAP_NET_RAW on ping
+[ "$1" = iputils ] || exit 0
+
+_ping=${2%/}/usr/bin/ping
+[ -f "$_ping" ] || exit 0
+
+command -v setcap >/dev/null || {
+    echo "iputils: setcap not found, ping will only work as root" >&2
+    exit 1
+}
+
+setcap cap_net_raw+p "$_ping" || {
+    echo "iputils: setcap failed on $_ping, does the filesystem support xattrs?" >&2
+    exit 1
+}

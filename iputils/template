@@ -1,0 +1,55 @@
+pkg_name=iputils
+version=20250605
+revision=1
+build_style=meson
+short_desc="Useful utilities for Linux networking (including ping)"
+home_page="https://github.com/iputils/iputils"
+license="BSD-3-Clause AND GPL-2.0-or-later"
+dist_files="https://github.com/iputils/iputils/archive/refs/tags/${version}.tar.gz>iputils-${version}.tar.gz"
+checksum="c05eb1d5e4e1a38be810494a214b1cc44c37926362b13123d32c5d7f0e7554b9"
+
+use_flags="man caps -suid arping clockdiff tracepath -nls"
+
+depends="libcap"
+make_depends="libcap linux-headers meson pkgconf
+ $(use_if man "docbook-xsl libxslt")
+ $(use_if nls gettext-tiny)"
+
+# caps ships a post-install hook that runs setcap cap_net_raw+p on ping after every
+# install or upgrade, same thing void does in its INSTALL script, libcap
+# (a runtime dep already) provides setcap
+#
+# suid is the fallback for filesystems without xattrs
+configure_args="
+    -DUSE_CAP=true
+    -DUSE_IDN=false
+    -DNO_SETCAP_OR_SUID=true
+    -DINSTALL_SYSTEMD_UNITS=false
+    -DBUILD_PING=true
+    -DBUILD_HTML_MANS=false
+    $(use_bool arping BUILD_ARPING)
+    $(use_bool clockdiff BUILD_CLOCKDIFF)
+    $(use_bool tracepath BUILD_TRACEPATH)
+    $(use_bool man BUILD_MANS)
+    $(use_bool nls USE_GETTEXT)"
+
+pre_configure() {
+    export XML_CATALOG_FILES=/usr/share/xsl/docbook/catalog.xml
+}
+
+post_install() {
+    # without one of these, unprivileged ping only works when net.ipv4.ping_group_range
+    # covers the users gid
+    if use caps && use suid; then
+        die "iputils: caps and suid are mutually exclusive, pick one"
+    fi
+    if use caps; then
+        binstall "$FILESDIR/hooks/post-install" 0755 /etc/bpm/hooks/post-install iputils
+    fi
+    if use suid; then
+        chmod 4755 "$DESTDIR/usr/bin/ping"
+    fi
+
+    blicense Documentation/LICENSE.BSD3
+    blicense Documentation/LICENSE.GPL2
+}

@@ -1,12 +1,12 @@
 pkg_name=flatpak
-version=1.18.1
+version=1.18.4
 revision=1
 build_style=meson
 short_desc="Application sandboxing and distribution framework"
 home_page="https://flatpak.org"
 license="LGPL-2.1-or-later"
 dist_files="https://github.com/flatpak/flatpak/releases/download/${version}/flatpak-${version}.tar.xz"
-checksum="0f8bb02c9e810bbf182c8ecc4d6f70a2737e146496aa89986915bf6570bedc53"
+checksum="4e113b953ff8c7a83bf44e049474149fc0079a14b2e0302605d5456bf759a933"
 
 use_flags="man seccomp wayland xauth"
 

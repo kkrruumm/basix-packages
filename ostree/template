@@ -1,12 +1,12 @@
 pkg_name=ostree
-version=2026.1
-revision=2
+version=2026.4
+revision=1
 build_style=gnu-configure
 short_desc="Git-like content addressed filesystem tree store"
 home_page="https://github.com/ostreedev/ostree"
 license="LGPL-2.0-or-later"
 dist_files="https://github.com/ostreedev/ostree/releases/download/v${version}/libostree-${version}.tar.xz"
-checksum="ee3661a0579aa430b1b57e8754fbfa5d8575d1e72ea0dda294a03062b9013b4b"
+checksum="f38ef63183e928338c02d3345c3f7f365104dfddf096a07c19dc1d9eaa240985"
 wrk_src="libostree-$version"
 
 use_flags="fuse man"

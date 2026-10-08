@@ -1,12 +1,12 @@
 pkg_name=bubblewrap
-version=0.11.2
+version=0.13.0
 revision=1
 build_style=meson
 short_desc="Unprivileged sandboxing tool"
 home_page="https://github.com/containers/bubblewrap"
 license="LGPL-2.0-or-later"
 dist_files="https://github.com/containers/bubblewrap/releases/download/v${version}/bubblewrap-${version}.tar.xz"
-checksum="84bbaab8e6674e165401e96d0d3f342015dc043b2528ae30c1da039fb6a06c80"
+checksum="d163442617eac820adf7cb327d6fcbd6559f6272d0fa27c936a4f597f726616f"
 depends="libcap"
 make_depends="libcap meson pkgconf $(use_if man "docbook-xsl libxslt")"
 
@@ -14,7 +14,6 @@ use_flags="man"
 
 
 configure_args="
-    -Drequire_userns=true
     -Dtests=false
     $(use_if man -Dman=enabled -Dman=disabled)"
 

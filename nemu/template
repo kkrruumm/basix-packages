@@ -1,0 +1,50 @@
+pkg_name=nemu
+version=3.5.0
+revision=1
+build_style=cmake
+short_desc="Ncurses UI for QEMU"
+home_page="https://github.com/nemuTUI/nemu"
+license="BSD-2-Clause"
+dist_files="https://github.com/nemuTUI/nemu/archive/v${version}.tar.gz>nemu-${version}.tar.gz"
+checksum="9869e526902f588cab96044de462b753b7411d2e6a430e3823610f057db0fc70"
+
+# ovf: import of OVA/OVF stuff
+# dbus: desktop notifications on vm state change
+# remote: TLS remote control API
+# usb: usb passthrough, libudev-zero doesnt have a real hwdb so device names
+#   might be kinda fucked up
+# the svg network map (NM_WITH_NETWORK_MAP) needs graphviz which isn't packaged
+use_flags="ovf remote usb man -dbus -completions -nls"
+
+depends="qemu ncurses sqlite json-c
+ $(use_if ovf "libxml2 libarchive")
+ $(use_if dbus dbus)
+ $(use_if remote libressl)
+ $(use_if usb "libusb libudev-zero")"
+make_depends="cmake pkgconf gettext-tiny linux-headers ncurses sqlite json-c
+ $(use_if ovf "libxml2 libarchive")
+ $(use_if dbus dbus)
+ $(use_if remote libressl)
+ $(use_if usb "libusb libudev-zero")"
+
+configure_args="
+    -DGIT_TAG_VERSION=v${version}
+    -DNM_WITH_NCURSES=OFF
+    -DNM_WITH_QEMU=OFF
+    -DNM_WITH_NETWORK_MAP=OFF
+    $(use_cmake ovf NM_WITH_OVF_SUPPORT)
+    $(use_cmake dbus NM_WITH_DBUS)
+    $(use_cmake remote NM_WITH_REMOTE)
+    $(use_cmake usb NM_WITH_USB)"
+
+pre_configure() {
+    CFLAGS="$CFLAGS -D_GNU_SOURCE"
+}
+
+post_install() {
+    use man || brm /usr/share/man
+    use nls || brm /usr/share/locale
+    use completions || brm /usr/share/bash-completion /usr/share/zsh
+
+    blicense LICENSE
+}

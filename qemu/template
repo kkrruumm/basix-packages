@@ -1,14 +1,14 @@
 # this is x86_64 only for the time being
 # (the only arch that matters anyway)
 pkg_name=qemu
-version=11.1.1
-revision=4
+version=11.1.2
+revision=1
 build_style=configure
 short_desc="Generic machine emulator and virtualizer"
 home_page="https://www.qemu.org"
 license="GPL-2.0-only, LGPL-2.1-only"
 dist_files="https://download.qemu.org/qemu-${version}.tar.xz"
-checksum="9cda9512c997d0ec176add30ff4f4531d4882681eb12e98ba5c7d11cb4cf610c"
+checksum="0c0ce4290270c88ae4fb419bbbec191fda6608850e3d80dea4294341004fc5ea"
 
 use_flags="slirp curses spice gnutls png jpeg zstd curl bzip2 aio seccomp usb
  cap-ng xkbcommon gtk opengl alsa tpm

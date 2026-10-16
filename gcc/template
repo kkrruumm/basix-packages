@@ -1,6 +1,6 @@
 pkg_name=gcc
 version=16.2.0
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="GNU compiler collection"
 home_page="https://gcc.gnu.org"
@@ -30,6 +30,8 @@ configure_args="
     $(use_enable nls)
     --enable-checking=release
     --enable-__cxa_atexit
+    --enable-host-pie
+    --enable-host-bind-now
     --enable-default-pie
     --enable-default-ssp
     --enable-shared
@@ -46,6 +48,32 @@ pre_configure() {
     # use lib, not lib64
     bsed '/m64=/s/lib64/lib/' ../gcc/config/i386/t-linux64
     bsed 's/lib64/lib/'       ../gcc/config/i386/linux64.h
+
+    # libcpp passes non literal format strings and wont build with these
+    CFLAGS="$CFLAGS -Wno-error=format-security"
+    CXXFLAGS="$CXXFLAGS -Wno-error=format-security"
+
+    # CFLAG sanitization for just gcc
+    _tflags=
+    for _f in $CFLAGS; do
+        case $_f in
+            -O*|-pipe|-march=*|-mtune=*) _tflags="$_tflags $_f";;
+        esac
+    done
+
+    # same for ldflags
+    _tldflags=
+    for _f in $LDFLAGS; do
+        case $_f in
+            -pie|-static-pie) ;;
+            *) _tldflags="$_tldflags $_f" ;;
+        esac
+    done
+
+    CFLAGS_FOR_TARGET=${_tflags# }
+    CXXFLAGS_FOR_TARGET=${_tflags# }
+    LDFLAGS_FOR_TARGET=${_tldflags# }
+    export CFLAGS CXXFLAGS CFLAGS_FOR_TARGET CXXFLAGS_FOR_TARGET LDFLAGS_FOR_TARGET
 
     # a full bootstrap is only needed when the host compiler is a
     # different major version

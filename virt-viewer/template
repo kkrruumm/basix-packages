@@ -1,12 +1,13 @@
 pkg_name=virt-viewer
 version=11.0
-revision=2
+revision=3
 build_style=meson
 short_desc="Graphical console client for virtual machines"
 home_page="https://virt-manager.org"
 license="GPL-2.0-or-later"
-dist_files="https://releases.pagure.org/virt-viewer/virt-viewer-${version}.tar.xz"
-checksum="fec81588b29b75a5b35005094a93b469a70547eb7b795eca0df26224558d9e96"
+dist_files="https://gitlab.com/virt-viewer/virt-viewer/-/archive/v${version}/virt-viewer-v${version}.tar.gz"
+checksum="3e7b6f409e5034772175582e98a5d765b4a1ac66a991ea04fbe3aac624087bb1"
+wrk_src="virt-viewer-v${version}"
 
 use_flags="libvirt spice -vnc -ovirt -vte"
 

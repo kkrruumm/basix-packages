@@ -1,6 +1,6 @@
 pkg_name=sway
 version=1.12
-revision=2
+revision=3
 build_style=meson
 short_desc="Tiling Wayland compositor compatible with i3"
 home_page="https://swaywm.org"
@@ -22,6 +22,7 @@ make_depends="cairo json-c libdrm libevdev libinput libudev-zero libxkbcommon me
  $(use_if tray basu)"
 
 configure_args="
+    -Dwerror=false
     -Dzsh-completions=false
     -Dfish-completions=false
     -Dbash-completions=false

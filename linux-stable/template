@@ -3,14 +3,14 @@
 # use flags here only disable stuff so if you override this stuff
 # in your custom kernel config, it'll stick as long as these are left "enabled"
 pkg_name=linux-stable
-version=7.2.10
+version=7.2.11
 revision=1
 build_style=custom
 short_desc="The Linux kernel"
 home_page="https://kernel.org"
 license="GPL-2.0-only"
 dist_files="https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-${version}.tar.xz"
-checksum="6adecc1a3ca8d2bac4f952a0c1aa28ef37903c2acfea30716538e22dc3c6bb50"
+checksum="41a066f01230203a07cb4ee0d4e4a1e5150cc2a5eb745ca4f2528f9588f525e3"
 wrk_src="linux-$version"
 
 # bison and flex build kconfig, libelf builds objtool, libressl signs modules

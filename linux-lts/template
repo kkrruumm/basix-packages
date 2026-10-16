@@ -3,14 +3,14 @@
 # use flags here only disable stuff so if you override this stuff
 # in your custom kernel config, it'll stick as long as these are left "enabled"
 pkg_name=linux-lts
-version=6.18.56
+version=6.18.57
 revision=1
 build_style=custom
 short_desc="The Linux kernel"
 home_page="https://kernel.org"
 license="GPL-2.0-only"
 dist_files="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${version}.tar.xz"
-checksum="e7d2895ae0c1a3151f5a8795643113c736f94996fe86956e5174246b9f018a8f"
+checksum="1bddca9f212775978c85d3b9d31844b271f4e70314db28390165f706ac40b9d9"
 wrk_src="linux-$version"
 
 # bison and flex build kconfig, libelf builds objtool, libressl signs modules

@@ -2,7 +2,7 @@
 # master already wants 22.x so like dont bump this without checking what the new one wants
 pkg_name=zig
 version=0.16.0
-revision=3
+revision=4
 build_style=cmake
 short_desc="General purpose programming language and toolchain"
 home_page="https://ziglang.org"
@@ -14,6 +14,7 @@ wrk_src="zig-$version"
 # the llvm package must be built with LLVM_TARGETS_TO_BUILD=all for this
 depends="llvm clang lld zlib zstd"
 make_depends="clang cmake lld llvm zlib zstd"
+use_depends="llvm:all-targets"
 
 configure_args="
     -DZIG_SHARED_LLVM=ON

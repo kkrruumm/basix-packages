@@ -1,12 +1,13 @@
 pkg_name=loksh
 version=7.9
-revision=2
+revision=3
 build_style=meson
 short_desc="Linux port of OpenBSD's ksh"
 home_page="https://github.com/dimkr/loksh"
 license="Public Domain"
 dist_files="https://github.com/dimkr/loksh/releases/download/${version}/loksh-${version}.tar.xz"
 checksum="46b1951763c857368e3441c6a28f6392c95c00256efc68536a4b16f2acea8d36"
+register_shell="/usr/bin/ksh /bin/ksh"
 
 # static needs ncurses static libs when curses is on
 #

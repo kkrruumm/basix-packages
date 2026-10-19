@@ -1,0 +1,27 @@
+# this is sdl2s compat thing instead of real sdl2
+pkg_name=SDL2
+version=2.32.74
+revision=2
+build_style=cmake
+short_desc="SDL2 API implemented on top of SDL3 (sdl2-compat)"
+home_page="https://github.com/libsdl-org/sdl2-compat"
+license="Zlib"
+dist_files="https://github.com/libsdl-org/sdl2-compat/releases/download/release-${version}/sdl2-compat-${version}.tar.gz"
+checksum="13b64bb311eaa2e2f0bcafb8e4d3290ed3db7423a3a557e9dfc3a98c99a50271"
+wrk_src="sdl2-compat-${version}"
+
+# x11: only adds X11 structs to the SDL_syswm API, headers only at build time
+use_flags="-x11 -static"
+
+depends="SDL3"
+make_depends="cmake SDL3
+ $(use_if x11 "libX11 xorgproto")"
+
+configure_args="
+    -DSDL2COMPAT_TESTS=OFF
+    $(use_cmake x11 SDL2COMPAT_X11)
+    $(use_cmake static SDL2COMPAT_STATIC)"
+
+post_install() {
+    blicense LICENSE.txt
+}

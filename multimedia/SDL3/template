@@ -1,0 +1,75 @@
+pkg_name=SDL3
+version=3.4.18
+revision=1
+build_style=cmake
+short_desc="Simple DirectMedia Layer (version 3)"
+home_page="https://www.libsdl.org"
+license="Zlib"
+dist_files="https://github.com/libsdl-org/SDL/releases/download/release-${version}/SDL3-${version}.tar.gz"
+checksum="702610ba672a774ae8dab82a58cb8e8bf3f79041150f5a2a8186cbae045b5729"
+
+# kmsdrm: fullscreen on a vt with no compositor
+# libusb: lets hidapi talk to a few controllers that don't show up as hidraw
+# dbus: screensaver inhibition, fcitx and the portal bits
+# vulkan: SDL_Vulkan_* helpers and the vulkan backend for SDL_gpu/renderer
+use_flags="alsa pipewire -pulseaudio -jack -sndio wayland -x11 kmsdrm dbus libusb
+ vulkan -static"
+
+depends="libudev-zero mesa
+ $(use_if alsa alsa-lib)
+ $(use_if pipewire pipewire)
+ $(use_if pulseaudio pulseaudio)
+ $(use_if jack jack)
+ $(use_if sndio sndio)
+ $(use_if wayland "libxkbcommon wayland")
+ $(use_if x11 "libX11 libXext")
+ $(use_if kmsdrm libdrm)
+ $(use_if dbus dbus)
+ $(use_if libusb libusb)
+ $(use_if vulkan vulkan-loader)"
+make_depends="cmake libudev-zero linux-headers pkgconf xorgproto
+ $(use_if alsa alsa-lib)
+ $(use_if pipewire pipewire)
+ $(use_if pulseaudio pulseaudio)
+ $(use_if jack jack)
+ $(use_if sndio sndio)
+ $(use_if wayland "libxkbcommon wayland wayland-protocols")
+ $(use_if x11 "libX11 libXext xorgproto")
+ $(use_if kmsdrm "libdrm mesa")
+ $(use_if dbus dbus)
+ $(use_if libusb libusb)"
+
+configure_args="
+    -DSDL_SHARED=ON
+    -DSDL_RPATH=OFF
+    -DSDL_DEPS_SHARED=OFF
+    -DSDL_CLOCK_GETTIME=ON
+    -DSDL_TESTS=OFF
+    -DSDL_INSTALL_TESTS=OFF
+    -DSDL_TEST_LIBRARY=OFF
+    -DSDL_EXAMPLES=OFF
+    -DSDL_OPENGL=ON
+    -DSDL_OPENGLES=ON
+    -DSDL_LIBUDEV=ON
+    -DSDL_HIDAPI=ON
+    -DSDL_IBUS=OFF
+    -DSDL_LIBURING=OFF
+    -DSDL_RPI=OFF
+    -DSDL_VIVANTE=OFF
+    -DSDL_WAYLAND_LIBDECOR=OFF
+    $(use_cmake alsa SDL_ALSA)
+    $(use_cmake pipewire SDL_PIPEWIRE)
+    $(use_cmake pulseaudio SDL_PULSEAUDIO)
+    $(use_cmake jack SDL_JACK)
+    $(use_cmake sndio SDL_SNDIO)
+    $(use_cmake wayland SDL_WAYLAND)
+    $(use_cmake x11 SDL_X11)
+    $(use_cmake kmsdrm SDL_KMSDRM)
+    $(use_cmake dbus SDL_DBUS)
+    $(use_cmake libusb SDL_HIDAPI_LIBUSB)
+    $(use_cmake vulkan SDL_VULKAN)
+    $(use_cmake static SDL_STATIC)"
+
+post_install() {
+    blicense LICENSE.txt
+}

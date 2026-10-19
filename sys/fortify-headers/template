@@ -1,0 +1,15 @@
+pkg_name=fortify-headers
+version=3.0.2
+revision=1
+build_style=custom
+short_desc="Standalone _FORTIFY_SOURCE implementation for musl"
+home_page="https://github.com/jvoisin/fortify-headers"
+license="0BSD"
+dist_files="https://github.com/jvoisin/fortify-headers/archive/refs/tags/${version}.tar.gz>fortify-headers-${version}.tar.gz"
+checksum="19dfa50e7d5e28667e5fb01ea3e04280f2eeb5920c8920a9dcc6f6ab3a47a699"
+
+do_install() {
+    bcopy include/. /usr/include/fortify
+    find "$DESTDIR/usr/include/fortify" -type f -exec chmod 0644 {} +
+    blicense LICENSE
+}

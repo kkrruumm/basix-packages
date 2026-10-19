@@ -1,0 +1,38 @@
+pkg_name=SDL2_image
+version=2.8.12
+revision=1
+build_style=cmake
+short_desc="Image loading library for SDL2"
+home_page="https://github.com/libsdl-org/SDL_image"
+license="Zlib"
+dist_files="https://github.com/libsdl-org/SDL_image/releases/download/release-${version}/SDL2_image-${version}.tar.gz"
+checksum="7b1a9b8c37b5c2c80591ddb99cc7dda72db1759fbb32146841292bce83ce38f2"
+
+# png, jpeg and webp go through the system libraries instead of the bundled stb_image
+# every other format like (bmp, gif, qoi, svg, tga, xpm, ...) is builtin
+#
+# not exposed because their libraries aren't packaged: avif, tiff, jxl
+use_flags="png jpeg webp"
+
+depends="SDL2
+ $(use_if png libpng)
+ $(use_if jpeg libjpeg-turbo)
+ $(use_if webp libwebp)"
+make_depends="cmake pkgconf SDL2
+ $(use_if png libpng)
+ $(use_if jpeg libjpeg-turbo)
+ $(use_if webp libwebp)"
+
+configure_args="
+    -DSDL2IMAGE_VENDORED=OFF
+    -DSDL2IMAGE_STRICT=ON
+    -DSDL2IMAGE_DEPS_SHARED=OFF
+    -DSDL2IMAGE_BACKEND_STB=OFF
+    -DSDL2IMAGE_SAMPLES=OFF
+    -DSDL2IMAGE_TESTS=OFF
+    -DSDL2IMAGE_AVIF=OFF
+    -DSDL2IMAGE_TIF=OFF
+    -DSDL2IMAGE_JXL=OFF
+    $(use_cmake png SDL2IMAGE_PNG)
+    $(use_cmake jpeg SDL2IMAGE_JPG)
+    $(use_cmake webp SDL2IMAGE_WEBP)"

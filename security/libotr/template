@@ -1,0 +1,31 @@
+pkg_name=libotr
+version=4.1.1
+revision=1
+build_style=gnu-configure
+short_desc="Off-the-Record messaging library"
+home_page="https://otr.cypherpunks.ca"
+license="LGPL-2.1-only"
+dist_files="https://otr.cypherpunks.ca/libotr-${version}.tar.gz"
+checksum="8e919b531f6e8d22926c57499b3ad90ab87e9d62d68b4ec2a24c58fb865105d6"
+
+# tools: otr_parse, otr_modify, etc
+#   any xmpp clients or otherwise shouldnt need these
+use_flags="man -tools"
+
+depends="libgcrypt"
+make_depends="autoconf automake libgcrypt libtool"
+
+configure_args="--disable-static"
+
+pre_configure() {
+    autoreconf -fi
+}
+
+post_install() {
+    if ! use tools || ! use man; then
+        brm /usr/share/man
+    fi
+    use tools || brm /usr/bin
+
+    blicense COPYING.LIB
+}

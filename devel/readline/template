@@ -1,0 +1,69 @@
+pkg_name=readline
+version=8.3.6
+revision=1
+build_style=gnu-configure
+short_desc="GNU line editing and history library"
+home_page="https://tiswww.cwru.edu/php/chet/readline/rltop.html"
+license="GPL-3.0-or-later"
+
+# version is <release>.<patchlevel>, upstream ships the release tarball
+# plus a -p0 patch per patchlevel, all of them get fetched and applied in order
+_rlver=${version%.*}
+_rlpl=${version##*.}
+_rlpfx=readline$(printf '%s' "$_rlver" | tr -d .)
+dist_files="https://ftp.gnu.org/gnu/readline/readline-${_rlver}.tar.gz"
+_i=1
+while [ "$_i" -le "$_rlpl" ]; do
+    dist_files="$dist_files https://ftp.gnu.org/gnu/readline/readline-${_rlver}-patches/${_rlpfx}-$(printf '%03d' "$_i")"
+    _i=$((_i + 1))
+done
+unset _i
+
+# sometimes i wish i could kick gnus ass
+checksum="7109f094062bda387a0c16b4875375b96e36437bebbbd8d8f91bb27ba01d687f
+87c85e44081abbf9d5cdca786b0c0bca5de3165163ee941475c951158331733a
+3b28dac250e1f078ad412920dccdeafe64502107df8a233a84c60a7c4fb7559a
+c618e7352e4f72a17bdc4dc69c5c9af94443be72bce5bfa475104b659926cbe2
+7ef52e38ed59c7e32ff2adf0d20322d8d2d437a0f813fc422fbde0d72ebdb1de
+eb261741b880aecedfa66595fa301fb63bfc549cee22ba2231675e3ee2fb0bf6
+297dd7ab1517d7303479b5ffa6de71e18982b5e5d7fe525ee0ff748910cf952b
+"
+
+wrk_src="readline-${_rlver}"
+
+depends="ncurses"
+make_depends="ncurses"
+
+use_flags="man static -doc"
+
+configure_args="
+    --with-curses
+    --with-shared-termcap-library
+    --enable-multibyte
+    --enable-shared
+    --disable-install-examples
+    $(use_enable static)
+    bash_cv_termcap_lib=libncursesw"
+
+do_patch() {
+    _i=1
+    while [ "$_i" -le "$_rlpl" ]; do
+        _p=$_rlpfx-$(printf '%03d' "$_i")
+        sub "patch $_p"
+        patch -p0 -i "$SOURCEDIR/$_p"
+        _i=$((_i + 1))
+    done
+
+    # still apply anything in patches/
+    apply_patches
+}
+
+post_install() {
+    brm /usr/share/info
+    
+    # empty bindir
+    rmdir "$DESTDIR/usr/bin" 2>/dev/null || :
+
+    use man || brm /usr/share/man
+    use doc || brm "/usr/share/doc/$pkg_name"
+}

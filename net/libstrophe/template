@@ -1,0 +1,36 @@
+pkg_name=libstrophe
+version=0.14.0
+revision=1
+build_style=gnu-configure
+short_desc="Minimal XMPP library written in C"
+home_page="https://strophe.im/libstrophe/"
+license="GPL-3.0-only OR MIT"
+dist_files="https://github.com/strophe/libstrophe/releases/download/${version}/libstrophe-${version}.tar.xz"
+checksum="444eea8cb5e274e60afd7076e25cedf50194d2d2c78c17d026dacc1622e00793"
+
+# ssl: tls via libressl, without this only plaintext connections work
+#   which almost no servers accept
+# zlib: XEP-0138 stream compression
+# libxml2: use libxml2 as the xml parser instead of expat
+use_flags="ssl zlib -libxml2 -static"
+
+depends="$(use_if libxml2 libxml2 expat)
+ $(use_if ssl libressl)
+ $(use_if zlib zlib)"
+make_depends="pkgconf
+ $(use_if libxml2 libxml2 expat)
+ $(use_if ssl libressl)
+ $(use_if zlib zlib)"
+
+configure_args="
+    --disable-examples
+    --enable-shared
+    $(use_enable static)
+    $(use_enable ssl tls)
+    $(use_enable zlib)
+    $(use_if libxml2 --with-libxml2)"
+
+post_install() {
+    blicense COPYING
+    blicense MIT-LICENSE.txt
+}

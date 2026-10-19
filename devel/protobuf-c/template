@@ -1,0 +1,24 @@
+pkg_name=protobuf-c
+version=1.5.2
+revision=1
+build_style=gnu-configure
+short_desc="Protocol Buffers implementation in C"
+home_page="https://github.com/protobuf-c/protobuf-c"
+license="BSD-2-Clause"
+dist_files="https://github.com/protobuf-c/protobuf-c/releases/download/v${version}/protobuf-c-${version}.tar.gz"
+checksum="12674c45a6e83db4ab28d35bb6dd0c43869cb7bd25557197bc6c66a3e9c3a40c"
+
+# protoc: build the protoc-c/protoc-gen-c code generator
+use_flags="protoc -static"
+
+depends="$(use_if protoc protobuf)"
+make_depends="pkgconf $(use_if protoc protobuf)"
+
+configure_args="
+    --enable-shared
+    $(use_enable static)
+    $(use_enable protoc)"
+
+post_install() {
+    blicense LICENSE
+}

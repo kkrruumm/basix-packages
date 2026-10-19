@@ -1,0 +1,64 @@
+pkg_name=profanity
+version=0.19.0
+revision=1
+build_style=meson
+short_desc="Console based XMPP client"
+home_page="https://profanity-im.github.io"
+license="GPL-3.0-or-later"
+dist_files="https://github.com/profanity-im/profanity/releases/download/${version}/profanity-${version}.tar.xz"
+checksum="79a5d9b88b89d2aa382591ea68d2cd959a6db21857f3a1eb7e76ea11afdce1c9"
+
+# notify: desktop notifs through libnotify
+# pgp: XEP-0027 and OX (XEP-0373) via gpgme
+# otr: Off-the-Record via libotr, legacy, prefer omemo if your group all supports it
+# omemo: OMEMO (XEP-0384) via libomemo-c, the build chain pulls in protobuf and abseil-cpp
+# python: python plugin support
+# cplugins: C plugin support
+# gtk: tray icon and clipboard paste (/paste) via gtk3
+# pixbuf: scale avatars before uploading them via gdk-pixbuf
+# themes: install the bundled color themes
+use_flags="man doc themes otr omemo -notify -pgp -python -cplugins -gtk -pixbuf"
+
+depends="curl glib libstrophe ncurses readline sqlite
+ $(use_if notify libnotify)
+ $(use_if pgp gpgme)
+ $(use_if otr libotr)
+ $(use_if omemo "libomemo-c libgcrypt")
+ $(use_if python python)
+ $(use_if gtk gtk3)
+ $(use_if pixbuf gdk-pixbuf)"
+make_depends="curl glib libstrophe meson ncurses pkgconf readline sqlite
+ $(use_if notify libnotify)
+ $(use_if pgp gpgme)
+ $(use_if otr libotr)
+ $(use_if omemo "libomemo-c libgcrypt")
+ $(use_if python python)
+ $(use_if gtk gtk3)
+ $(use_if pixbuf gdk-pixbuf)"
+
+use_depends="libstrophe:ssl curl:ssl"
+
+configure_args="
+    -Dtests=false
+    $(use_if notify -Dnotifications=enabled -Dnotifications=disabled)
+    $(use_if pgp -Dpgp=enabled -Dpgp=disabled)
+    $(use_if otr -Dotr=enabled -Dotr=disabled)
+    $(use_if omemo -Domemo=enabled -Domemo=disabled)
+    -Domemo-backend=libomemo-c
+    -Domemo-qrcode=disabled
+    -Dxscreensaver=disabled
+    -Dspellcheck=disabled
+    $(use_if python -Dpython-plugins=enabled -Dpython-plugins=disabled)
+    $(use_if cplugins -Dc-plugins=enabled -Dc-plugins=disabled)
+    $(use_if gtk -Dicons-and-clipboard=enabled -Dicons-and-clipboard=disabled)
+    $(use_if pixbuf -Dgdk-pixbuf=enabled -Dgdk-pixbuf=disabled)
+    $(use_bool themes install_themes)"
+
+pre_configure() {
+    bsed "s/^is_release = .*/is_release = true/" meson.build
+}
+
+post_install() {
+    use man || brm /usr/share/man
+    use doc || brm "/usr/share/doc/$pkg_name"
+}

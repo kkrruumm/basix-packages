@@ -1,0 +1,20 @@
+pkg_name=libomemo-c
+version=0.5.1
+revision=1
+build_style=meson
+short_desc="Signal protocol implementation with OMEMO (XEP-0384) support"
+home_page="https://github.com/dino/libomemo-c"
+license="GPL-3.0-only"
+dist_files="https://github.com/dino/libomemo-c/releases/download/v${version}/libomemo-c-${version}.tar.gz"
+checksum="22edb3d84fd7b96dbb2a1009fc419dfb29f3ab5f575ffe8d2d56620cf2e7be79"
+
+depends="protobuf-c"
+make_depends="meson pkgconf protobuf protobuf-c"
+use_depends="protobuf-c:protoc"
+
+# tests want check and openssl
+configure_args="-Dtests=false"
+
+post_install() {
+    blicense LICENSE
+}

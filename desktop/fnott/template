@@ -1,0 +1,33 @@
+pkg_name=fnott
+version=1.8.0
+revision=1
+build_style=meson
+short_desc="Keyboard driven and lightweight Wayland notification daemon"
+home_page="https://codeberg.org/dnkl/fnott"
+license="MIT"
+dist_files="https://codeberg.org/dnkl/fnott/archive/${version}.tar.gz>fnott-${version}.tar.gz"
+checksum=""9ba4f3786440c413be8812150aa871fbc4aa713806a1c067dd8138ca3971bfbe
+wrk_src="fnott"
+
+use_flags="man -doc -completions"
+
+depends="dbus fcft fontconfig libpng pixman wayland"
+make_depends="dbus fcft fontconfig libpng meson pixman pkgconf tllist wayland
+ wayland-protocols
+ $(use_if man scdoc)"
+
+configure_args="
+-Dwerror=false
+$(use_if man -Ddocs=enabled -Ddocs=disabled)"
+
+post_install() {
+    brm /usr/lib/systemd
+
+    if ! use completions; then
+        brm /usr/share/zsh
+        brm /usr/share/fish
+    fi
+    use doc || brm "/usr/share/doc/$pkg_name"
+
+    blicense LICENSE
+}

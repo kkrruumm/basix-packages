@@ -1,6 +1,6 @@
 pkg_name=brogue
 version=1.15.1
-revision=3
+revision=4
 build_style=gnu-makefile
 short_desc="Roguelike dungeon crawl with a focus on clarity over complexity"
 home_page="https://github.com/tmewett/BrogueCE"
@@ -8,16 +8,17 @@ license="AGPL-3.0-only"
 dist_files="https://github.com/tmewett/BrogueCE/archive/refs/tags/v${version}.tar.gz>brogue-${version}.tar.gz"
 checksum="478e37be4c8ecfb568acd7bba355b85a4d59d98d2afa49e342fb867c0966f9aa"
 wrk_src="BrogueCE-${version}"
-depends="ncurses"
-make_depends="ncurses pkgconf"
 
-use_flags="doc"
+use_flags="doc graphics"
 
-# GRAPHICS pulls in SDL2 and SDL2_image
+depends="ncurses $(use_if graphics "SDL2 SDL2_image")"
+make_depends="ncurses pkgconf $(use_if graphics "SDL2 SDL2_image")"
+use_depends="$(use_if graphics SDL2_image:png)"
+
 make_build_args="
     SYSTEM=LINUXLIKE
     TERMINAL=YES
-    GRAPHICS=NO
+    GRAPHICS=$(use_if graphics YES NO)
     RELEASE=YES
     DATADIR=/usr/share/brogue"
 
@@ -35,6 +36,10 @@ do_install() {
     bbin "$FILESDIR/brogue"
 
     bdata bin/keymap.txt
+
+    if use graphics; then
+        bcopy bin/assets /usr/share/brogue
+    fi
 
     if use doc; then
         bdoc README.md

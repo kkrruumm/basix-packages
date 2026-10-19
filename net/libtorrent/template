@@ -1,0 +1,23 @@
+# remember to bump both this and rtorrent at the same time
+pkg_name=libtorrent
+version=0.16.25
+revision=1
+build_style=gnu-configure
+short_desc="BitTorrent library written in C++, used by rtorrent"
+home_page="https://github.com/rakshasa/libtorrent"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/rakshasa/libtorrent/archive/refs/tags/v${version}.tar.gz>libtorrent-${version}.tar.gz"
+checksum="1d3950ad019e46bc956a29d6e8ee64a9060f4069b17555e22bf3bae337a2e812"
+
+depends="curl libressl zlib"
+make_depends="autoconf automake curl libressl libtool pkgconf zlib"
+
+configure_args="--disable-debug"
+
+pre_configure() {
+    autoreconf -fi
+}
+
+post_install() {
+    blicense COPYING
+}

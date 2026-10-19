@@ -1,0 +1,34 @@
+pkg_name=rtorrent
+version=0.16.25
+revision=1
+build_style=gnu-configure
+short_desc="Ncurses BitTorrent client based on libtorrent"
+home_page="https://github.com/rakshasa/rtorrent"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/rakshasa/rtorrent/releases/download/v${version}/rtorrent-${version}.tar.gz"
+checksum="62c7bb819a6602258bd81e95575c1b83ec89bcabf1bbd1d4019a2db81d4b1303"
+
+# ncurses: the curses UI, without this rtorrent is daemon-only
+#   and driven over xmlrpc
+# xmlrpc: xmlrpc over scgi via the bundled tinyxml2, this is for
+#   stuff like rutorrent, flood, pyrosimple, etc
+# lua: lua scripting via lua.* commands
+use_flags="ncurses xmlrpc -lua doc"
+
+depends="libtorrent zlib
+ $(use_if ncurses ncurses)
+ $(use_if lua lua)"
+make_depends="libtorrent pkgconf zlib
+ $(use_if ncurses ncurses)
+ $(use_if lua lua)"
+
+configure_args="
+    --disable-debug
+    $(use_if ncurses --with-ncursesw --without-ncurses)
+    $(usev xmlrpc --with-xmlrpc-tinyxml2)
+    $(use_if lua --with-lua=yes --with-lua=no)"
+
+post_install() {
+    use doc && bdoc doc/rtorrent.rc
+    blicense COPYING
+}

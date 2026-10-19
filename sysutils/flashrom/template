@@ -1,0 +1,44 @@
+pkg_name=flashrom
+version=1.8.0
+revision=1
+build_style=meson
+short_desc="Utility for reading, writing, verifying and erasing flash chips"
+home_page="https://www.flashrom.org"
+license="GPL-2.0-or-later"
+dist_files="https://github.com/flashrom/flashrom/archive/refs/tags/v${version}.tar.gz>flashrom-${version}.tar.gz"
+checksum="fbbdf6fe2fc9c08ade7d34a76270d576d644f7ea41fd3d37ad7a6a9aa89709d4"
+wrk_src="flashrom-${version}"
+
+# rpmc: Replay Protected Monotonic Counter commands (JESD260), needs libcrypto
+# no man flag, the man page is generated with sphinx which isn't packaged
+use_flags="rpmc -completions -static"
+
+# programmer=auto (the default) enables every programmer whose library is here
+#   libpci: internal (flashing the running machine) and the pci cards
+#   libusb: ch341a_spi, ch347_spi, dediprog, stlinkv3_spi, dirtyjtag_spi and
+#      the rest of the usb programmers
+# serprog, linux_spi, linux_mtd, buspirate_spi and dummy need nothing extra
+# not built because their libraries aren't packaged: ft2232_spi and
+# usbblaster_spi (libftdi1), jlink_spi (libjaylink)
+depends="libusb pciutils
+ $(use_if rpmc libressl)"
+make_depends="libusb linux-headers meson pciutils pkgconf
+ $(use_if rpmc libressl)"
+
+configure_args="
+    -Dsbindir=bin
+    -Dwerror=false
+    -Duse_internal_dmi=true
+    -Duse_git_version=disabled
+    -Dtests=disabled
+    -Dman-pages=disabled
+    -Ddocumentation=disabled
+    $(use_if rpmc -Drpmc=enabled -Drpmc=disabled)
+    $(use_if completions -Dbash_completion=enabled -Dbash_completion=disabled)"
+
+post_install() {
+    # this is always built
+    use static || brm /usr/lib/libflashrom.a
+
+    blicense COPYING.rst
+}

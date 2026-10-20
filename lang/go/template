@@ -1,12 +1,12 @@
 pkg_name=go
-version=1.26.5
+version=1.26.10
 revision=1
 build_style=custom
 short_desc="Go programming language toolchain"
 home_page="https://go.dev"
 license="BSD-3-Clause"
 dist_files="https://go.dev/dl/go${version}.src.tar.gz"
-checksum="4647bddc3b15cc2adc587492d0346262c65007bf6cd00e486c53e7d4f7a4be8c12"
+checksum="0c042ede877c7be6a0c3ff683bc38e290026e619310e51e9b2820dd8f001da75"
 wrk_src="go"
 depends="gcc"
 make_depends="go-bootstrap"

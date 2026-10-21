@@ -6,7 +6,7 @@ short_desc="basix package manager"
 home_page="https://github.com/kkrruumm/bpm"
 license="MIT"
 dist_files="https://github.com/kkrruumm/bpm/archive/refs/tags/${version}.tar.gz"
-checksum="7b48707f531dcdda823e672afd05f60663a7458754d25980a824f4caedd7e45d"
+checksum="8cc38f8c3c1aa4277c249d7fee39c17250a9c585357b27300ca5f5af250203dd"
 
 depends="b3sum curl git"
 

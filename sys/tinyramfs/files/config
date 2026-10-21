@@ -1,0 +1,18 @@
+# /etc/tinyramfs/config, see tinyramfs(5)
+
+# get your UUID from blkid
+root=UUID=
+
+# root_type=xfs
+
+# the order these hooks come in matters, so mdevd must come before luks for example
+hooks="mdevd"
+
+# initramfs image compression, recommended zstd
+compress="zstd -9"
+
+# copy only hostonly modules
+# hostonly=true
+
+# enable this if your kernel was built with use flag -modules
+# monolith=true

@@ -1,0 +1,20 @@
+#!/bin/sh
+# args: <pkg_name> <root> <version>
+#
+# nukes /boot/initramfs-<release>.img once its associated is gone
+#
+# the db entry and files are already gone when post-remove runs so
+# instead of guessing the release from a package version this just removes
+# every image whose vmlinuz-<version> and /usr/lib/modules/<version> no longer exist
+
+root=${2%/}
+
+for _img in "$root"/boot/initramfs-*.img; do
+    [ -f "$_img" ] || continue
+    _r=${_img##*/initramfs-}; _r=${_r%.img}
+    [ -e "$root/boot/vmlinuz-$_r" ] && continue
+    [ -d "$root/usr/lib/modules/$_r" ] && continue
+    rm -f "$_img" && printf '%s\n' "tinyramfs: removed $_img"
+done
+
+exit 0

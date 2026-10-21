@@ -1,0 +1,48 @@
+#!/bin/sh
+# args: <pkg_name> <root> <version>
+# 
+# this generates /boot/initramfs-<version>.img for every kernel the package that
+# was just installed ships, a package is considered a kernel by this script if
+# the manigest for it has a vmlinuz in it so it works for whatever kernel package name
+
+root=${2%/}
+in_root() { if [ -n "$root" ]; then chroot "$root" "$@"; else "$@"; fi; }
+
+# an upgrade or revbump on a kernel is an install operation and the old vmlinuz
+# and its modules are dropped without remove hooks so the image for the release that just
+# got nuked is cleaned up here, only images that have a missing kernel and modules both are cleaned
+prune() {
+    for _img in "$root"/boot/initramfs-*.img; do
+        [ -f "$_img" ] || continue
+        _r=${_img##*/initramfs-}; _r=${_r%.img}
+        [ -e "$root/boot/vmlinuz-$_r" ] && continue
+        [ -d "$root/usr/lib/modules/$_r" ] && continue
+        rm -f "$_img" && printf '%s\n' "tinyramfs: removed stale $_img"
+    done
+}
+
+_m=$root/var/db/bpm/installed/$1/manifest
+[ -f "$_m" ] || exit 0
+_rels=$(sed -n 's|^/boot/vmlinuz-\(.*[^/]\)$|\1|p' "$_m")
+[ -n "$_rels" ] || exit 0
+
+[ -x "$root/usr/bin/tinyramfs" ] || exit 0
+if [ ! -f "$root/etc/tinyramfs/config" ]; then
+    printf '%s\n' "tinyramfs: no /etc/tinyramfs/config, not generating an initramfs for $1" >&2
+    exit 1
+fi
+
+_rc=0
+for _rel in $_rels; do
+    if [ ! -d "$root/usr/lib/modules/$_rel" ] &&
+       ! grep -q '^[[:space:]]*monolith=..*' "$root/etc/tinyramfs/config"; then
+        printf '%s\n' "tinyramfs: $1 has no modules for $_rel, set monolith=1 in /etc/tinyramfs/config" >&2
+        _rc=1; continue
+    fi
+    printf '%s\n' "tinyramfs: generating /boot/initramfs-$_rel.img"
+    # the image can end up holding keyfiles from the luks hook
+    ( umask 0077; in_root /usr/bin/tinyramfs -f -k "$_rel" "/boot/initramfs-$_rel.img" ) || _rc=1
+done
+
+prune
+exit "$_rc"

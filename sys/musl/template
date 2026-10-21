@@ -1,6 +1,6 @@
 pkg_name=musl
 version=1.2.6
-revision=1
+revision=2
 build_style=configure
 short_desc="musl libc"
 home_page="https://musl.libc.org"

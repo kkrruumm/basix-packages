@@ -2,7 +2,7 @@
 # (the only arch that matters anyway)
 pkg_name=qemu
 version=11.1.2
-revision=1
+revision=2
 build_style=configure
 short_desc="Generic machine emulator and virtualizer"
 home_page="https://www.qemu.org"
@@ -11,7 +11,7 @@ dist_files="https://download.qemu.org/qemu-${version}.tar.xz"
 checksum="0c0ce4290270c88ae4fb419bbbec191fda6608850e3d80dea4294341004fc5ea"
 
 use_flags="slirp curses spice gnutls png jpeg zstd curl bzip2 aio seccomp usb
- cap-ng xkbcommon gtk opengl alsa tpm
+ cap-ng xkbcommon gtk opengl alsa tpm virtfs
  -usbredir -vnc -pipewire -bridge-helper -guest-agent -i386 -nls"
 
 depends="glib pixman zlib
@@ -124,7 +124,7 @@ configure_args="
     $(use_if usbredir --enable-usb-redir --disable-usb-redir)
     --disable-vde
     --disable-virglrenderer
-    --disable-virtfs
+    $(use_if virtfs --enable-virtfs --disable-virtfs)
     --disable-vnc-sasl
     --disable-vte
     --disable-xen

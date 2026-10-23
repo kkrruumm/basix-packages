@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+fdmove -c 2 1
+/usr/lib/nitro/need mdevd --
+mdevd-coldplug -O4

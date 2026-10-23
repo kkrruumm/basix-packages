@@ -1,0 +1,10 @@
+#!/bin/sh
+# nitro runs this script after all other services have been stopped
+# and all leftover processes killed
+#
+# after it exists, nitro remounts / ro and syncs
+for stage in swap random-seed loopback mount-fs; do
+    /bin/sh /usr/lib/nitro/scripts/$stage down
+done
+
+exit 0

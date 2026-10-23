@@ -1,6 +1,6 @@
 pkg_name=android-tools
 version=37.0.0
-revision=1
+revision=2
 build_style=cmake
 short_desc="Android platform tools (adb, fastboot and friends)"
 home_page="https://github.com/nmeum/android-tools"
@@ -60,8 +60,9 @@ post_install() {
     rmdir "$DESTDIR/usr/share/android-tools" 2>/dev/null || :
 
     if use services; then
-        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
-        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+        bcopy "$FILESDIR/sv/." /etc/sv
+        find "$DESTDIR/etc/sv" -type f \
+            \( -name run -o -name setup -o -name finish \) -exec chmod 0755 {} +
     fi
 
     blicense LICENSE

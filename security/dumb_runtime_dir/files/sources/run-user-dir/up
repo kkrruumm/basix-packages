@@ -1,2 +1,0 @@
-if { mkdir -p /run/user }
-chmod 0755 /run/user

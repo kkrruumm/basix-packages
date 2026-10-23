@@ -1,0 +1,6 @@
+#!/bin/execlineb -S1
+# this is the default logger for all services
+# if a service doesnt specify a logger itself,
+# this will automatically take over for that
+if { mkdir -p /var/log/${1} }
+s6-log -d3 -- n3 s1000000 T /var/log/${1}

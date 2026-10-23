@@ -1,48 +1,36 @@
 # this package has no upstream, everything it ships lives in files/
 pkg_name=baseinit
-version=2.0.0
-revision=5
+version=3.0.0
+revision=1
 build_style=custom
 short_desc="the base basix boot sequence"
 home_page="https://github.com/kkrruumm/basix-packages"
 license="MIT"
 
-# mdevd is the only device manager basix supports for the time being
-depends="s6 s6-rc s6-linux-init s6-frontend execline skalibs mdevd"
+depends="nitro s6-log execline skalibs chpst mdevd"
 
 use_flags="gettys"
 
 do_build() { :; }
 
 do_install() {
-    # skeleton scripts, s6-linux-init-maker copies these into
-    # /etc/s6-linux-init/current/scripts, it does not run them from here so
-    # editing them means re-running /usr/lib/s6-linux-init/rebuild
-    for s in rc.init rc.shutdown rc.shutdown.final runlevel; do
-        binstall "$FILESDIR/skel/$s" 0755 /etc/s6-linux-init/skel
-    done
-
-    # helpers and boot script bodies, regular ass POSIX shell
-    binstall "$FILESDIR/rc.lib" 0644 /usr/lib/s6-rc
-    for s in "$FILESDIR"/scripts/*; do
-        binstall "$s" 0755 /usr/lib/s6-rc/scripts
-    done
-
-    # the package managers service store, definitions live under /usr/share so
-    # bpm owns them outright, which of them run at boot is repository state in
-    # /var/lib/s6-rc, so an upgrade can never reenable something a user may have turned off
-    bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+    bcopy "$FILESDIR/sv/." /etc/sv
     if ! use gettys; then
-        brm /usr/share/s6-rc/sources/getty-tty1 /usr/share/s6-rc/sources/getty-tty2
+        brm "/etc/sv/getty@"
     fi
-    find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
 
-    # the local store for service definitions the admin writes by hand, a
-    # startup or shutdown script here is just a oneshot
-    bmkdir /etc/s6-rc/sources /etc/s6-rc/compiled /var/lib/s6-rc
+    find "$DESTDIR/etc/sv" -type f \
+        \( -name run -o -name setup -o -name finish -o -name fatal -o -name final \) \
+        -exec chmod 0755 {} +
 
-    # repository upkeep, bpm does this instead of the sysadmin
-    # read: probably don't fuck with these, or do, i'm not your dad
-    binstall "$FILESDIR/hooks/20-s6-rc" 0755 /etc/bpm/hooks/post-install
-    binstall "$FILESDIR/hooks/20-s6-rc" 0755 /etc/bpm/hooks/post-remove
+    for s in SYS LOG@; do
+        bln "/etc/sv/$s" "/etc/nitro/$s"
+    done
+
+    # helpers and boot scripts, regular ass POSIX shell
+    binstall "$FILESDIR/rc.lib" 0644 /usr/lib/nitro
+    binstall "$FILESDIR/need" 0755 /usr/lib/nitro
+    for s in "$FILESDIR"/scripts/*; do
+        binstall "$s" 0755 /usr/lib/nitro/scripts
+    done
 }

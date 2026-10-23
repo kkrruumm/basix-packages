@@ -1,6 +1,6 @@
 pkg_name=baselayout
 version=1
-revision=5
+revision=6
 build_style=custom
 short_desc="Base filesystem layout and /etc defaults"
 home_page=""
@@ -13,7 +13,7 @@ checksum="0e25bf33c6d8eb18e0dd4ba0fcb5995da6fbc6b1f7686f84ddfd73bb4f01e2a7 83b5e
 do_install() {
     for d in boot dev etc/modules-load.d etc/sysctl.d etc home mnt opt run usr usr/bin usr/include usr/lib \
              usr/share var/cache var/local var/opt var/log var/log/old \
-             var/lib var/lib/misc var/empty var/service var/spool; do
+             var/lib var/lib/misc var/empty var/spool; do
         bmkdir -m 0755 "/$d"
     done
     for d in 1 2 3 4 5 6 7 8; do bmkdir -m 0755 "/usr/share/man/man$d"; done

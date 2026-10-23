@@ -1,6 +1,6 @@
 pkg_name=openssh
 version=10.5p1
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="OpenBSD secure shell, portable release"
 home_page="https://www.openssh.com"
@@ -68,7 +68,8 @@ post_install() {
         /usr/share/man/man8/ssh-sk-helper.8
 
     if use server && use services; then
-        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
-        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+        bcopy "$FILESDIR/sv/." /etc/sv
+        find "$DESTDIR/etc/sv" -type f \
+            \( -name run -o -name setup -o -name finish \) -exec chmod 0755 {} +
     fi
 }

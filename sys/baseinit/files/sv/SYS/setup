@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# the boot sequence
+#
+# nitro should have already mounted /run and /dev, this file is for
+# everything else that needs to happen before a service can run
+
+. /usr/lib/nitro/rc.lib
+
+# early services, the order these are in matters
+EARLY="mdevd mdevd-coldplug"
+
+# how long to wait for each of those, in seconds
+EARLY_TIMEOUT=60
+
+log "welcome to basix!"
+
+log "mounting pseudo filesystems..."
+mnt nosuid,noexec,nodev proc proc /proc
+mnt nosuid,noexec,nodev sysfs sys /sys
+mnt nosuid,noexec,nodev cgroup2 cgroup2 /sys/fs/cgroup
+mnt mode=0620,gid=5,nosuid,noexec devpts devpts /dev/pts
+mnt mode=1777,nosuid,nodev tmpfs shm /dev/shm
+
+mkdir -p /run/user
+mkdir -p -m 1777 /run/lock
+
+ln -sfn /proc/self/fd /dev/fd
+ln -sfn fd/0 /dev/stdin
+ln -sfn fd/1 /dev/stdout
+ln -sfn fd/2 /dev/stderr
+
+# the order these are in also matters
+for stage in devices fsck mount-fs hostname loopback sysctl random-seed swap; do
+    /bin/sh /usr/lib/nitro/scripts/$stage up
+done
+
+for sv in $EARLY; do
+    [ -d "/etc/nitro/$sv" ] || continue
+    log "starting $sv..."
+    nitroctl -t "$EARLY_TIMEOUT" start "$sv" ||
+        log "warning: $sv did not come up within ${EARLY_TIMEOUT}s, carrying on"
+done
+
+log "starting services..."
+exit 0

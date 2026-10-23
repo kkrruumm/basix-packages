@@ -1,0 +1,14 @@
+--- a/nitroctl.c	2026-04-24 13:35:05.000000000 +0000
++++ b/nitroctl.c	2026-10-23 00:26:43.427476710 +0000
+@@ -621,9 +621,9 @@
+ 		if (argc == 2) {
+ 			if (streq(argv[1], "0"))
+ 				cmd = "Shutdown";
+-			else if (streq(argv[1], "6") == 0)
++			else if (streq(argv[1], "6"))
+ 				cmd = "Reboot";
+-			else if (streq(argv[1], "q") == 0)
++			else if (streq(argv[1], "q"))
+ 				cmd = "scan";
+ 			else
+ 				goto init_usage;

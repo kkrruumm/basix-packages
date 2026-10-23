@@ -2,7 +2,7 @@
 # apply sysctl.d the conventional way: all candidates sorted by basename
 # across every directory, and for a given basename the first directory in the
 # search path wins
-. /usr/lib/s6-rc/rc.lib
+. /usr/lib/nitro/rc.lib
 case $1 in
 up)
     log "loading sysctl settings..."

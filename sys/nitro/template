@@ -1,0 +1,42 @@
+pkg_name=nitro
+version=0.8.1
+revision=1
+build_style=custom
+short_desc="Tiny but flexible init system and process supervisor"
+home_page="https://github.com/leahneukirchen/nitro"
+license="0BSD"
+dist_files="https://github.com/leahneukirchen/nitro/archive/refs/tags/v${version}.tar.gz>nitro-${version}.tar.gz"
+checksum="66d55f498814b6930464797f293ce5d20298b3f6909ae1973efe672f39ab9799"
+wrk_src="nitro-$version"
+
+use_flags="static -completions"
+
+do_build() {
+    # the makefile doesnt have an install target and hardcodes a bunch ofs tuff
+    $make_cmd $make_jobs CC="$CC" \
+        CFLAGS="$CFLAGS -Wall -Wno-unused-parameter" \
+        LDFLAGS="$LDFLAGS $(usev static -static)"
+}
+
+do_install() {
+    bbin nitro
+    bbin nitroctl
+
+    for c in init halt poweroff reboot; do
+        bln nitroctl "/usr/bin/$c"
+    done
+
+    bman nitro.8
+    bman nitroctl.1
+    bman halt.8
+    bln halt.8 /usr/share/man/man8/poweroff.8
+    bln halt.8 /usr/share/man/man8/reboot.8
+
+    if use completions; then
+        bcompletion contrib/_nitroctl zsh nitroctl
+    fi
+
+    bmkdir /etc/nitro
+
+    blicense LICENSE
+}

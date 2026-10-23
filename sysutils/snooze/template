@@ -1,6 +1,6 @@
 pkg_name=snooze
 version=0.6
-revision=3
+revision=4
 build_style=gnu-makefile
 short_desc="run a command at a particular time"
 home_page="https://github.com/leahneukirchen/snooze"
@@ -20,7 +20,8 @@ post_install() {
     binstall "$FILESDIR/run-periodic" 0755 /usr/lib/snooze
 
     if use services; then
-        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
-        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+        bcopy "$FILESDIR/sv/." /etc/sv
+        find "$DESTDIR/etc/sv" -type f \
+            \( -name run -o -name setup -o -name finish \) -exec chmod 0755 {} +
     fi
 }

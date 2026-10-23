@@ -1,0 +1,33 @@
+pkg_name=s6-log
+version=2.15.1.0
+revision=1
+build_style=configure
+short_desc="Logger from the s6 supervision suite"
+home_page="https://skarnet.org/software/s6/s6-log.html"
+license="ISC"
+dist_files="https://skarnet.org/software/s6/s6-${version}.tar.gz"
+checksum="0fa40d4cdc39ace536ca40e799fc3ffe51868718beedc1d074aafc315ea3d737"
+wrk_src="s6-$version"
+
+use_flags="-static doc"
+
+depends="$(use_if static '' skalibs)"
+make_depends="skalibs"
+
+configure_args="
+    --bindir=/usr/bin
+    --with-sysdeps=/usr/lib/skalibs/sysdeps
+    --disable-rpath
+    --disable-execline
+    $(use_if static --enable-allstatic --disable-allstatic)"
+
+# just the one binary, nothing else in s6 gets built
+make_build_target="s6-log"
+
+do_install() {
+    bbin s6-log
+    if use doc; then
+        bdoc doc/s6-log.html
+    fi
+    blicense COPYING
+}

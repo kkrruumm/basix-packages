@@ -1,6 +1,6 @@
 #!/bin/sh
 # rootfs read-write, then everything else in fstab
-. /usr/lib/s6-rc/rc.lib
+. /usr/lib/nitro/rc.lib
 case $1 in
 up)
     log "remounting rootfs read-write..."
@@ -11,8 +11,9 @@ up)
     mount -a -O no_netdev || sos
     ;;
 down)
-    # unmounting is done via s6-linux-init-unmountall, this is just here to
-    # make certain nothing is mid-write when that happens
+    sync
+    log "unmounting filesystems..."
+    umount -a -r || :
     sync
     ;;
 esac

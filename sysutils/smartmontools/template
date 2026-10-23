@@ -1,6 +1,6 @@
 pkg_name=smartmontools
 version=7.5
-revision=4
+revision=5
 build_style=gnu-configure
 short_desc="Tools to monitor S.M.A.R.T. attributes of storage devices"
 home_page="https://www.smartmontools.org"
@@ -25,7 +25,8 @@ post_install() {
     fi
 
     if use services; then
-        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
-        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+        bcopy "$FILESDIR/sv/." /etc/sv
+        find "$DESTDIR/etc/sv" -type f \
+            \( -name run -o -name setup -o -name finish \) -exec chmod 0755 {} +
     fi
 }

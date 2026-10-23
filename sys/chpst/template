@@ -1,0 +1,37 @@
+# only chpst out of runit, nitro does the supervising and s6-log the logging,
+# this is just for run scripts that need to change user, limits, env, etc
+pkg_name=chpst
+version=2.2.0
+revision=1
+build_style=custom
+short_desc="Run a program with a changed process state (from runit)"
+home_page="https://smarden.org/runit/chpst.8"
+license="BSD-3-Clause"
+dist_files="https://smarden.org/runit/runit-${version}.tar.gz"
+checksum="8c7b3d37fd65cc307fd2892e59ebf671ae3a48e4de56feb86500f0689ce91642"
+
+# the tarball unpacks into admin/runit-<version>
+wrk_src="admin/runit-$version"
+
+use_flags="-static"
+
+do_build() {
+    (
+        cd src
+
+        # djb style build, the compiler and linker lines are read from these two
+        # files, old school C so implicit declarations must not be fatal on newer
+        # compilers
+        printf '%s\n' "$CC $CFLAGS -std=gnu17 -Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=incompatible-pointer-types" > conf-cc
+        printf '%s\n' "$CC $LDFLAGS $(usev static -static)" > conf-ld
+
+        # the makefile builds every runit program by default, only chpst is wanted
+        $make_cmd chpst
+    )
+}
+
+do_install() {
+    bbin src/chpst
+    bman man/chpst.8
+    blicense package/COPYING
+}

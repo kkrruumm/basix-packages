@@ -1,4 +1,4 @@
-# /usr/lib/s6-rc/rc.lib - helpers shared by the boot scripts and rc.init
+# /usr/lib/nitro/rc.lib - init helpers
 
 log() {
     printf '=> %s\n' "$@"

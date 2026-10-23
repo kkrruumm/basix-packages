@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# /usr/lib/nitro/need <service>... [-- prog [args...]]
+#
+# this is kind of a cheat around nitro lacking dependencies
+# this should be invoked from your services setup scripts
+set -u
+
+deps=
+while [ $# -gt 0 ] && [ "$1" != -- ]; do
+    deps="$deps $1"
+    shift
+done
+[ $# -gt 0 ] && shift
+
+if [ -z "$deps" ]; then
+    echo 'usage: need <service>... [-- prog [args...]]' >&2
+    exit 100
+fi
+
+for sv in $deps; do
+    if [ ! -d "/etc/nitro/$sv" ]; then
+        printf 'need: %s is not enabled, ln -s /etc/sv/%s /etc/nitro first\n' "$sv" "$sv" >&2
+        exit 111
+    fi
+done
+
+# shellcheck disable=SC2086
+nitroctl start $deps || exit
+
+[ $# -gt 0 ] || exit 0
+exec "$@"

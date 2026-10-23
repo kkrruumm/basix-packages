@@ -1,0 +1,8 @@
+#!/bin/execlineb -P
+# -D 3 is for readiness, without it nitro won't know that mdevd is ready
+# and mdevd-coldplug would send uevents into the shadow realm
+#
+# -O 4 rebroadcasts every handled uevent on netlink group 4 which lets
+# mdevd-coldplug -O4 block until the last coldplug event
+fdmove -c 2 1
+mdevd -D 3 -O 4

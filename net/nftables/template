@@ -1,6 +1,6 @@
 pkg_name=nftables
 version=1.1.6
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="Netfilter tables userspace utility"
 home_page="https://netfilter.org/projects/nftables"
@@ -71,7 +71,8 @@ post_install() {
     bconf "$FILESDIR/nftables.conf"
 
     if use services; then
-        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
-        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+        bcopy "$FILESDIR/sv/." /etc/sv
+        find "$DESTDIR/etc/sv" -type f \
+            \( -name run -o -name setup -o -name finish \) -exec chmod 0755 {} +
     fi
 }

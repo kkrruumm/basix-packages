@@ -5,7 +5,7 @@
 #
 # snooze doesnt write the timefiles itself so this has to,
 # timestamp files are written even if the job fails because if the timestamp
-# doesn't change s6-supervise will restart the service and snooze will see
+# doesn't change nitro will restart the service and snooze will see
 # the old mtime, think it's late, exec again, and create a loop
 set -u
 

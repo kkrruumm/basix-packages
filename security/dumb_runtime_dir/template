@@ -1,6 +1,6 @@
 pkg_name=dumb_runtime_dir
 version=1.0.4
-revision=2
+revision=3
 build_style=gnu-makefile
 short_desc="PAM module that creates an XDG_RUNTIME_DIR on login"
 home_page="https://github.com/ifreund/dumb_runtime_dir"
@@ -18,7 +18,9 @@ pre_build() {
 
 post_install() {
     if use services; then
-        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
+        bcopy "$FILESDIR/sv/." /etc/sv
+        find "$DESTDIR/etc/sv" -type f \
+            \( -name run -o -name setup -o -name finish \) -exec chmod 0755 {} +
     fi
 
     blicense LICENSE

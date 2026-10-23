@@ -1,6 +1,6 @@
 #!/bin/sh
 # check the filesystems listed in fstab with / read only
-. /usr/lib/s6-rc/rc.lib
+. /usr/lib/nitro/rc.lib
 case $1 in
 up)
     log "remounting rootfs read-only..."
@@ -15,7 +15,7 @@ up)
         0|1) ;;
         2|3)
             log "filesystem repairs need a reboot to take effect, rebooting..."
-            reboot
+            nitroctl Reboot
             sleep 60
         ;;
         *)

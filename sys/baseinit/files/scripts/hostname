@@ -1,5 +1,5 @@
 #!/bin/sh
-. /usr/lib/s6-rc/rc.lib
+. /usr/lib/nitro/rc.lib
 case $1 in
 up)
     log "setting hostname..."

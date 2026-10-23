@@ -4,9 +4,9 @@
 # device manager can pick up
 #
 # coldplugging doesn't happen here, mdevd-coldplug tells the kernel to reemit
-# uevents, the mdevd longrun depends on this oneshot and the mdevd-coldplug oneshot
-# depends on the longrun being ready
-. /usr/lib/s6-rc/rc.lib
+# uevents, SYS/setup starts the mdevd service after this has run and the
+# mdevd-coldplug oneshot waits for mdevd to be ready
+. /usr/lib/nitro/rc.lib
 case $1 in
 up)
     log "loading modules for present devices..."

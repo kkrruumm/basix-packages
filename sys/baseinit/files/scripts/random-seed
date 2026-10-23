@@ -3,7 +3,7 @@
 # fresh one straight away, so an unclean shutdown can never leave two boots
 #
 # this should also create and set permissions on /var/lib/seedrng all by itself
-. /usr/lib/s6-rc/rc.lib
+. /usr/lib/nitro/rc.lib
 case $1 in
 up)
     log "seeding the kernel rng..."

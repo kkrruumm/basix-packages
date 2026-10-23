@@ -1,6 +1,6 @@
 pkg_name=dhcpcd
 version=10.3.2
-revision=2
+revision=3
 build_style=configure
 short_desc="DHCP and IPv6 router advertisement client"
 home_page="https://github.com/NetworkConfiguration/dhcpcd"
@@ -23,7 +23,8 @@ make_install_args="BINMODE=755"
 
 post_install() {
     if use services; then
-        bcopy "$FILESDIR/sources/." /usr/share/s6-rc/sources
-        find "$DESTDIR/usr/share/s6-rc/sources" -type f -name run -exec chmod 0755 {} +
+        bcopy "$FILESDIR/sv/." /etc/sv
+        find "$DESTDIR/etc/sv" -type f \
+            \( -name run -o -name setup -o -name finish \) -exec chmod 0755 {} +
     fi
 }

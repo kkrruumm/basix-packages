@@ -1,0 +1,4 @@
+#!/bin/execlineb -P
+fdmove -c 2 1
+if { mkdir -p /run/user }
+chmod 0755 /run/user

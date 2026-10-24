@@ -1,12 +1,12 @@
 pkg_name=libcap-ng
-version=0.9.5
+version=0.9.6
 revision=1
 build_style=gnu-configure
 short_desc="Library for making the POSIX capabilities API easier to use"
 home_page="https://github.com/stevegrubb/libcap-ng"
 license="LGPL-2.1-or-later, GPL-2.0-or-later"
 dist_files="https://github.com/stevegrubb/libcap-ng/archive/refs/tags/v${version}.tar.gz>libcap-ng-${version}.tar.gz"
-checksum="5996c750399536207b59f39f50bd77f0d3819fb7cab721e873ae035e68dc1642"
+checksum="d9b93c3acffef93fbe804ea18806a1755e677425d5be90c970d62303b20356b2"
 
 use_flags="utils -static"
 

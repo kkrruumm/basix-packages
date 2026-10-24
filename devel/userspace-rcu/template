@@ -1,12 +1,12 @@
 pkg_name=userspace-rcu
-version=0.15.3
+version=0.15.7
 revision=1
 build_style=gnu-configure
 short_desc="Userspace RCU (read-copy-update) library"
 home_page="https://liburcu.org/"
 license="LGPL-2.1-or-later"
 dist_files="https://lttng.org/files/urcu/userspace-rcu-${version}.tar.bz2"
-checksum="346b2cb2ec989468f4fff76348d9f794852cd81d4d8919de63274f849ad25933"
+checksum="9564db975f18e6f8bd93d1326f78adb072227238e211ae3683edbb524c5238aa"
 make_depends="bash perl"
 
 post_install() {

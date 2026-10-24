@@ -1,12 +1,12 @@
 pkg_name=xfsprogs
-version=7.2.0
+version=7.2.1
 revision=1
 build_style=gnu-configure
 short_desc="Utilities for managing the XFS filesystem"
 home_page="https://xfs.org/index.php/Main_Page"
 license="LGPL-2.1-or-later"
 dist_files="https://mirrors.edge.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-${version}.tar.xz"
-checksum="1c63565577ba59f8e7a45e9d85bd683338118bcbb9a53666d865271ac12b9b94"
+checksum="ec0538c3e42a7eab5971a3e4c7e39485217f92e7ca5163bb74d8ca5e13683d4c"
 
 use_flags="editline"
 

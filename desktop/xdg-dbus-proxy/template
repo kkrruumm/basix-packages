@@ -1,12 +1,12 @@
 pkg_name=xdg-dbus-proxy
-version=0.1.8
+version=0.1.9
 revision=1
 build_style=meson
 short_desc="Filtering proxy for D-Bus connections"
 home_page="https://github.com/flatpak/xdg-dbus-proxy"
 license="LGPL-2.1-or-later"
 dist_files="https://github.com/flatpak/xdg-dbus-proxy/releases/download/${version}/xdg-dbus-proxy-${version}.tar.xz"
-checksum="564d6f8ccb45862bb00f136f1a37648c89f2251f358373d73d16102ecaf3c9b3"
+checksum="a975bf46dc1f87f9c80d9ac44b37c6466415e0d22962e35bee55519cb4ecbc66"
 
 use_flags="man"
 

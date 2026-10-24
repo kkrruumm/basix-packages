@@ -1,12 +1,12 @@
 pkg_name=wlroots
-version=0.20
+version=0.20.2
 revision=1
 build_style=meson
 short_desc="Modular Wayland compositor library"
 home_page="https://gitlab.freedesktop.org/wlroots/wlroots"
 license="MIT"
 dist_files="https://gitlab.freedesktop.org/wlroots/wlroots/-/archive/${version}/wlroots-${version}.tar.gz"
-checksum="4255e64a0452a7a485e51624f38850e7dc1699c8f16399e18340b841ba2133ffd8"
+checksum="5812b8dae8def8d503f7e74a1db5e331fa4bced625b653169add94d5c80bc43d"
 use_flags="vulkan -xwayland"
 
 # lcms2 comes from -Dcolor-management=enabled, and both end up in the Requires

@@ -1,12 +1,12 @@
 pkg_name=libressl
-version=4.3.2
+version=4.4.0
 revision=1
 build_style=gnu-configure
 short_desc="TLS/SSL and crypto library, OpenBSD's fork of OpenSSL"
 home_page="https://www.libressl.org/"
 license="ISC, OpenSSL, Apache-2.0"
 dist_files="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${version}.tar.gz"
-checksum="6364b58f037dd3ed4e0df5548ab28d7b93c11656e6eaa7c430db172dec12b69e"
+checksum="70e7f199cf57cfadff5e4f18b5c1d1421aa0b0bf882b45f1818884a5bd815523"
 depends="certs"
 
 use_flags="asm man static -nc"

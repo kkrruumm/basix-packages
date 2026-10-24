@@ -1,12 +1,12 @@
 pkg_name=mesa
-version=26.2.3
+version=26.2.5
 revision=1
 build_style=meson
 short_desc="Open source implementation of the OpenGL and Vulkan specifications"
 home_page="https://www.mesa3d.org"
 license="MIT"
 dist_files="https://mesa3d.org/archive/mesa-${version}.tar.xz"
-checksum="766c8710e50169254e6d9e2a5f9680a3c7eb9191514ad387a52cbcd2d648ac43"
+checksum="c4d7cb6a215709133bcc9345d67ea0cf73daa0b616ea9b8315bb2bdee73172a0"
 use_flags="amdgpu intel -nouveau -rusticl vulkan x11"
 
 depends="expat libdisplay-info libdrm libelf libudev-zero llvm wayland zlib zstd

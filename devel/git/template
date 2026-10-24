@@ -1,12 +1,12 @@
 pkg_name=git
-version=2.55.0
+version=2.56.0
 revision=1
 build_style=gnu-configure
 short_desc="Distributed version control system"
 home_page="https://git-scm.com"
 license="GPL-2.0-only"
 dist_files="https://mirrors.edge.kernel.org/pub/software/scm/git/git-${version}.tar.xz https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-${version}.tar.xz"
-checksum="99cf418d6426cd615c2818986002f3d4619c707bceea9c624414cc2362c1ff5ed4 be976a5146ce71cf94793c93a9947879efe59a2d3948bf12872ff75d0551db063b"
+checksum="596b02fea3d67e2ca45208aabebc92d2c14e7f2827f82cba59a630d55eea0854 ecc9bdcbf8522068579f8c10af69ea71d0d1b5777fd001084cf623036caa6407"
 depends="curl zlib"
 make_depends="curl zlib"
 

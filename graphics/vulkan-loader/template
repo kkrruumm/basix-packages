@@ -1,13 +1,13 @@
 pkg_name=vulkan-loader
-version=1.4.350.1
+version=1.4.366
 revision=1
 build_style=cmake
 short_desc="Vulkan Installable Client Driver loader"
 home_page="https://github.com/KhronosGroup/Vulkan-Loader"
 license="Apache-2.0"
-dist_files="https://github.com/KhronosGroup/Vulkan-Loader/archive/vulkan-sdk-${version}.tar.gz>vulkan-loader-${version}.tar.gz"
-checksum="6cc1b4501735b068b6fe2bde57ff96237a329ce30c819c6698be585026c63d0e35"
-wrk_src="Vulkan-Loader-vulkan-sdk-$version"
+dist_files="https://github.com/khronosgroup/vulkan-loader/archive/refs/tags/v${version}.tar.gz>vulkan-loader-${version}.tar.gz"
+checksum="c309bc07a9f82e0263556d01ef584933fc4d857ec8c94f3d8e62022e3ba74e51"
+wrk_src="Vulkan-Loader-$version"
 depends="vulkan-headers wayland"
 make_depends="cmake python vulkan-headers wayland"
 

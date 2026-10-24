@@ -1,12 +1,12 @@
 pkg_name=nftables
-version=1.1.6
-revision=2
+version=1.1.7
+revision=1
 build_style=gnu-configure
 short_desc="Netfilter tables userspace utility"
 home_page="https://netfilter.org/projects/nftables"
 license="GPL-2.0-only"
 dist_files="https://netfilter.org/projects/nftables/files/nftables-${version}.tar.xz"
-checksum="fe01ac223a3e41331bfa686058a04cb2719c2ced1ed7bb7892df3e5026f9fc82"
+checksum="f78cc0b914f24bd9cfc2f26055e3dd78b4eac67bc0855e76ca5998216f74ff3b"
 
 # cli needs a readline package, xtables needs iptables and man_doc needs
 # docbook2x, but manpages are still installed (look at post_install)

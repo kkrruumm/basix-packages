@@ -1,12 +1,12 @@
 pkg_name=openssh
-version=10.5p1
-revision=2
+version=10.6p1
+revision=1
 build_style=gnu-configure
 short_desc="OpenBSD secure shell, portable release"
 home_page="https://www.openssh.com"
 license="BSD-2-Clause, ISC, MIT"
 dist_files="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${version}.tar.gz"
-checksum="60c9bdc9997dbd78d6011b4d52705fb9cd412104078020832c0f0154403615c1"
+checksum="5b27910392630fe98eaef74e2ed72ad3416e108ee4234f1be7228c681e515137"
 
 depends="libressl zlib"
 make_depends="libressl zlib"

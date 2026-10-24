@@ -1,12 +1,12 @@
 pkg_name=foot
-version=1.27.0
-revision=3
+version=1.28.0
+revision=1
 build_style=meson
 short_desc="Fast, lightweight and minimalistic Wayland terminal emulator"
 home_page="https://codeberg.org/dnkl/foot"
 license="MIT"
 dist_files="https://codeberg.org/dnkl/foot/archive/${version}.tar.gz>foot-${version}.tar.gz"
-checksum="34f92e0a50ca36b7de72971eddda215b7222462e2c7365e68e9c14961066c718"
+checksum="b1f7d0d4ad320e7404696abdb8c8ac6ab8b84b05282ee4d997057c9be6533f2c"
 wrk_src="foot"
 depends="fcft fontconfig freetype libutf8proc libxkbcommon pixman wayland"
 make_depends="fcft fontconfig freetype libutf8proc libxkbcommon meson ncurses pixman

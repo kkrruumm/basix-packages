@@ -1,0 +1,24 @@
+pkg_name=SDL2_ttf
+version=2.24.0
+revision=1
+build_style=cmake
+short_desc="TrueType font rendering library for SDL2"
+home_page="https://github.com/libsdl-org/SDL_ttf"
+license="Zlib"
+dist_files="https://github.com/libsdl-org/SDL_ttf/releases/download/release-${version}/SDL2_ttf-${version}.tar.gz"
+checksum="5832e4e0312e145b4648127ee58558885c4aee0d6f91e020538d0f7b53eb939e"
+
+# harfbuzz is only needed for complex shaping or whatever (arabic and whatnot)
+use_flags="-harfbuzz"
+
+depends="SDL2 freetype $(use_if harfbuzz harfbuzz)"
+make_depends="cmake pkgconf SDL2 freetype $(use_if harfbuzz harfbuzz)"
+
+configure_args="
+    -DSDL2TTF_VENDORED=OFF
+    -DSDL2TTF_SAMPLES=OFF
+    $(use_cmake harfbuzz SDL2TTF_HARFBUZZ)"
+
+post_install() {
+    blicense LICENSE.txt
+}

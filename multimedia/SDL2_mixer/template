@@ -1,0 +1,51 @@
+pkg_name=SDL2_mixer
+version=2.8.2
+revision=1
+build_style=cmake
+short_desc="Audio mixer library for SDL2"
+home_page="https://github.com/libsdl-org/SDL_mixer"
+license="Zlib"
+dist_files="https://github.com/libsdl-org/SDL_mixer/releases/download/release-${version}/SDL2_mixer-${version}.tar.gz"
+checksum="5f762fe9c3f762ebcd999c657041490daed913e7ff7eca0e305856c598f5a7f1"
+
+# builtin decoders:
+#   wave: streaming wav, Mix_LoadWAV works regardless of this
+#   vorbis: ogg vorbis via stb_vorbis
+#   flac: flac via dr_flac
+#   mp3: mp3 via minimp3
+#   midi: have you guys ever watched vinesauce joel
+#   cmd: Mix_SetMusicCMD, hands off music to an external player
+#
+# system libs:
+#   opus: opus via opusfile
+use_flags="wave vorbis flac mp3 midi cmd opus"
+
+depends="SDL2 $(use_if opus opusfile)"
+make_depends="cmake pkgconf SDL2 $(use_if opus opusfile)"
+
+# FLAC_LIBFLAC and MP3_MPG123 are hardcoded to off
+# so those flags just mean the builtin stuff
+configure_args="
+    -DSDL2MIXER_VENDORED=OFF
+    -DSDL2MIXER_DEPS_SHARED=OFF
+    -DSDL2MIXER_SAMPLES=OFF
+    -DSDL2MIXER_MOD=OFF
+    -DSDL2MIXER_GME=OFF
+    -DSDL2MIXER_WAVPACK=OFF
+    -DSDL2MIXER_MIDI_FLUIDSYNTH=OFF
+    -DSDL2MIXER_FLAC_LIBFLAC=OFF
+    -DSDL2MIXER_MP3_MPG123=OFF
+    -DSDL2MIXER_VORBIS=$(use_if vorbis STB)
+    $(use_cmake wave SDL2MIXER_WAVE)
+    $(use_cmake flac SDL2MIXER_FLAC)
+    $(use_cmake flac SDL2MIXER_FLAC_DRFLAC)
+    $(use_cmake mp3 SDL2MIXER_MP3)
+    $(use_cmake mp3 SDL2MIXER_MP3_MINIMP3)
+    $(use_cmake midi SDL2MIXER_MIDI)
+    $(use_cmake midi SDL2MIXER_MIDI_TIMIDITY)
+    $(use_cmake cmd SDL2MIXER_CMD)
+    $(use_cmake opus SDL2MIXER_OPUS)"
+
+post_install() {
+    blicense LICENSE.txt
+}

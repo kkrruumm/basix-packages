@@ -1,0 +1,100 @@
+pkg_name=cataclysm-dda
+# upstream tags with fucking O.I-1, no dashes in versions
+version=0.I.1
+revision=1
+_tag=0.I-1
+build_style=gnu-makefile
+short_desc="Post-apocalyptic turn-based survival roguelike"
+home_page="https://cataclysmdda.org"
+license="CC-BY-SA-3.0"
+dist_files="https://github.com/CleverRaven/Cataclysm-DDA/archive/refs/tags/${_tag}.tar.gz>cataclysm-dda-${_tag}.tar.gz"
+checksum="60119f3ea73591014442d8b64b48f67faa7207a19d8fc6f9feca04bfbfe54165"
+wrk_src="Cataclysm-DDA-${_tag}"
+
+# the curses version is always built
+# tiles adds cataclysm-tiles
+# sound needs tiles
+use_flags="tiles sound nls"
+
+# zstd is vendored, zlib isn't
+depends="ncurses zlib
+ $(use_if tiles "SDL2 SDL2_image SDL2_ttf freetype")
+ $(use_if sound SDL2_mixer)"
+make_depends="ncurses pkgconf zlib
+ $(use_if tiles "SDL2 SDL2_image SDL2_ttf freetype")
+ $(use_if sound SDL2_mixer)
+ $(use_if nls gettext-tiny)"
+use_depends="$(use_if tiles SDL2_image:png)"
+
+# BACKTRACE needs execinfo.h, musl doesnt have this
+# OPTLEVEL is empty so RELEASE doesnt try to fuck with -O
+make_build_args="
+    PREFIX=/usr
+    RELEASE=1
+    OPTLEVEL=
+    WARNINGS=-Wall
+    STRIP=:
+    PCH=0
+    LTO=0
+    BACKTRACE=0
+    TESTS=0
+    RUNTESTS=0
+    ASTYLE=0
+    LINTJSON=0
+    USE_XDG_DIR=1
+    VERSION=$_tag
+    $(use_if nls "LOCALIZE=1 LANGUAGES=all" LOCALIZE=0)"
+
+pre_build() {
+    if use sound && ! use tiles; then
+        die "cataclysm-dda: sound requires tiles"
+    fi
+}
+
+do_build() {
+    $make_cmd $make_jobs $make_build_args TILES=0 SOUND=0
+
+    if use tiles; then
+        $make_cmd $make_jobs $make_build_args TILES=1 \
+            SOUND=$(use_if sound 1 0)
+    fi
+}
+
+# upstreams install target uses cp --no-preserve and GNU install -t
+# which busybox doesnt have so just doing this shit manually
+do_install() {
+    bbin cataclysm
+    if use tiles; then
+        bbin cataclysm-tiles
+    fi
+
+    blibexec zzip
+
+    _data=/usr/share/$pkg_name
+    bcopy data/core data/font data/json data/mods data/names data/raw \
+        data/motd data/credits data/title "$_data"
+    bdata data/changelog.txt
+    bdata data/cataicon.ico
+    bdata data/fontdata.json
+
+    if use tiles; then
+        bcopy gfx "$_data"
+        binstall data/xdg/org.cataclysmdda.CataclysmDDA.desktop 0644 \
+            /usr/share/applications
+        binstall data/xdg/org.cataclysmdda.CataclysmDDA.appdata.xml 0644 \
+            /usr/share/metainfo
+        binstall data/xdg/org.cataclysmdda.CataclysmDDA.svg 0644 \
+            /usr/share/icons/hicolor/scalable/apps
+    fi
+
+    if use sound; then
+        bcopy data/sound "$_data"
+    fi
+
+    if use nls; then
+        bcopy lang/mo/* /usr/share/locale
+    fi
+
+    blicense LICENSE.txt
+    blicense LICENSE-OFL-Terminus-Font.txt
+}

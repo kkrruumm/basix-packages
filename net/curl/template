@@ -1,12 +1,12 @@
 pkg_name=curl
-version=8.22.0
+version=8.23.0
 revision=1
 build_style=gnu-configure
 short_desc="Command line URL transfer tool"
 home_page="https://curl.se"
 license="curl"
 dist_files="https://curl.haxx.se/download/curl-${version}.tar.xz"
-checksum="62cce71e8646994d54b368df4a4cac811de7ade4a6efd62047a1a0c99dc0c5ea"
+checksum="c048df2e61382c619b609f94156ea73d29c96f536ff2de5abb8e9a1a871c63ac"
 
 # man: generate the curl(1)/libcurl(3) manpages from md sources, needs perl
 # manual: built in `curl --manual`, generated from the same sources as ^

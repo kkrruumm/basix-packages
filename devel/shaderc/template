@@ -1,12 +1,12 @@
 pkg_name=shaderc
-version=2026.2
+version=2026.4
 revision=1
 build_style=cmake
 short_desc="Collection of tools, libraries and tests for shader compilation"
 home_page="https://github.com/google/shaderc"
 license="Apache-2.0"
 dist_files="https://github.com/google/shaderc/archive/v${version}.tar.gz>shaderc-${version}.tar.gz"
-checksum="d399b02a0fa2f3bb7d438781a3135ef45fceba6cae449f4a22603a2ec3a5f813"
+checksum="e1613d8aafa35b9bf209ba1ff23d9da5a8948d0f399cf609c19f10f295f17ae9"
 depends="glslang spirv-tools"
 make_depends="cmake glslang python spirv-headers spirv-tools"
 

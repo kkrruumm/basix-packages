@@ -1,12 +1,12 @@
 pkg_name=fuzzel
-version=1.14.1
+version=1.15.0
 revision=1
 build_style=meson
 short_desc="App launcher and fuzzy finder for Wayland"
 home_page="https://codeberg.org/dnkl/fuzzel"
 license="MIT"
 dist_files="https://codeberg.org/dnkl/fuzzel/archive/${version}.tar.gz>fuzzel-${version}.tar.gz"
-checksum="d2f1708a2ce0d0dc04f36662f07f5debb5f2b2f190f6bfda93e699c4c8667f0c"
+checksum="6676b8e052044e994f8bbb5f68e45626d379a54518c671b07c557b61199017ef"
 wrk_src="fuzzel"
 
 use_flags="man png svg cairo"

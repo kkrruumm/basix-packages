@@ -3,14 +3,14 @@
 # since there's no compile here, nbd
 # this fucking sucked, btw.
 pkg_name=linux-firmware
-version=20260810
+version=20261019
 revision=1
 build_style=custom
 short_desc="Firmware blobs for devices supported by the Linux kernel"
 home_page="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 license="GPL-2.0-only, GPL-2.0-or-later, MIT, custom:redistributable"
 dist_files="https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-${version}.tar.xz"
-checksum="80d492fdca9aae6b0c8ff7b5277e41ca314e76c03b6254867b2858c2dde18f70"
+checksum="952c61976bba21d86663aba960f5fe1f2269b3dc287799719025d5aa63185f69"
 
 # these are vendor blobs
 no_strip=yes
@@ -32,6 +32,9 @@ if use dedup; then make_depends="${make_depends:-} rdfind"; fi
 # share one directory because fml
 # intel-misc is still here because the sensor hub firmware sits in the top level directories
 # named after the OEM
+#
+# ti/ is split up, ti/audio and ti/pcm6240 are speaker amp firmware some x86 laptops may use,
+# only ti/vpdma is soc fw
 _fw_paths() {
     case $1 in
         amdgpu) echo "amdgpu" ;;
@@ -53,7 +56,7 @@ _fw_paths() {
         realtek) echo "realtek rtlwifi rtw88 rtw89 rtl_bt rtl_nic" ;;
         marvell) echo "mrvl libertas mwl8k mwlwifi lbtf_usb.bin usb8388*" ;;
         ti-wifi) echo "ti-connectivity wl12*.bin wl18*.bin" ;;
-        wifi-misc) echo "atmel atusb rsi rsi_91x.fw wfx agere_*.bin wsm_22.bin
+        wifi-misc) echo "aic atmel atusb rsi rsi_91x.fw wfx agere_*.bin wsm_22.bin
                          vntwusb.fw sdd_sagrad_*.bin ositech 3com morsemicro" ;;
         ethernet) echo "bnx2 bnx2x cxgb3 cxgb4 e100 tigon liquidio netronome qed
                         mellanox myricom myri10ge_*.dat cavium dpaa2 emulex
@@ -62,16 +65,17 @@ _fw_paths() {
         storage) echo "adaptec advansys isci qlogic ql2*.bin
                        cbfw-*.bin ct2fw-*.bin ctfw-*.bin" ;;
         serial) echo "moxa keyspan keyspan_pda edgeport whiteheat*.fw ti_[0-9]*.fw
-                      rp2.fw mts_*.fw cis yam ene-ub6250 usbdux*_firmware.bin" ;;
+                      rp2.fw mts_*.fw cis yam ene-ub6250 usbdux*_firmware.bin
+                      ueagle-atm" ;;
         media) echo "dvb-*.fw dvb-*.hex dvb_nova_*.inp sms1xxx-*.fw isdbt_*.inp
                      cmmb_*.inp tdmb_*.inp av7110 cpia2 go7007 ttusb-budget
                      as102_data*.hex cx18* v4l-* vicam dabusb s2250*.fw
                      f2255usb.bin tlg2300_firmware.bin lgs8g75.fw" ;;
         sound) echo "cirrus sdca cs42l43.bin TAS2XXX*.bin TIAS*.bin TXNW*.bin
                      INT8866*.bin [0-9A-F][0-9A-F][0-9A-F][0-9A-F]-*.bin
-                     ctefx*.bin ctspeq.bin emi26 emi62 tas2781 ess yamaha korg
+                     ctefx*.bin ctspeq.bin emi26 emi62 ti/audio ti/pcm6240 tas2781 ess yamaha korg
                      emu sb16 turtlebeach dsp56k" ;;
-        arm) echo "arm imx nxp meson rockchip amlogic powervr ti ti-keystone
+        arm) echo "arm imx nxp meson rockchip amlogic powervr ti/vpdma-*.bin ti-keystone
                    renesas amphion cnm cadence microchip inside-secure aeonsemi
                    s5p-mfc*.fw r8a779x_usb3_*.dlmem rcar_gen4_pcie.bin
                    Lontium lt*_fw.bin ixp4xx bmi260-init-data.fw tsse_firmware.bin" ;;

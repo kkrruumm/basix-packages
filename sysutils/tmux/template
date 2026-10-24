@@ -1,12 +1,12 @@
 pkg_name=tmux
-version=3.7c
-revision=3
+version=3.8
+revision=1
 build_style=gnu-configure
 short_desc="Terminal multiplexer"
 home_page="https://tmux.github.io"
 license="ISC"
 dist_files="https://github.com/tmux/tmux/releases/download/${version}/tmux-${version}.tar.gz"
-checksum="83a68d1180368750aaadd30750c95b304455f1faf6d2d38e8471284ab39daa9b"
+checksum="f948bad3444dac126da9f4d9cd8ea92856dbed6bdc2435ef4053bb2113f66df4"
 
 # if you want emojis for some reason or CJK fonts, enable utf8proc
 use_flags="-utf8proc sixel man doc -static"

@@ -1,12 +1,12 @@
 pkg_name=gpgme
-version=2.1.2
+version=2.2.0
 revision=1
 build_style=gnu-configure
 short_desc="Library for applications to access GnuPG"
 home_page="https://gnupg.org/software/gpgme"
 license="LGPL-2.1-or-later"
 dist_files="https://gnupg.org/ftp/gcrypt/gpgme/gpgme-${version}.tar.bz2"
-checksum="93d14828b7b7025b230b7b7f8a85565cf805daf2ebde53242d02c0b5cc7d5468"
+checksum="5ea4353f35ae45b91af204b3aeab68977d89027d7bbd577b92cce14674f910c1"
 depends="gnupg libassuan libgpg-error"
 make_depends="gnupg libassuan libgpg-error pkgconf"
 

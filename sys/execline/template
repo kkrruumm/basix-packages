@@ -1,12 +1,12 @@
 pkg_name=execline
-version=2.9.9.2
+version=2.10.0.0
 revision=1
 build_style=configure
 short_desc="Non-interactive scripting language used by the s6 suite"
 home_page="https://skarnet.org/software/execline"
 license="ISC"
 dist_files="https://skarnet.org/software/execline/execline-${version}.tar.gz"
-checksum="29a8aa37cb10b4392e0d14ef3f76262c40bf7df36a5616cc6d0095d7dd2fac7f"
+checksum="d2330004b1aa0ec55847e0efbc8d394a9d056fe45f45065a37745a2ca5a76585"
 
 depends="skalibs"
 make_depends="skalibs"

@@ -1,12 +1,12 @@
 pkg_name=at-spi2-core
-version=2.56.5
+version=2.62.1
 revision=1
 build_style=meson
 short_desc="Assistive technology service provider interface, also ships atk"
 home_page="https://gitlab.gnome.org/GNOME/at-spi2-core"
 license="LGPL-2.1-or-later"
 dist_files="https://download.gnome.org/sources/at-spi2-core/${version%.*}/at-spi2-core-${version}.tar.xz"
-checksum="23dd656cc46c31f3c57559b1c3b3ed2e2232fe19e2715a116e70802d9270b28d"
+checksum="ca7a7dafca5eda3cab1f4701990d97cce537125db5b6803b75cf5d08a463a250"
 
 # x11 wants libXi and libXtst which are not packaged yet
 use_flags="atspi -x11 -introspection"

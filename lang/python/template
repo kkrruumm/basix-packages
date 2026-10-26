@@ -1,12 +1,12 @@
 pkg_name=python
-version=3.14.8
+version=3.14.9
 revision=1
 build_style=gnu-configure
 short_desc="Python programming language interpreter"
 home_page="https://www.python.org"
 license="Python-2.0"
 dist_files="https://www.python.org/ftp/python/${version}/Python-${version}.tar.xz"
-checksum="9fd7b7713a64b221b9f72ce2de5b6997aea36cbc4005561e2921e036e9f8ac6b"
+checksum="2a0f054e27c0ea9feb6d56885d3cd3e42edfb1b03434d777bdca2cd32d6bed4f"
 wrk_src="Python-$version"
 depends="bzip2 expat libffi libressl zlib"
 make_depends="bzip2 expat libffi libressl zlib"

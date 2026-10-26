@@ -1,14 +1,20 @@
 pkg_name=fribidi
-version=1.0.16
+version=1.0.17
 revision=1
 build_style=gnu-configure
 short_desc="Free implementation of the Unicode bidirectional algorithm"
 home_page="https://github.com/fribidi/fribidi"
 license="LGPL-2.1-or-later"
 dist_files="https://github.com/fribidi/fribidi/releases/download/v${version}/fribidi-${version}.tar.xz"
-checksum="c16ee250f73f149d7d52dc7d285eb73ac755bad7907d237391e23f429b2b71d59c"
+checksum="2566038b4a6ab36d8f370bb1157d7615aa767096bf8fc885c04b72e2b47ec393"
 
 use_flags="man"
+
+pre_configure() {
+    # bug in 1.0.17, fribidi.1 is pregen'd but its %.1: % rule always
+    # rebuilds it with help2man
+    bsed '/^%\.1: %$/,/--output=\$@$/d' bin/Makefile.in
+}
 
 post_install() {
     use man || brm /usr/share/man/man3

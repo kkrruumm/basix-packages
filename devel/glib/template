@@ -1,12 +1,12 @@
 pkg_name=glib
-version=2.88.0
-revision=3
+version=2.90.1
+revision=1
 build_style=meson
 short_desc="GNU library of C routines"
 home_page="https://gitlab.gnome.org/GNOME/glib"
 license="LGPL-2.1-or-later"
 dist_files="https://download.gnome.org/sources/glib/${version%.*}/glib-${version}.tar.xz"
-checksum="f2edb718705e11624da01c4c55b0c1a81e5fbccdc10842493e624b13371ca4b923"
+checksum="86a15eec2594a3fa4e5e301132713f21d342e57830b03c75d4d537c67f810b52"
 depends="libelf libffi pcre2 util-linux zlib"
 make_depends="bison flex libelf libffi meson pcre2 pkgconf python util-linux zlib python-docutils"
 

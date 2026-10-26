@@ -1,12 +1,12 @@
 pkg_name=brotli
-version=1.2.0
+version=1.2.1
 revision=1
 build_style=cmake
 short_desc="Generic-purpose lossless compression algorithm"
 home_page="https://github.com/google/brotli"
 license="MIT"
 dist_files="https://github.com/google/brotli/archive/refs/tags/v${version}.tar.gz>brotli-${version}.tar.gz"
-checksum="88a91819bc0e0b5bd27bd8c7d8ffddf132768851069f2cd5e905eac87e2860de"
+checksum="1fa1b8b9120e13315c8ab32e4ea71c94bbf7e763e382a870a628cc478876434f"
 
 use_flags="man -static"
 

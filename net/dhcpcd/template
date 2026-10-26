@@ -1,12 +1,12 @@
 pkg_name=dhcpcd
-version=10.3.2
-revision=3
+version=10.5.2
+revision=1
 build_style=configure
 short_desc="DHCP and IPv6 router advertisement client"
 home_page="https://github.com/NetworkConfiguration/dhcpcd"
 license="BSD-2-Clause"
 dist_files="https://github.com/NetworkConfiguration/dhcpcd/archive/refs/tags/v${version}.tar.gz>dhcpcd-${version}.tar.gz"
-checksum="21d5910f751b18cde5d4674b61ca2d53bf7afa74206f07155bfd2f56b1c4d55514"
+checksum="b9c294c2f28578c9154d067f2c23dde2b4fab912d4dc9178687274838d4657aa"
 
 make_depends="linux-headers"
 

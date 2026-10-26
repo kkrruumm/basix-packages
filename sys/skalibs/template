@@ -1,6 +1,6 @@
 pkg_name=skalibs
 version=2.16.0.0
-revision=1
+revision=2
 build_style=configure
 short_desc="General purpose C programming library used by the s6 suite"
 home_page="https://skarnet.org/software/skalibs"
@@ -8,7 +8,7 @@ license="ISC"
 dist_files="https://skarnet.org/software/skalibs/skalibs-${version}.tar.gz"
 checksum="dabb87fe8ce7d9cd104add90e02e0caa7f22f6658f0241bfd8e35edab212109e"
 
-use_flags="-static ipv6 -pkgconfig doc"
+use_flags="static ipv6 -pkgconfig doc"
 
 # skarnets configure gets sysconfdir from --prefix, so /usr would give it /usr/etc
 # bpms config style always passes --prefix=/usr, everything that would go under it

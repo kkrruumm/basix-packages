@@ -1,12 +1,12 @@
 pkg_name=fuse3
-version=3.18.2
+version=3.18.3
 revision=1
 build_style=meson
 short_desc="Reference implementation of the Linux FUSE interface"
 home_page="https://github.com/libfuse/libfuse"
 license="LGPL-2.1-only"
 dist_files="https://github.com/libfuse/libfuse/releases/download/fuse-${version}/fuse-${version}.tar.gz"
-checksum="8d10a06f56940d0c560619d030391a1aceb505d6afa041f004420806c71a71de"
+checksum="9c6a20820c83bf67681b8f7a2524a3a0ccc0e9080da88333c6332d765d7bec33"
 wrk_src="fuse-$version"
 depends="libudev-zero"
 make_depends="libudev-zero linux-headers meson pkgconf"

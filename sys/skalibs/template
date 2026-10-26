@@ -1,12 +1,12 @@
 pkg_name=skalibs
-version=2.15.1.0
+version=2.16.0.0
 revision=1
 build_style=configure
 short_desc="General purpose C programming library used by the s6 suite"
 home_page="https://skarnet.org/software/skalibs"
 license="ISC"
 dist_files="https://skarnet.org/software/skalibs/skalibs-${version}.tar.gz"
-checksum="4b922d501d18f2860034e448b74f70a2665acbabeef09bd18b0701fa0552336a"
+checksum="dabb87fe8ce7d9cd104add90e02e0caa7f22f6658f0241bfd8e35edab212109e"
 
 use_flags="-static ipv6 -pkgconfig doc"
 

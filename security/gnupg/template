@@ -1,12 +1,12 @@
 pkg_name=gnupg
-version=2.5.22
+version=2.5.24
 revision=1
 build_style=gnu-configure
 short_desc="GNU Privacy Guard, a complete OpenPGP implementation"
 home_page="https://gnupg.org"
 license="GPL-3.0-or-later"
 dist_files="https://gnupg.org/ftp/gcrypt/gnupg/gnupg-${version}.tar.bz2"
-checksum="d7c9528f843b20f72878d01f167f90ad9362f8b9a21ec1e8c3c11da0153ed92c"
+checksum="f8a66bee2415fc0e293ae10b17a89c708ac32b9a1c2379d28ed9508001fd7b18"
 
 use_flags="tls"
 

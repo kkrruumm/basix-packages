@@ -1,12 +1,12 @@
 pkg_name=s6-log
-version=2.15.1.0
+version=2.15.1.1
 revision=1
 build_style=configure
 short_desc="Logger from the s6 supervision suite"
 home_page="https://skarnet.org/software/s6/s6-log.html"
 license="ISC"
 dist_files="https://skarnet.org/software/s6/s6-${version}.tar.gz"
-checksum="0fa40d4cdc39ace536ca40e799fc3ffe51868718beedc1d074aafc315ea3d737"
+checksum="deeefeba77d463f7817a8563e8bb0ac9b1cb4dd8deff6c4e46f79a63d6ba5fa4"
 wrk_src="s6-$version"
 
 use_flags="-static doc"

@@ -1,0 +1,29 @@
+pkg_name=whois
+version=5.6.6
+revision=1
+build_style=gnu-makefile
+short_desc="Improved whois client"
+home_page="https://www.linux.it/~md/software"
+license="GPL-2.0-or-later"
+dist_files="https://deb.debian.org/debian/pool/main/w/whois/whois_${version}.tar.xz"
+checksum="2f5b02d07474df893ee780838299446ffc9a041fc32a9272e7b4826de2b21b26"
+
+# idn: convert internationalized domains to punycode, needs libidn2
+use_flags="man -completions -idn"
+
+depends="$(use_if idn libidn2)"
+make_depends="perl $(use_if idn "libidn2 pkgconf")"
+
+# only the whois target, mkpasswd (and with it libxcrypt) and the translations are left out
+make_build_args="HAVE_ICONV=1 CONFIG_FILE=/etc/whois.conf
+ $(use_if idn "" PKG_CONFIG=false)"
+make_build_target=whois
+make_install_target=install-whois
+
+post_install() {
+    use man || brm /usr/share/man
+
+    if use completions; then
+        bcompletion whois.bash bash
+    fi
+}

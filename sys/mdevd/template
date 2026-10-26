@@ -1,6 +1,6 @@
 pkg_name=mdevd
 version=0.1.8.2
-revision=5
+revision=6
 build_style=configure
 short_desc="Mdev-compatible Linux hotplug manager daemon"
 home_page="https://skarnet.org/software/mdevd"
@@ -10,8 +10,9 @@ checksum="74975dbb8f48f60076aaf85ffe44a9eb892155ad9e9481f08c1fae8382b9b835"
 
 depends="skalibs"
 make_depends="skalibs"
+use_depends="$(use_if static skalibs:static)"
 
-use_flags="-static -nsss services doc"
+use_flags="-nsss static services doc"
 
 configure_args="
     --sysconfdir=/etc

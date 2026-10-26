@@ -1,6 +1,6 @@
 pkg_name=s6-log
 version=2.15.1.1
-revision=1
+revision=2
 build_style=configure
 short_desc="Logger from the s6 supervision suite"
 home_page="https://skarnet.org/software/s6/s6-log.html"
@@ -9,10 +9,11 @@ dist_files="https://skarnet.org/software/s6/s6-${version}.tar.gz"
 checksum="deeefeba77d463f7817a8563e8bb0ac9b1cb4dd8deff6c4e46f79a63d6ba5fa4"
 wrk_src="s6-$version"
 
-use_flags="-static doc"
+use_flags="static doc"
 
 depends="$(use_if static '' skalibs)"
 make_depends="skalibs"
+use_depends="$(use_if static skalibs:static)"
 
 configure_args="
     --bindir=/usr/bin

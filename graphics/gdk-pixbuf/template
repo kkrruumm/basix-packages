@@ -1,12 +1,12 @@
 pkg_name=gdk-pixbuf
-version=2.44.7
-revision=2
+version=2.44.8
+revision=1
 build_style=meson
 short_desc="Image loading library for GTK"
 home_page="https://gitlab.gnome.org/GNOME/gdk-pixbuf"
 license="LGPL-2.1-or-later"
 dist_files="https://download.gnome.org/sources/gdk-pixbuf/${version%.*}/gdk-pixbuf-${version}.tar.xz"
-checksum="af8996e49b106844a37f5dee68859530f8cdc7965b8ed3918b43b90cf5dfa365"
+checksum="e1ae09fa4aa88ee2fd0555f095c69316c8085140296fbfb48dfc24bb511fe149"
 depends="glib libjpeg-turbo libpng"
 make_depends="glib libjpeg-turbo libpng meson pkgconf python"
 

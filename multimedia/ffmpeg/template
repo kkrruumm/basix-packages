@@ -1,5 +1,5 @@
 pkg_name=ffmpeg
-version=9.0.1
+version=9.0.2
 revision=1
 build_style=configure
 short_desc="Complete solution to record, convert and stream audio and video"
@@ -7,7 +7,7 @@ home_page="https://ffmpeg.org/"
 license="LGPL-2.1-or-later"
 # upstream is ffmpeg.org, this is their mirror
 dist_files="https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n${version}.tar.gz>ffmpeg-${version}.tar.gz"
-checksum="751bdaa5c86a595b7e1db1b264034dbab07ad80dbe43327a5ecee9b7bfa6475d"
+checksum="e9d29fdca7ea7a1a2fa7df8ea278eb01cbca0807677b4fc453af00f916d150a1"
 wrk_src="FFmpeg-n${version}"
 
 # libressl patches are from openbsd ports graphics/ffmpeg

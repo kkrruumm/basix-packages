@@ -1,12 +1,12 @@
 pkg_name=spice-gtk
-version=0.42
+version=0.43
 revision=1
 build_style=meson
 short_desc="GTK widget and GLib client library for the SPICE protocol"
 home_page="https://www.spice-space.org"
 license="LGPL-2.1-or-later"
 dist_files="https://www.spice-space.org/download/gtk/spice-gtk-${version}.tar.xz"
-checksum="82b8d3f02fcd47f92bd5ce1ff3b1fd5a3fbdd5177b08019c80377ac4de3fc810"
+checksum="cc7cc885f6512511cb4b198ed53526207d404026796af7e15ef420d77191e754"
 
 use_flags="gtk wayland mjpeg opus -usbredir lz4
  -introspection -vala -sasl -smartcard -webdav -polkit -docs"

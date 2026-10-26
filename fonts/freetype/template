@@ -1,12 +1,12 @@
 pkg_name=freetype
-version=2.14.3
+version=2.15.0
 revision=1
 build_style=gnu-configure
 short_desc="Font rendering engine and library"
 home_page="https://freetype.org"
 license="FTL OR GPL-2.0-or-later"
 dist_files="https://download-mirror.savannah.gnu.org/releases/freetype/freetype-${version}.tar.xz"
-checksum="0c791e2ea02be6e3cddd6e69ee84d66d869190e5275d8a34e282517769f1192ef9"
+checksum="bba0cf03f9a50a7564141047f837a4f4f83062e5b649e3f58964128fdd1788ce"
 depends="bzip2 libpng zlib"
 make_depends="bzip2 libpng zlib"
 

@@ -1,12 +1,12 @@
 pkg_name=htop
-version=3.5.2
-revision=3
+version=3.5.3
+revision=1
 build_style=gnu-configure
 short_desc="Interactive process viewer"
 home_page="https://htop.dev"
 license="GPL-2.0-or-later"
 dist_files="https://github.com/htop-dev/htop/releases/download/${version}/htop-${version}.tar.xz"
-checksum="c7a0ef8f2787def5af4b92f9e133052e640c215b4756fb99cfc36da806f1c0ad57"
+checksum="ddc0bb9e1f9d7c4f47309c9202ab6f2aa7f5080bf03e3b4d952ea4ed047ac122"
 depends="ncurses"
 make_depends="ncurses"
 

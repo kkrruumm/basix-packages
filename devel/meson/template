@@ -1,11 +1,11 @@
 pkg_name=meson
-version=1.11.2
+version=1.12.1
 revision=1
 build_style=python3-pep517
 short_desc="High productivity build system"
 home_page="https://mesonbuild.com"
 license="Apache-2.0"
 dist_files="https://github.com/mesonbuild/meson/releases/download/${version}/meson-${version}.tar.gz"
-checksum="d4289353953d938c7708db714b5a381c99987369e12bb3f519ecb21c90ea472d40"
+checksum="f6d4541d0a5129992e93ce9e55a5ec7608781381451e84e9a4c2afd6400f13e0"
 depends="python samurai"
 make_depends="python python-build python-installer python-setuptools python-wheel"

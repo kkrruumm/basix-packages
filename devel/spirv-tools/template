@@ -1,12 +1,12 @@
 pkg_name=spirv-tools
-version=2026.2
+version=2026.4
 revision=1
 build_style=cmake
 short_desc="API and commands for processing SPIR-V modules"
 home_page="https://github.com/KhronosGroup/SPIRV-Tools"
 license="Apache-2.0"
 dist_files="https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/v${version}.tar.gz>spirv-tools-${version}.tar.gz"
-checksum="cf47ecec68f53e982de25f551fc344522a3ee58e116bf9a35caf278611dd237541"
+checksum="e85384bef46411bc30ab7d29597df7cb515d0d2db51c9a89beeb37e3e2d12cea"
 wrk_src="SPIRV-Tools-$version"
 depends="spirv-headers"
 make_depends="cmake python spirv-headers"

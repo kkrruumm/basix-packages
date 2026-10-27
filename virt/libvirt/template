@@ -1,12 +1,12 @@
 pkg_name=libvirt
-version=12.7.0
-revision=3
+version=12.8.0
+revision=1
 build_style=meson
 short_desc="Virtualization API for controlling virtualization engines"
 home_page="https://libvirt.org"
 license="LGPL-2.1-or-later"
 dist_files="https://libvirt.org/sources/libvirt-${version}.tar.xz"
-checksum="2c0c6f20cc9f2afebacca8c1196bf56e057be96a45383d23fdf85d522596612c"
+checksum="07bdfb05ad2aaa9b9fe7768ecc8eeba44ded4cf3bf0431ec0a904df0ce810507"
 
 patch_args="-p0"
 

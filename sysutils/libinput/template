@@ -1,12 +1,12 @@
 pkg_name=libinput
-version=1.31.3
+version=1.32.0
 revision=1
 build_style=meson
 short_desc="Input device library for Wayland and X"
 home_page="https://gitlab.freedesktop.org/libinput/libinput"
 license="MIT"
 dist_files="https://gitlab.freedesktop.org/libinput/libinput/-/archive/${version}/libinput-${version}.tar.gz"
-checksum="98f4b75c159279f6bc17f4c93d81726b080e64381086f898907b6fc31879abb88b"
+checksum="b6342e131c12c1a8472309c4ced18800084b5aa7815d262f277e01bdbf982d7a"
 depends="libevdev libudev-zero mtdev"
 make_depends="libevdev libudev-zero meson mtdev pkgconf python"
 

@@ -1,11 +1,11 @@
 pkg_name=spirv-headers
-version=1.4.350.1
+version=1.4.363.0
 revision=1
 build_style=cmake
 short_desc="Machine readable SPIR-V specification headers"
 home_page="https://github.com/KhronosGroup/SPIRV-Headers"
 license="MIT"
 dist_files="https://github.com/KhronosGroup/SPIRV-Headers/archive/vulkan-sdk-${version}.tar.gz>spirv-headers-${version}.tar.gz"
-checksum="b7b7ef141be89ad947c75b3c537e60607614fbe272298c231826397b7f9a0ca6c7"
+checksum="26e0aa58245b08ee4b86245991c5b39d8c7835d6be9ec6881f18f9127027bda0"
 wrk_src="SPIRV-Headers-vulkan-sdk-$version"
 make_depends="cmake"

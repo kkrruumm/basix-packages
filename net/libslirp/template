@@ -1,12 +1,12 @@
 pkg_name=libslirp
-version=4.9.4
+version=4.9.6
 revision=1
 build_style=meson
 short_desc="General purpose TCP-IP emulator, user mode networking for qemu"
 home_page="https://gitlab.freedesktop.org/slirp/libslirp"
 license="BSD-3-Clause"
 dist_files="https://github.com/qemu/libslirp/archive/refs/tags/v${version}.tar.gz>libslirp-${version}.tar.gz"
-checksum="9ad702868888d0a2265f71a3edfc297d592d0490215297e0ed84e4a7de38fb4b"
+checksum="197014916e1541f4fd252f7d485327daef911285026433dd682ceff28b3c50f1"
 
 depends="glib"
 make_depends="glib meson pkgconf"

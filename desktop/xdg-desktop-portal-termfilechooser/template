@@ -1,12 +1,12 @@
 pkg_name=xdg-desktop-portal-termfilechooser
-version=1.4.3
+version=1.5.0
 revision=1
 build_style=meson
 short_desc="xdg-desktop-portal backend for terminal file choosers"
 home_page="https://github.com/hunkyburrito/xdg-desktop-portal-termfilechooser"
 license="MIT"
 dist_files="https://github.com/hunkyburrito/xdg-desktop-portal-termfilechooser/archive/v${version}.tar.gz>xdg-desktop-portal-termfilechooser-${version}.tar.gz"
-checksum="ae6dfffbe066807a2a516d02ccfab348c022f5fd1992b108964f776aeadee915"
+checksum="5a855da31ad86a949d80cf66545beab30bc32ed029f3544b9ac73476b3dc98e5"
 
 use_flags="man"
 

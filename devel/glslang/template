@@ -1,12 +1,12 @@
 pkg_name=glslang
-version=16.3.0
-revision=2
+version=16.6.0
+revision=1
 build_style=cmake
 short_desc="Khronos reference front end for GLSL, ESSL and SPIR-V"
 home_page="https://github.com/KhronosGroup/glslang"
 license="BSD-3-Clause, MIT, Apache-2.0"
 dist_files="https://github.com/KhronosGroup/glslang/archive/${version}.tar.gz>glslang-${version}.tar.gz"
-checksum="5ef6be9b19c33bafdffbe8e7cc44d640e96a9da0effd8b4e2e68a2238966317c2e"
+checksum="acdee1ad26de6bb4f36f5b046483b73da92785ab6d55652cb611800ebe60a5ad"
 depends="spirv-tools"
 make_depends="cmake python spirv-tools"
 

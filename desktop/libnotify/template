@@ -1,12 +1,12 @@
 pkg_name=libnotify
-version=0.8.8
+version=0.8.9
 revision=1
 build_style=meson
 short_desc="Library for sending desktop notifications"
 home_page="https://gitlab.gnome.org/GNOME/libnotify"
 license="LGPL-2.1-or-later"
 dist_files="https://github.com/GNOME/libnotify/archive/refs/tags/${version}.tar.gz>libnotify-${version}.tar.gz"
-checksum="3d5f3340fe907670a14efbd34ec9166990ec697a096083ac9d402a41f517cd70"
+checksum="f2c5a306850d40d79ebe1ed383e36526bb2913a66b07a39901cfa54f3f72cd14"
 wrk_src="libnotify-${version}"
 
 use_flags="man"

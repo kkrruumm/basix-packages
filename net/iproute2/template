@@ -1,14 +1,14 @@
 # this is largely here as a stopgap for wg-quick
 # being incompatible with busyboxs ip
 pkg_name=iproute2
-version=7.2.0
+version=7.3.0
 revision=1
 build_style=configure
 short_desc="Utilities for controlling TCP/IP networking and traffic control"
 home_page="https://wiki.linuxfoundation.org/networking/iproute2"
 license="GPL-2.0-only"
 dist_files="https://github.com/iproute2/iproute2/archive/refs/tags/v${version}.tar.gz>iproute2-${version}.tar.gz"
-checksum="c112d0cb9c8095f8f4618b0fe4e9d0ce872540e65f7bbfe7de0cca4009855cfa"
+checksum="066784c0b18c92748124bb10ae664f639b8d1eabb04e0d141a1287bede3a9c02"
 
 # mnl here is tpic, devlink, rdma, dcb, vdpa, netshaper, and dpll
 # without it, this will build ip/tc/bridge/ss and nothing else

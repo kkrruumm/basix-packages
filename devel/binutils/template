@@ -1,12 +1,12 @@
 pkg_name=binutils
-version=2.46.1
-revision=2
+version=2.47
+revision=1
 build_style=gnu-configure
 short_desc="GNU binary utilities"
 home_page="https://www.gnu.org/software/binutils/"
 license="GPL-3.0-or-later"
 dist_files="https://ftp.gnu.org/gnu/binutils/binutils-${version}.tar.xz"
-checksum="c66598f95e9225638db6b31ff75ad1c8905d584e65952df05d0fda0add368a558a"
+checksum="05a142fb2225e617a3fa30224d5d275682e5cf03a62a15af804c03214cc3a5cf"
 depends="zlib"
 make_depends="flex zlib"
 

@@ -1,12 +1,12 @@
 pkg_name=pkgconf
-version=3.0.3
+version=3.0.10
 revision=1
 build_style=gnu-configure
 short_desc="Compiler and linker flag database for libraries"
 home_page="https://gitea.treehouse.systems/ariadne/pkgconf"
 license="ISC"
 dist_files="https://distfiles.ariadne.space/pkgconf/pkgconf-${version}.tar.xz"
-checksum="bc8e23fe42489c649fc192706acc746b968a9f03f053045c61a758aa3185eb606a"
+checksum="c8930aecddfc2463eb05a35ff140bbf7b4df86de0d30b6bd98046d30f40fc31b"
 
 use_flags="pkg_config_symlink"
 

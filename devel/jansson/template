@@ -1,12 +1,12 @@
 pkg_name=jansson
-version=2.15.0
+version=2.15.1
 revision=1
 build_style=gnu-configure
 short_desc="C library for encoding, decoding and manipulating JSON data"
 home_page="https://digip.org/jansson"
 license="MIT"
 dist_files="https://github.com/akheron/jansson/releases/download/v${version}/jansson-${version}.tar.gz"
-checksum="53432e6ba17b7ad7640c397c5f382eb2d6dbb7f22d13f04078454c7a6affe4bd"
+checksum="281bc4844516a7fbe83f829f77a11382d3953b95c34a9f2ce4098adc4a84a04c"
 
 make_depends="pkgconf"
 

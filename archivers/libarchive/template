@@ -1,12 +1,12 @@
 pkg_name=libarchive
-version=3.8.9
-revision=2
+version=3.8.10
+revision=1
 build_style=gnu-configure
 short_desc="Library for reading and writing streaming archive formats"
 home_page="https://libarchive.org"
 license="BSD-2-Clause"
 dist_files="https://github.com/libarchive/libarchive/releases/download/v${version}/libarchive-${version}.tar.xz"
-checksum="5db1e836d7ab5f0f166ece56a399af3104869d1f3857b41f5f762abc07c07471"
+checksum="3d8fda87d02102b719f181ab7b982c2807a2acdbca43f4636ed6954e9ce3e1b2"
 depends="bzip2 expat libressl xz zlib zstd"
 make_depends="bzip2 expat libressl pkgconf xz zlib zstd"
 

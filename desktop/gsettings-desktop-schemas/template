@@ -1,12 +1,12 @@
 pkg_name=gsettings-desktop-schemas
-version=50.1
+version=51.0
 revision=1
 build_style=meson
 short_desc="Collection of GSettings schemas for desktop settings"
 home_page="https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas"
 license="LGPL-2.1-or-later"
 dist_files="https://download.gnome.org/sources/gsettings-desktop-schemas/${version%.*}/gsettings-desktop-schemas-${version}.tar.xz"
-checksum="9c966b54eb832a5a0e79f4f947a9d34c7a7ad57b8958d50612d485f047dd9102"
+checksum="e862539da4cf40ab39230673dc2d9d2b4a4e0b8303c87c13f1ac6f6aa164f72f"
 
 use_flags="-introspection"
 

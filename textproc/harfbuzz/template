@@ -1,12 +1,12 @@
 pkg_name=harfbuzz
-version=14.2.1
+version=15.0.0
 revision=1
 build_style=meson
 short_desc="OpenType text shaping engine"
 home_page="https://harfbuzz.github.io"
 license="MIT"
 dist_files="https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-checksum="fd1ca500318637f241482bb35d7143ef8d8971bb6b6f439ec2cf0327a4f907280c"
+checksum="c142a92c2f472c4e4b0628e8b502cc2c9beec6d3650bc8c12fd4832ff6fc4b87"
 depends="freetype glib libpng zlib"
 make_depends="freetype glib libpng meson pkgconf python zlib"
 

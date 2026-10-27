@@ -1,12 +1,12 @@
 pkg_name=libevdev
-version=1.13.4
+version=1.14.0
 revision=1
 build_style=meson
 short_desc="Wrapper library for evdev input devices"
 home_page="https://www.freedesktop.org/wiki/Software/libevdev/"
 license="MIT"
 dist_files="https://www.freedesktop.org/software/libevdev/libevdev-${version}.tar.xz"
-checksum="f5b544de356cb65ff9e1c63e8eb1f53b1e421f32ac064f764a69927f57f91905a4"
+checksum="d5367929b8188c36f9df7875f7ebf2da175625c7415d9457279471f17d9f31e6"
 make_depends="meson pkgconf python"
 
 use_flags="man tools"

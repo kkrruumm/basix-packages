@@ -1,12 +1,12 @@
 pkg_name=libX11
-version=1.8.13
+version=1.8.14
 revision=1
 build_style=gnu-configure
 short_desc="Core X11 client library"
 home_page="https://gitlab.freedesktop.org/xorg/lib/libx11"
 license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/libX11-${version}.tar.xz"
-checksum="f8503727da9dbaa5974c9225e4343b5c36cc47027f9aed7369e563adc87ad9e9"
+checksum="9fae6eb666b44dedb4074147b8d9452bb975ea1f78a99860f9e4a227c37bc30b"
 depends="libxcb"
 make_depends="libxcb pkgconf util-macros xorgproto xtrans"
 

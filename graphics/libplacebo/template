@@ -1,12 +1,12 @@
 pkg_name=libplacebo
-version=7.360.1
+version=7.387.0
 revision=1
 build_style=meson
 short_desc="Reusable library for GPU accelerated video and image rendering"
 home_page="https://code.videolan.org/videolan/libplacebo"
 license="LGPL-2.1-or-later"
 dist_files="https://github.com/haasn/libplacebo/archive/refs/tags/v${version}.tar.gz>libplacebo-${version}.tar.gz"
-checksum="76b1f05a66cdc30ca3e773bff965f2c123b7a1bb00af93947046efd986868314"
+checksum="b7601d8521bef3e9518c477c6175d94a68bc568fa56d5defa76a53210edb0b1d"
 wrk_src="libplacebo-$version"
 
 use_flags="lcms opengl vulkan"

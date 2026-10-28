@@ -1,12 +1,12 @@
 pkg_name=rtorrent
-version=0.16.26
+version=0.16.27
 revision=1
 build_style=gnu-configure
 short_desc="Ncurses BitTorrent client based on libtorrent"
 home_page="https://github.com/rakshasa/rtorrent"
 license="GPL-2.0-or-later"
 dist_files="https://github.com/rakshasa/rtorrent/releases/download/v${version}/rtorrent-${version}.tar.gz"
-checksum="9e82bc3291bdeb902f42afb5e2a1c0e9ab3b9fdc68411c47f5ca25e202e4a44e"
+checksum="ff70d0c78da9d4e515590de247fb15e62448aa7e20c06ccb6dd9061b86ee27e1"
 
 # ncurses: the curses UI, without this rtorrent is daemon-only
 #   and driven over xmlrpc

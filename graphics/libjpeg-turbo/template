@@ -1,12 +1,12 @@
 pkg_name=libjpeg-turbo
-version=3.2.0
+version=3.2.1
 revision=1
 build_style=cmake
 short_desc="JPEG image codec with accelerated baseline compression and decompression"
 home_page="https://libjpeg-turbo.org"
 license="IJG AND BSD-3-Clause AND Zlib"
 dist_files="https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/${version}/libjpeg-turbo-${version}.tar.gz"
-checksum="cc6c1fb3b6e155d33af2c05ad02d0745b596d16e21722966ba60e4cdefab9c89"
+checksum="a02ede54045926bf7edbda4782ab734b79940eca34c7c28e2bd4d364de148253"
 make_depends="cmake nasm pkgconf samurai"
 
 configure_args="

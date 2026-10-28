@@ -1,5 +1,5 @@
 pkg_name=libgrapheme
-version=2.0.2
+version=3.0.0
 revision=1
 build_style=gnu-makefile
 short_desc="Unicode string library"
@@ -7,7 +7,7 @@ home_page="https://libs.suckless.org/libgrapheme/"
 license="ISC, Unicode-DFS-2016"
 # upstream is dl.suckless.org, this is the authors github mirror
 dist_files="https://github.com/FRIGN/libgrapheme/archive/refs/tags/${version}.tar.gz>libgrapheme-${version}.tar.gz"
-checksum="25e505648bb9dfa55f4b663f19b8fa8893b3fbf5891382264eec943aa7a81679"
+checksum="62bda8b4f9bdb94d2247a95de55b531f87a1114e916a52a0dce0b2e6f89ce630"
 
 use_flags="man static"
 

@@ -1,12 +1,12 @@
 pkg_name=gstreamer
-version=1.28.5
+version=1.29.2
 revision=1
 build_style=meson
 short_desc="Streaming media framework"
 home_page="https://gstreamer.freedesktop.org"
 license="LGPL-2.0-or-later"
 dist_files="https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${version}.tar.xz"
-checksum="492c612027fd1bbc6179e8a3db225e8f78b0f7f161625fe81e4039e6763b215d"
+checksum="ed645be28fdc26f2dd1793270b6466cdf253babcbd351363ff93d46acd32aa08"
 depends="glib"
 make_depends="bison flex glib meson pkgconf python"
 

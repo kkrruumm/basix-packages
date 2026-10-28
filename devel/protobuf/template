@@ -1,12 +1,12 @@
 pkg_name=protobuf
-version=35.1
+version=36.2
 revision=1
 build_style=cmake
 short_desc="Protocol buffers compiler and C++ library"
 home_page="https://protobuf.dev"
 license="BSD-3-Clause"
 dist_files="https://github.com/protocolbuffers/protobuf/releases/download/v${version}/protobuf-${version}.tar.gz"
-checksum="4d5d446b2303bac6defbefe120e6c7dea1964c03e9bd9df68d0fc44db2a52cde"
+checksum="5494170cefcba0d5dc5569edd4884fa940731a396472249870f594d81c4db767"
 
 use_flags="zlib"
 

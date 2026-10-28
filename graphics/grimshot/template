@@ -1,12 +1,12 @@
 pkg_name=grimshot
-version=1.11
+version=1.12
 revision=1
 build_style=custom
 short_desc="Helper for screenshots within sway"
 home_page="https://github.com/OctopusET/sway-contrib"
 license="MIT"
 dist_files="https://github.com/OctopusET/sway-contrib/archive/refs/tags/${version}.tar.gz>sway-contrib-${version}.tar.gz"
-checksum="1b148b5cb33390db7c92e8811bbc62ac3f96ea8f5ce6ae5b54a3baaf198afc00"
+checksum="5e3c1b68b02afd537782410d23d5436b130b6bf6fcd0dc12bb4f3b08f5ad5b3c"
 wrk_src="sway-contrib-${version}"
 
 use_flags="man notify"

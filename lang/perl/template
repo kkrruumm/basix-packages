@@ -1,12 +1,12 @@
 pkg_name=perl
-version=5.42.2
+version=5.44.0
 revision=1
 build_style=custom
 short_desc="Practical Extraction and Report Language"
 home_page="https://www.perl.org"
 license="Artistic-1.0-Perl, GPL-1.0-or-later"
 dist_files="https://www.cpan.org/src/5.0/perl-${version}.tar.xz"
-checksum="d8a9988b0fd5305204c74ac3cca7a19e47625ca65ad10723dfff129abaa4981a36"
+checksum="2b1be108d901a7b5832e17292631b975f98d04d7c615dcde9d7f61c32c79063c"
 
 depends="bzip2 zlib"
 make_depends="bzip2 zlib"

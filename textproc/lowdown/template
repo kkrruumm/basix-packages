@@ -1,12 +1,12 @@
 pkg_name=lowdown
-version=3.1.1
+version=3.2.1
 revision=1
 build_style=configure
 short_desc="Simple markdown translator and library"
 home_page="https://kristaps.bsd.lv/lowdown/"
 license="ISC"
 dist_files="https://kristaps.bsd.lv/lowdown/snapshots/lowdown-${version}.tar.gz"
-checksum="629643c1d1167c2def87f410b164b23fd8fe25aacd69fc22d936a1d2bc49a036"
+checksum="49fb2294c0ec343243243d4d6156bffcc8af93a4f26991105dfce0172e17e7ad"
 
 make_check_target=regress
 

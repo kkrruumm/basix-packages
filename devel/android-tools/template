@@ -1,12 +1,12 @@
 pkg_name=android-tools
-version=37.0.0
+version=37.0.0p1
 revision=2
 build_style=cmake
 short_desc="Android platform tools (adb, fastboot and friends)"
 home_page="https://github.com/nmeum/android-tools"
 license="Apache-2.0, BSD-2-Clause, ISC, MIT, GPL-2.0-only"
 dist_files="https://github.com/nmeum/android-tools/releases/download/${version}/android-tools-${version}.tar.xz"
-checksum="c2102666e07ffc6aad3c3376e0127b65c4c77b61bc7fda502814e8fb623d35ac"
+checksum="73b59244ecab17663d2df5b92d426fefd3ae2f45d942bb8de9aacf6b03c49411"
 
 # python: avbtool, mkbootimg, unpack_bootimg, repack_bootimg, and mkdtboimg
 #   these are all python scripts but probably optional for most people id figure

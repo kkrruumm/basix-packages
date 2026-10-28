@@ -1,6 +1,6 @@
 pkg_name=perl-term-animation
 version=2.6
-revision=1
+revision=2
 build_style=perl-module
 short_desc="ASCII sprite animation framework for perl"
 home_page="https://metacpan.org/dist/Term-Animation"

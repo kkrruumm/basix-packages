@@ -1,12 +1,12 @@
 pkg_name=gst-plugins-base
-version=1.28.3
+version=1.29.2
 revision=1
 build_style=meson
 short_desc="Base plugins for GStreamer"
 home_page="https://gstreamer.freedesktop.org"
 license="LGPL-2.0-or-later"
 dist_files="https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-${version}.tar.xz"
-checksum="6aab4b41871d82d03381c2a17838688b94df91745d48429aebb722a559f995d0"
+checksum="4e30b713937c64705eddf17aaa4e21d05c5246341d5b8ac1ca5f306af56d87a8"
 depends="glib gstreamer zlib"
 make_depends="glib gstreamer meson pkgconf python zlib"
 

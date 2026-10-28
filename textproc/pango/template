@@ -1,12 +1,12 @@
 pkg_name=pango
-version=1.56.3
+version=1.58.2
 revision=1
 build_style=meson
 short_desc="Library for layout and rendering of internationalized text"
 home_page="https://pango.gnome.org"
 license="LGPL-2.0-or-later"
 dist_files="https://download.gnome.org/sources/pango/${version%.*}/pango-${version}.tar.xz"
-checksum="78542feaaf007c1d648b94c4e9b6655ed7515d27ce434766aea99bef886c21ac98"
+checksum="5188d64063c712d0afd4bc51cc8b05e53a5bbaafa8f6e696d65904a0243b6447"
 depends="cairo fontconfig freetype glib harfbuzz fribidi"
 make_depends="cairo fontconfig freetype fribidi glib harfbuzz meson pkgconf python"
 

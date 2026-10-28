@@ -1,6 +1,6 @@
 pkg_name=libomemo-c
 version=0.5.1
-revision=1
+revision=2
 build_style=meson
 short_desc="Signal protocol implementation with OMEMO (XEP-0384) support"
 home_page="https://github.com/dino/libomemo-c"

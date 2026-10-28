@@ -1,8 +1,7 @@
 diff --git a/conf/example.conf.in b/conf/example.conf.in
-index 923d238..73e3cc9 100644
 --- a/conf/example.conf.in
 +++ b/conf/example.conf.in
-@@ -1044,6 +1044,7 @@ global {
+@@ -1094,6 +1094,7 @@
  	# Configuration option global/library_dir.
  	# Search this directory first for shared libraries.
  	# This configuration option does not have a default value defined.

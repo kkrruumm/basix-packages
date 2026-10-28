@@ -1,12 +1,12 @@
 pkg_name=lvm2
-version=2.03.41
+version=2.03.44
 revision=1
 build_style=custom
 short_desc="Logical volume manager and device mapper"
 home_page="https://sourceware.org/lvm2/"
 license="GPL-2.0-only, LGPL-2.1-only"
 dist_files="https://mirrors.kernel.org/sourceware/lvm2/releases/LVM2.${version}.tgz"
-checksum="09640e7576f521b96c2eda202d43984c9e999949fa4b2d28d93f96d3873cc2438d"
+checksum="402f3a08b290d4757da8e3cd8069d6e6b6736e9d0efaae96ec54a9991c837d2a"
 depends="libaio util-linux"
 make_depends="libaio util-linux"
 wrk_src="LVM2.${version}"

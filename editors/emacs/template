@@ -1,12 +1,12 @@
 pkg_name=emacs
-version=30.2
-revision=3
+version=31.1
+revision=1
 build_style=gnu-configure
 short_desc="Extensible, customizable, self-documenting text editor"
 home_page="https://www.gnu.org/software/emacs"
 license="GPL-3.0-or-later"
 dist_files="https://ftp.gnu.org/gnu/emacs/emacs-${version}.tar.xz"
-checksum="51101a26553420ee445adfbb537a8572750e3c21b9024569ef543c3f3508c3ca"
+checksum="9deb5d6fae5e5391bf78b643f1f3806aaff421fa3f2a3e51a7d37bd55b21f733"
 
 use_flags="xml gnutls -dbus -lcms2 -tree_sitter modules inotify"
 

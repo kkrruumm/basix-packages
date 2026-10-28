@@ -1,12 +1,12 @@
 pkg_name=expat
-version=2.8.2
+version=2.9.0
 revision=1
 build_style=gnu-configure
 short_desc="Stream oriented XML parser library"
 home_page="https://libexpat.github.io"
 license="MIT"
-dist_files="https://github.com/libexpat/libexpat/releases/download/R_2_8_2/expat-${version}.tar.bz2"
-checksum="12f132d2ccf08fb943bc19b0ce45912db98a1f0654d22b5db5a3db326641be13ea"
+dist_files="https://github.com/libexpat/libexpat/releases/download/R_2_9_0/expat-${version}.tar.bz2"
+checksum="32b5a3e8003f0402ee6ef70968c6dee653290f4c1a0032c84b904cd9fed0ea72"
 
 use_flags="-xmlwf"
 

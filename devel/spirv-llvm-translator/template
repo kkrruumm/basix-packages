@@ -1,12 +1,12 @@
 pkg_name=spirv-llvm-translator
-version=21.1.0
+version=21.1.12
 revision=1
 build_style=cmake
 short_desc="Bidirectional translator between SPIR-V and LLVM IR"
 home_page="https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
 license="Apache-2.0 WITH LLVM-exception"
 dist_files="https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/v${version}/SPIRV-LLVM-Translator-${version}.tar.gz"
-checksum="ca8600a6f57b127a12bffac8b73cd4f7139b87aaec0eda5615f3c2b09ed5be5f"
+checksum="354008740be0802c62cb5c02528224aff30df1b78dd0bc52a18ec924f25974e7"
 wrk_src="SPIRV-LLVM-Translator-$version"
 depends="llvm spirv-headers"
 make_depends="cmake llvm python spirv-headers spirv-tools"

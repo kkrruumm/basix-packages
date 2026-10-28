@@ -1,5 +1,5 @@
 pkg_name=tzdata
-version=2026e
+version=2026f
 revision=1
 build_style=custom
 short_desc="IANA time zone database"
@@ -8,7 +8,7 @@ license="Public-Domain"
 dist_files="
  https://www.iana.org/time-zones/repository/releases/tzcode${version}.tar.gz
  https://www.iana.org/time-zones/repository/releases/tzdata${version}.tar.gz"
-checksum="d7c8eec0b9d8ac2180c2b62351b12318ecef6234b077a5e82e31ead134ad61e9 1176f45cc16382adb20c7c9fa8d470051b1a8799c7f335c4b8b5bbc163cd4bda"
+checksum="95186212ae7bad296effa617e6f1f8ae9926c803d868bd8aa082976600e27c03 fa37afc2986ec3d9ce9028b3df87ba921c04d9c2f98e190f098892aeacfd132f"
 
 do_build() {
     $make_cmd $make_jobs CC="$CC" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" \

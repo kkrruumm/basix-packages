@@ -1,6 +1,6 @@
 pkg_name=imv
 version=5.0.1
-revision=1
+revision=2
 build_style=meson
 short_desc="Image viewer for tiling window manager users"
 home_page="https://sr.ht/~exec64/imv/"

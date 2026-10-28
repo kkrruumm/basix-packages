@@ -1,12 +1,12 @@
 pkg_name=cmus
-version=2.12.0
-revision=3
+version=2.13.0
+revision=1
 build_style=gnu-makefile
 short_desc="Feature-rich ncurses-based music player"
 home_page="https://cmus.github.io/"
 license="GPL-2.0-or-later"
 dist_files="https://github.com/cmus/cmus/archive/v${version}.tar.gz>cmus-${version}.tar.gz"
-checksum="142c818fb92554f8fbcc2fa8129d5e6e28e87f43339f3324c61c2d7e30c70a53"
+checksum="738df76be18b5073788d71e4607bed3e816c31bec237e43b912ecfbf6bc550ea"
 
 use_flags="alsa flac mad mpris opus vorbis"
 

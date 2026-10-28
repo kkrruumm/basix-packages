@@ -1,12 +1,12 @@
 pkg_name=libelf
-version=0.195
-revision=2
+version=0.197
+revision=1
 build_style=gnu-configure
 short_desc="ELF object file access library from elfutils"
 home_page="https://sourceware.org/elfutils/"
 license="LGPL-3.0-or-later"
 dist_files="https://sourceware.org/elfutils/ftp/${version}/elfutils-${version}.tar.bz2"
-checksum="f397be2a59cbbc375cdbb28f7947a9345a8d126fadc6a2bb40b49c1dbe38787c4a"
+checksum="1fa069e5cb3ddb36aec20bdc6ee453dd246b229d35a3db7c9a31e3a9d99ee16b"
 wrk_src="elfutils-${version}"
 
 depends="zlib"

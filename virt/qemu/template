@@ -2,7 +2,7 @@
 # (the only arch that matters anyway)
 pkg_name=qemu
 version=11.1.2
-revision=2
+revision=3
 build_style=configure
 short_desc="Generic machine emulator and virtualizer"
 home_page="https://www.qemu.org"

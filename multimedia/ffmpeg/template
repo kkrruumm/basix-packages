@@ -1,6 +1,6 @@
 pkg_name=ffmpeg
 version=9.0.2
-revision=1
+revision=2
 build_style=configure
 short_desc="Complete solution to record, convert and stream audio and video"
 home_page="https://ffmpeg.org/"

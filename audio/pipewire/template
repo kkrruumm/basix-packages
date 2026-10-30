@@ -1,12 +1,12 @@
 pkg_name=pipewire
-version=1.6.10
+version=1.6.11
 revision=1
 build_style=meson
 short_desc="Server and user space API to deal with multimedia pipelines"
 home_page="https://pipewire.org"
 license="MIT"
 dist_files="https://github.com/PipeWire/pipewire/archive/${version}.tar.gz>pipewire-${version}.tar.gz"
-checksum="3f91bf923d44691dd7580e21b7a214f184479d005abbd5c11955dce47db37c23"
+checksum="dfa5e84f311219ce0d5e1754807de300e358d8dd5548deb080904da2ebbdbdae"
 
 use_flags="alsa -bluetooth -camera -echo-cancel -gstreamer -jack pulse -sndfile -v4l2 -vulkan -x11"
 

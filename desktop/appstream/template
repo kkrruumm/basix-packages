@@ -1,12 +1,12 @@
 pkg_name=appstream
-version=1.2.1
+version=1.2.2
 revision=1
 build_style=meson
 short_desc="Software metadata handling library"
 home_page="https://www.freedesktop.org/wiki/Distributions/AppStream"
 license="LGPL-2.1-or-later"
 dist_files="https://www.freedesktop.org/software/appstream/releases/AppStream-${version}.tar.xz"
-checksum="f764164187567d73d089b1966bce0b5bbcb0d7fa79b90ddd636ac4776664599c"
+checksum="ccc31aa5a50469896863a72a752ec119e73ad7f89e3bd96c64a841d33027a724"
 wrk_src="AppStream-$version"
 depends="curl glib libfyaml libxml2 libxmlb zstd"
 make_depends="curl gettext-tiny glib gperf libfyaml libxml2 libxmlb meson pkgconf

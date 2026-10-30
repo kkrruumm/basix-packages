@@ -1,12 +1,12 @@
 pkg_name=wireplumber
-version=0.5.18
+version=0.5.19
 revision=1
 build_style=meson
 short_desc="Modular session and policy manager for PipeWire"
 home_page="https://pipewire.pages.freedesktop.org/wireplumber/"
 license="MIT"
 dist_files="https://gitlab.freedesktop.org/PipeWire/wireplumber/-/archive/${version}/wireplumber-${version}.tar.gz"
-checksum="03febd172fa0ddbfdb19e9dfee12d7a387fc0c7940db45167c0bbe68bc9b20fa"
+checksum="97cb54e1635a177cb45312cbc7ae09246efae6862339ae421514bd3e343d83d4"
 depends="glib lua pipewire"
 make_depends="glib lua meson pipewire pkgconf python"
 

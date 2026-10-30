@@ -1,12 +1,12 @@
 pkg_name=xdg-desktop-portal-wlr
-version=0.8.4
+version=0.8.5
 revision=1
 build_style=meson
 short_desc="xdg-desktop-portal backend for wlroots compositors"
 home_page="https://github.com/emersion/xdg-desktop-portal-wlr"
 license="MIT"
 dist_files="https://github.com/emersion/xdg-desktop-portal-wlr/releases/download/v${version}/xdg-desktop-portal-wlr-${version}.tar.gz"
-checksum="6aef309dde1a256a7f3fcd54f712740e579137c99348cd276487ea7f10982e8f"
+checksum="439fd254b116845ebffd0508703964dedc1617a46ecf4f3df73aa464936e7867"
 
 use_flags="man"
 

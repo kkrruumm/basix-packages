@@ -1,0 +1,27 @@
+pkg_name=attr
+version=2.5.2
+revision=1
+build_style=gnu-configure
+short_desc="Extended attribute support library and tools"
+home_page="https://savannah.nongnu.org/projects/attr"
+license="LGPL-2.1-or-later, GPL-2.0-or-later"
+dist_files="https://download.savannah.nongnu.org/releases/attr/attr-${version}.tar.xz"
+checksum="d0831671ff83c7195b184b41a6052d1f05ed75b06bacea61dc19038c31d32204"
+
+use_flags="man static -nls -doc"
+
+make_depends="$(use_if nls gettext-tiny)"
+
+configure_args="
+    --disable-rpath
+    $(use_enable nls)
+    $(use_enable static)"
+
+post_install() {
+    use man || brm /usr/share/man
+
+    use doc || brm /usr/share/doc
+    for f in doc/COPYING*; do
+        [ -f "$f" ] && blicense "$f"
+    done
+}

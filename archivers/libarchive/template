@@ -1,16 +1,51 @@
 pkg_name=libarchive
-version=3.8.10
+version=3.8.11
 revision=1
 build_style=gnu-configure
 short_desc="Library for reading and writing streaming archive formats"
 home_page="https://libarchive.org"
 license="BSD-2-Clause"
 dist_files="https://github.com/libarchive/libarchive/releases/download/v${version}/libarchive-${version}.tar.xz"
-checksum="3d8fda87d02102b719f181ab7b982c2807a2acdbca43f4636ed6954e9ce3e1b2"
-depends="bzip2 expat libressl xz zlib zstd"
-make_depends="bzip2 expat libressl pkgconf xz zlib zstd"
+checksum="a28a6c5ec6a212a6f881396a10a6597d7e58edf8adc5919c7efa3400ba272456"
+
+# bsdtar/bsdcpio/bsdcat/bsdunzip: the command line frontends, always installed
+#   under their bsd* names
+# acl: store and restore POSIX ACLs (bsdtar --acls, -p)
+# lz4: what it sounds like
+use_flags="acl lz4 bsdtar bsdcpio bsdcat bsdunzip -tar_symlink -cpio_symlink -unzip_symlink"
+
+depends="bzip2 expat libressl xz zlib zstd
+ $(use_if acl acl)
+ $(use_if lz4 lz4)"
+make_depends="bzip2 expat libressl pkgconf xz zlib zstd
+ $(use_if acl "acl attr")
+ $(use_if lz4 lz4)"
 
 configure_args="
     --disable-static
     --without-xml2
-    --with-expat"
+    --with-expat
+    --without-libb2
+    $(use_enable acl)
+    $(use_with lz4)
+    $(use_if bsdtar --enable-bsdtar=shared --disable-bsdtar)
+    $(use_if bsdcpio --enable-bsdcpio=shared --disable-bsdcpio)
+    $(use_if bsdcat --enable-bsdcat=shared --disable-bsdcat)
+    $(use_if bsdunzip --enable-bsdunzip=shared --disable-bsdunzip)"
+
+post_install() {
+    if use bsdtar && use tar_symlink; then
+        bln bsdtar /usr/bin/tar
+        bln bsdtar.1 /usr/share/man/man1/tar.1
+    fi
+    if use bsdcpio && use cpio_symlink; then
+        bln bsdcpio /usr/bin/cpio
+        bln bsdcpio.1 /usr/share/man/man1/cpio.1
+    fi
+    if use bsdunzip && use unzip_symlink; then
+        bln bsdunzip /usr/bin/unzip
+        bln bsdunzip.1 /usr/share/man/man1/unzip.1
+    fi
+
+    blicense COPYING
+}

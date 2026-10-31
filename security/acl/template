@@ -1,0 +1,28 @@
+pkg_name=acl
+version=2.3.2
+revision=1
+build_style=gnu-configure
+short_desc="Access control list library and tools"
+home_page="https://savannah.nongnu.org/projects/acl"
+license="LGPL-2.1-or-later, GPL-2.0-or-later"
+dist_files="https://download.savannah.nongnu.org/releases/acl/acl-${version}.tar.xz"
+checksum="585824ee75cf926b98bb79d9431700f122c3173c45ee19d013e2c794ea6669ab"
+
+depends="attr"
+make_depends="attr $(use_if nls gettext-tiny)"
+
+use_flags="man static -nls -doc"
+
+configure_args="
+    --disable-rpath
+    $(use_enable nls)
+    $(use_enable static)"
+
+post_install() {
+    use man || brm /usr/share/man
+
+    use doc || brm /usr/share/doc
+    for f in doc/COPYING*; do
+        [ -f "$f" ] && blicense "$f"
+    done
+}

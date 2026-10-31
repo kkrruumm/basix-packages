@@ -10,18 +10,16 @@
 case $1 in
 up)
     log "loading modules for present devices..."
-    find /sys/devices -name modalias -type f 2>/dev/null | while read -r m; do
-        read -r alias < "$m" || continue
-        modprobe -bq "$alias" 2>/dev/null || :
-    done
+    find /sys/devices -name modalias -type f -exec cat {} + 2>/dev/null |
+        sort -u | xargs -r modprobe -abq 2>/dev/null || :
 
     for f in /etc/modules-load.d/*.conf; do
         [ -f "$f" ] || continue
         while read -r mod _; do
             case $mod in ''|\#*) continue ;; esac
-            modprobe -bq "$mod" 2>/dev/null || :
+            printf '%s\n' "$mod"
         done < "$f"
-    done
+    done | xargs -r modprobe -aq 2>/dev/null || :
 
     # mdevd reads the netlink itself so a hotplug helper left
     # behind by an initramfs needs to be cleaned up

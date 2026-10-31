@@ -1,0 +1,51 @@
+pkg_name=chafa
+version=1.18.3
+revision=1
+build_style=gnu-configure
+short_desc="Versatile and fast Unicode/ASCII/ANSI graphics renderer"
+home_page="https://hpjansson.org/chafa/"
+license="LGPL-3.0-or-later"
+dist_files="https://github.com/hpjansson/chafa/releases/download/${version}/chafa-${version}.tar.xz"
+checksum="5df739a5dfc35d22441a6e73e3afc2b2a4ac8697d5ec80607642014ddbf51688"
+
+# tools is the chafa(1) binary, -tools means only libchafa
+# png, gif, qoi, and xwd come from bundled stuff
+use_flags="man tools jpeg webp -doc -static -completions"
+
+depends="glib"
+if use tools; then
+    depends="$depends freetype"
+    if use jpeg; then depends="$depends libjpeg-turbo"; fi
+    if use webp; then depends="$depends libwebp"; fi
+fi
+make_depends="$depends pkgconf"
+
+# avif, heif, jxl, svg, and tiff stuff is hard disabled because i havent packaged that stuff (TODO)
+# a prebuilt manpage is shipped with this so just using that
+configure_args="
+    --disable-man
+    --disable-gtk-doc
+    --without-avif
+    --without-heif
+    --without-jxl
+    --without-svg
+    --without-tiff
+    $(use_enable static)
+    $(use_with tools)
+    $(use_with jpeg)
+    $(use_with webp)"
+
+post_install() {
+    use doc || brm /usr/share/gtk-doc
+
+    if use man && use tools; then
+        bman docs/chafa.1
+    fi
+
+    if use completions && use tools; then
+        bcompletion tools/completions/bash-completion.sh bash
+        bcompletion tools/completions/zsh-completion.zsh zsh
+        bcompletion tools/completions/fish-completion.fish fish
+    fi
+    :
+}

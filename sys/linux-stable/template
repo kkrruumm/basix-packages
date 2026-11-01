@@ -3,14 +3,14 @@
 # use flags here only disable stuff so if you override this stuff
 # in your custom kernel config, it'll stick as long as these are left "enabled"
 pkg_name=linux-stable
-version=7.2.14
+version=7.3.1
 revision=1
 build_style=custom
 short_desc="The Linux kernel"
 home_page="https://kernel.org"
 license="GPL-2.0-only"
 dist_files="https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-${version}.tar.xz"
-checksum="d643dc1d116cc94bffd098452270e9d86196e9439251a08ce7fddc896b09b3e9"
+checksum="83de733cf656ccd2c556e13c51679b4d097a1c0f07b489d129a830062127395d"
 wrk_src="linux-$version"
 
 # bison and flex build kconfig, libelf builds objtool, libressl signs modules
@@ -72,15 +72,15 @@ do_configure() {
         NET_VENDOR_PENSANDO NET_VENDOR_AMAZON NET_VENDOR_MICROSOFT NET_VENDOR_GOOGLE \
         NET_VENDOR_FUNGIBLE NET_VENDOR_ENGLEDER NET_VENDOR_META NET_VENDOR_WANGXUN \
         NET_VENDOR_MARVELL NET_VENDOR_CISCO NET_VENDOR_BROCADE NET_VENDOR_SUN \
-        NET_VENDOR_DEC NET_VENDOR_ADAPTEC NET_VENDOR_3COM NET_VENDOR_ALTEON \
+        NET_VENDOR_DEC NET_VENDOR_ADAPTEC NET_VENDOR_3COM \
         NET_VENDOR_8390 NET_VENDOR_NI NET_VENDOR_NATSEMI NET_VENDOR_RDC NET_VENDOR_SIS \
         NET_VENDOR_VIA NET_VENDOR_TEHUTI NET_VENDOR_DLINK NET_VENDOR_ARC NET_VENDOR_AGERE \
         NET_VENDOR_ALACRITECH NET_VENDOR_SMSC NET_VENDOR_SOCIONEXT NET_VENDOR_XILINX \
         NET_VENDOR_VERTEXCOM NET_VENDOR_LITEX NET_VENDOR_MICREL NET_VENDOR_MICROCHIP \
-        NET_VENDOR_MICROSEMI NET_VENDOR_MYRI NET_VENDOR_OKI NET_VENDOR_PACKET_ENGINES \
+        NET_VENDOR_MICROSEMI NET_VENDOR_MYRI NET_VENDOR_OKI \
         NET_VENDOR_SEEQ NET_VENDOR_STMICRO NET_VENDOR_TI NET_VENDOR_WIZNET \
         NET_VENDOR_XIRCOM NET_VENDOR_ADI NET_VENDOR_DAVICOM NET_VENDOR_CORTINA \
-        NET_VENDOR_FARADAY NET_VENDOR_HISILICON \
+        NET_VENDOR_FARADAY NET_VENDOR_HISILICON NET_VENDOR_ZTE \
         BNXT BNX2X I40E ICE IXGBE IAVF IDPF FM10K NET_DSA
 
     use infiniband || _kdisable INFINIBAND
@@ -88,13 +88,13 @@ do_configure() {
     use scsi_hba || _kdisable SCSI_LOWLEVEL FUSION
     use server || _kdisable EDAC NUMA NVME_TARGET TARGET_CORE ISCSI_TCP \
         DM_MULTIPATH SCSI_FC_ATTRS OCFS2_FS GFS2_FS CEPH_FS DLM
-    use wwan || _kdisable WWAN ATM IEEE802154 6LOWPAN CAN NFC HAMRADIO WAN
+    use wwan || _kdisable WWAN ATM IEEE802154 6LOWPAN CAN NFC WAN
 
     use virt_guest || _kdisable HYPERV XEN VMWARE_VMCI VMWARE_BALLOON VMXNET3 VBOXGUEST
     use kvm || _kdisable KVM VFIO
 
     use embedded || _kdisable IIO COMEDI MTD W1 USB_GADGET PARPORT FIREWIRE GREYBUS \
-        SPMI MOST SIOX SLIMBUS MCB IPACK NTB FPGA SOUNDWIRE \
+        SPMI MOST SIOX SLIMBUS MCB IPACK_BUS NTB FPGA SOUNDWIRE \
         CHROME_PLATFORMS SURFACE_PLATFORMS GNSS COUNTER
 
     # hwmon is used by too much shit to turn it off, can drop the sensors though

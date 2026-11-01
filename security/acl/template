@@ -1,12 +1,12 @@
 pkg_name=acl
-version=2.3.2
+version=2.4.0
 revision=1
 build_style=gnu-configure
 short_desc="Access control list library and tools"
 home_page="https://savannah.nongnu.org/projects/acl"
 license="LGPL-2.1-or-later, GPL-2.0-or-later"
 dist_files="https://download.savannah.nongnu.org/releases/acl/acl-${version}.tar.xz"
-checksum="585824ee75cf926b98bb79d9431700f122c3173c45ee19d013e2c794ea6669ab"
+checksum="49c50bec26906a493a615fdf3da0e34d29f0c9092ac097799fa76016085ed7d2"
 
 depends="attr"
 make_depends="attr $(use_if nls gettext-tiny)"

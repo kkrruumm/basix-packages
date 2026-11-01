@@ -1,0 +1,37 @@
+pkg_name=passt
+version=2026.10.02
+revision=1
+# upstream tags snapshots as YYYY_MM_DD.<short commit>
+_commit=cba3570
+_tag=$(printf '%s' "$version" | tr . _).$_commit
+build_style=gnu-makefile
+short_desc="User-mode networking for VMs (passt) and network namespaces (pasta)"
+home_page="https://passt.top"
+license="BSD-3-Clause AND GPL-2.0-or-later"
+dist_files="https://passt.top/passt/snapshot/passt-${_tag}.tar.gz"
+checksum="7ef503ae28799d4c905eaaa1d32f20bf7e7b77b511efeb9b5a2fd7fab02df829"
+wrk_src="passt-$_tag"
+make_depends="linux-headers"
+
+use_flags="man -doc"
+
+make_build_args="VERSION=$_tag"
+make_install_args="prefix=/usr"
+
+pre_build() {
+    # seccomp.sh runs with sh -eu and pipes its progress through fmt which busybox does not hav
+    # this is just cosmetic so using fold to do the same wrapping
+    bsed 's/| fmt -t \${col_args}$/| fold -s ${col_args}; echo/' seccomp.sh
+    if grep -q 'fmt -t' seccomp.sh; then
+        die "passt: seccomp.sh fmt substitution no longer matches"
+    fi
+}
+
+post_install() {
+    use man || brm /usr/share/man
+    use doc || brm /usr/share/doc
+
+    for _l in LICENSES/*.txt; do
+        blicense "$_l"
+    done
+}

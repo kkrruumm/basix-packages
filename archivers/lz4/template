@@ -1,12 +1,12 @@
 pkg_name=lz4
-version=1.10.0
+version=1.11.0
 revision=1
 build_style=gnu-makefile
 short_desc="Extremely fast lossless compression algorithm"
 home_page="https://lz4.org"
 license="BSD-2-Clause, GPL-2.0-or-later"
 dist_files="https://github.com/lz4/lz4/archive/refs/tags/v${version}.tar.gz>lz4-${version}.tar.gz"
-checksum="3e69fd475e7852e17594985528b5232afeba7d3d56cfebe2e89071768b2ab36a"
+checksum="cd810aa687448f2eaba1f12342986066cd9df94a2aeaefc81ce98e8febdb789f"
 
 make_depends="make"
 

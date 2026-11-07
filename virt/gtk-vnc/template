@@ -1,12 +1,12 @@
 pkg_name=gtk-vnc
-version=1.5.0
+version=1.6.0
 revision=1
 build_style=meson
 short_desc="VNC client widget for GTK"
 home_page="https://gitlab.gnome.org/GNOME/gtk-vnc"
 license="LGPL-2.1-or-later"
 dist_files="https://download.gnome.org/sources/gtk-vnc/${version%.*}/gtk-vnc-${version}.tar.xz"
-checksum="5e7765c86c5e8c5231c5e09bfe978ff2ad99a02e2d348210da5ec1e62540e621"
+checksum="fb6274ff6496e33e4287ba03a843166dc9e01d03a6f937ab1263808b8b90cdd3"
 
 use_flags="-introspection -pulseaudio -sasl -vala"
 

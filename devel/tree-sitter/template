@@ -1,12 +1,12 @@
 pkg_name=tree-sitter
-version=0.27.1
+version=0.27.2
 revision=1
 build_style=gnu-makefile
 short_desc="Incremental parsing library"
 home_page="https://tree-sitter.github.io"
 license="MIT"
 dist_files="https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v${version}.tar.gz>tree-sitter-${version}.tar.gz"
-checksum="f14d571904e4b45635dac0ee49bfb0e54b7e2258eacdce17e2d9519f74e284a7"
+checksum="9136189e7a334d497981d19ca8eb794c7e7eab1f0f0569496cf8442568e6e6f2"
 
 make_depends="pkgconf"
 

@@ -1,12 +1,12 @@
 pkg_name=fzf
-version=0.74.5
+version=0.75.0
 revision=1
 build_style=go
 short_desc="Command-line fuzzy finder"
 home_page="https://github.com/junegunn/fzf"
 license="MIT"
 dist_files="https://github.com/junegunn/fzf/archive/refs/tags/v${version}.tar.gz>fzf-${version}.tar.gz"
-checksum="7dd8ed3c5a9dc8a4154ec68762bd9c1e4f0690ac614ff6e2867c86ce8f083610"
+checksum="e355d091590d8ee5ab943dc9e5bda7a7ff818189ed4b12dd6b06fb508f80e4a8"
 wrk_src="fzf-$version"
 
 # shell: keybinds and ** completion scripts for bash/zsh/fish

@@ -1,0 +1,3 @@
+#!/bin/execlineb -P
+# lidm does its own chvt, this is a workaround for non busybox setups
+/usr/bin/lidm 7

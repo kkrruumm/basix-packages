@@ -1,0 +1,20 @@
+--- a/src/ui.c
++++ b/src/ui.c
+@@ -144,7 +144,7 @@
+     maxlen -= utf8len(g_config->strings.opts_pre) +
+               utf8len(g_config->strings.opts_post);
+   }
+-  col += ofield_display_cursor_col(ofield, maxlen);
++  if (focused_input != PASSWD) col += ofield_display_cursor_col(ofield, maxlen);
+   if (ofield->opts > 1) col += utf8len(g_config->strings.opts_pre);
+ 
+   // rows in here quite bodged
+@@ -500,7 +500,7 @@
+ 
+   ulong actual_len = length > VALUE_MAXLEN ? VALUE_MAXLEN : length;
+   memset(passwd_prompt, ' ', VALUE_MAXLEN);
+-  memset(passwd_prompt, '*', actual_len);
++  (void)actual_len;
+   passwd_prompt[VALUE_MAXLEN] = '\0';
+ 
+   printf("\r\x1b[%dC\x1b[%sm", box_start.x + VALUES_COL - 1, pass_color);

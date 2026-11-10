@@ -1,0 +1,63 @@
+pkg_name=lidm
+version=2.0.2
+revision=1
+build_style=gnu-makefile
+short_desc="Fully colorful, customizable, and lightweight TUI display manager"
+home_page="https://github.com/javalsai/lidm"
+license="GPL-3.0-only"
+dist_files="https://github.com/javalsai/lidm/archive/refs/tags/v${version}.tar.gz>lidm-${version}.tar.gz"
+checksum="1f57ab4ee3996f7bb7ee8fa83d6daafe6ee571cd843a0d28ea9960139dd44d15"
+
+# themes: every upstream theme, /etc/lidm.ini is always the default regardless
+# seatd: the service waits on seatd
+# hidepasswd: by default lidm will show a * for every character in your password
+#   this is probably not desired, the patch here just disables that
+use_flags="man services seatd hidepasswd themes"
+
+depends="linux-pam
+ $(use_if services "execline $(use_if seatd seatd)")"
+make_depends="linux-headers linux-pam"
+
+pre_build() {
+    if use hidepasswd; then
+        patch -p1 -i "$FILESDIR/hide-passwd.patch"
+    fi
+
+    export INFO_GIT_REV="v$version"
+    export INFO_BUILD_TS="${SOURCE_DATE_EPOCH:-0}"
+
+    # LOGIN_SHELL defaults to bash which isn't going to have been installed by default
+    export CPPFLAGS="${CPPFLAGS:-} -DLOGIN_SHELL=\\\"sh\\\" -DPAM_SERVICE_FALLBACK=\\\"lidm\\\""
+}
+
+# this has to be done manually here becuase upstreams install target
+# uses man{1,5} which obviously isnt portable
+do_install() {
+    bbin lidm
+    bconf themes/default.ini lidm.ini
+    binstall "$FILESDIR/lidm.pam" 0644 /etc/pam.d lidm
+
+    if use man; then
+        bman assets/man/lidm.1
+        bman assets/man/lidm-config.5
+    fi
+
+    if use themes; then
+        for _t in themes/*.ini; do
+            bdata "$_t" themes
+        done
+    fi
+
+    if use services; then
+        bcopy "$FILESDIR/sv/." /etc/sv
+        use seatd || brm /etc/sv/lidm/setup
+        find "$DESTDIR/etc/sv" -type f \
+            \( -name run -o -name setup -o -name finish \) -exec chmod 0755 {} +
+        blibexec "$FILESDIR/lidm-tty7"
+    fi
+    
+    # lidm state dir
+    bmkdir -m 0750 /var/lib/lidm
+
+    blicense LICENSE
+}

@@ -1,12 +1,12 @@
 pkg_name=vim
-version=9.2.1302
+version=9.2.1332
 revision=1
 build_style=gnu-configure
 short_desc="Vi Improved, a highly configurable text editor"
 home_page="https://www.vim.org"
 license="Vim"
 dist_files="https://github.com/vim/vim/archive/refs/tags/v${version}.tar.gz>vim-${version}.tar.gz"
-checksum="453f6abaaaa459a8d05ca7f31a29e76b4b9ea0d2d7f4181c426aa5d53a999ab6"
+checksum="026ee197ef5c6284158693cd90864f5a3c236ba875d001af5a6fc64085b23e7d"
 depends="ncurses"
 make_depends="ncurses"
 

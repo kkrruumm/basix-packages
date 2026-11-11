@@ -1,12 +1,12 @@
 pkg_name=sshfs
-version=3.7.6
+version=3.7.7
 revision=1
 build_style=meson
 short_desc="FUSE filesystem client based on the SSH File Transfer Protocol"
 home_page="https://github.com/libfuse/sshfs"
 license="GPL-2.0-only"
 dist_files="https://github.com/libfuse/sshfs/releases/download/sshfs-${version}/sshfs-${version}.tar.xz"
-checksum="5324253d4201b285fae954074887265d1b52cc1e7d1b0a9f84b4bd2931dcc76f"
+checksum="2a9a17259cc71e17268817ab0896153afe5fdbe43782b14b09e50c3b3c9d6a82"
 wrk_src="sshfs-$version"
 
 depends="fuse3 glib openssh"

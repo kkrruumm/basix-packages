@@ -1,12 +1,12 @@
 pkg_name=dash
-version=0.5.13.5
-revision=2
+version=0.5.13.6
+revision=1
 build_style=gnu-configure
 short_desc="Small and fast POSIX-compliant shell"
 home_page="http://gondor.apana.org.au/~herbert/dash/"
 license="BSD-3-Clause AND GPL-2.0-or-later"
 dist_files="http://gondor.apana.org.au/~herbert/dash/files/dash-${version}.tar.gz"
-checksum="7871678c86c4fda68266f79b4914d38792a8c4604e221cc3fc8d901da21560a1"
+checksum="ef59d5988dbc441316e807451f02f354994e7b497008c7bea46d9dcbf2c358c5"
 register_shell="/usr/bin/dash /bin/dash"
 
 # libedit gives dash interactive line edits and history and shit

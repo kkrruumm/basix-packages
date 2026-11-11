@@ -1,0 +1,28 @@
+pkg_name=pipemixer
+version=0.5.1
+revision=1
+build_style=meson
+short_desc="TUI volume control for PipeWire"
+home_page="https://github.com/heather7283/pipemixer"
+license="GPL-3.0-or-later"
+dist_files="https://github.com/heather7283/pipemixer/archive/v${version}.tar.gz>pipemixer-${version}.tar.gz"
+checksum="7246fc13a8a2b52011c0826d850033a74039a377d5dada4c4367f7e88a8ffbff"
+
+use_flags="man doc -desktop -completions"
+
+depends="inih ncurses pipewire"
+make_depends="inih meson ncurses pipewire pkgconf"
+
+configure_args="$(use_bool completions shell-completions)"
+
+post_install() {
+    use man || brm /usr/share/man
+    use desktop || brm /usr/share/applications
+
+    if use doc; then
+        bdoc README.md
+        bdoc assets/pipemixer.ini
+    fi
+
+    blicense COPYING
+}

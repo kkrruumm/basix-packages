@@ -1,12 +1,12 @@
 pkg_name=go
-version=1.27.3
+version=1.27.4
 revision=1
 build_style=custom
 short_desc="Go programming language toolchain"
 home_page="https://go.dev"
 license="BSD-3-Clause"
 dist_files="https://go.dev/dl/go${version}.src.tar.gz"
-checksum="3b7cf7bb35ba61548a0c507bb76371000dd7ef30fbb1e70ebdcb0e6001d318e6"
+checksum="e65ad6a7516e1a768ad649fd7cd8430248bbd98cc63f615f3d7129b37ca2ba9c"
 wrk_src="go"
 depends="gcc"
 make_depends="go-bootstrap"

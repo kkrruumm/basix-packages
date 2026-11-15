@@ -1,29 +1,29 @@
 pkg_name=bpm
-version=0.9.4
+version=0.10.1
 revision=1
 build_style=custom
 short_desc="basix package manager"
 home_page="https://github.com/kkrruumm/bpm"
-license="MIT"
+license="BSD-3-Clause"
 dist_files="https://github.com/kkrruumm/bpm/archive/refs/tags/${version}.tar.gz"
-checksum="c119aa8e3e940322759754de677bb12aa919d70abe1191f8eb6e993d717c0fb3"
+checksum="05bbe1862544ba8682c2108c8e2cd28ddfb9c7ce57579b392ef529b8aa6d4618"
 
 depends="b3sum curl git"
 
 do_build() { :; }
 
 do_install() {
-    if [ -f lib/common.sh ]; then
+    if [ -f lib/core.sh ]; then
         :
-    elif [ -f bpm/lib/common.sh ]; then
+    elif [ -f bpm/lib/core.sh ]; then
         cd bpm
     else
-        die "no lib/common.sh in $PWD"
+        die "no lib/core.sh in $PWD"
     fi
 
     bbin bpm
 
-    for f in lib/common.sh lib/pkg.sh lib/build.sh lib/account.sh lib/sandbox.sh; do
+    for f in lib/*.sh lib/graph.awk; do
         binstall "$f" 0644 /usr/lib/bpm
     done
     for f in lib/style/*.sh; do

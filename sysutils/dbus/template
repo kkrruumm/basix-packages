@@ -1,12 +1,12 @@
 pkg_name=dbus
-version=1.16.2
-revision=4
+version=1.16.4
+revision=1
 build_style=cmake # at some point should probably switch to meson for this but fuck it
 short_desc="Freedesktop.org message bus system"
 home_page="https://www.freedesktop.org/wiki/Software/dbus"
 license="AFL-2.1 OR GPL-2.0-or-later"
 dist_files="https://dbus.freedesktop.org/releases/dbus/dbus-${version}.tar.xz"
-checksum="b1d1f22858a8f04665e5dca29d194f892620f00fd3e3f4e89dd208e78868436e"
+checksum="18ade2eb75232a207dbeb5ee46f8798c8121545429c5198c1ff68adbf4e36581"
 depends="expat"
 make_depends="cmake expat"
 

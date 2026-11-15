@@ -1,12 +1,12 @@
 pkg_name=cloc
-version=2.10
+version=2.12
 revision=1
 build_style=custom
 short_desc="Count lines of code, comment and blank lines by language"
 home_page="https://github.com/AlDanial/cloc"
 license="GPL-2.0-or-later"
 dist_files="https://github.com/AlDanial/cloc/archive/v${version}.tar.gz>cloc-${version}.tar.gz"
-checksum="aa310dde77139691ec4cb9294b0925e509b57d07cbfbde3bfc4483d43828505f"
+checksum="037b28434971c1b73a753e8e75476e4056da9ce3a1eeb6f9cf4e2624674d502a"
 depends="perl"
 make_depends="perl"
 

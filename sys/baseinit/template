@@ -1,13 +1,13 @@
 # this package has no upstream, everything it ships lives in files/
 pkg_name=baseinit
 version=3.0.0
-revision=2
+revision=3
 build_style=custom
 short_desc="the base basix boot sequence"
 home_page="https://github.com/kkrruumm/basix-packages"
 license="MIT"
 
-depends="nitro s6-log execline skalibs chpst mdevd"
+depends="nitro s6-log chpst mdevd"
 
 use_flags="gettys"
 

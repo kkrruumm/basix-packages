@@ -1,6 +1,6 @@
 pkg_name=openssh
 version=10.6p2
-revision=1
+revision=2
 build_style=gnu-configure
 short_desc="OpenBSD secure shell, portable release"
 home_page="https://www.openssh.com"

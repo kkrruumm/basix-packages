@@ -1,6 +1,6 @@
 pkg_name=openntpd
 version=7.9p1
-revision=4
+revision=5
 build_style=gnu-configure
 short_desc="Lightweight NTP daemon ported from OpenBSD"
 home_page="https://www.openntpd.org/"

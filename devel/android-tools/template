@@ -1,6 +1,6 @@
 pkg_name=android-tools
 version=37.0.0p1
-revision=2
+revision=3
 build_style=cmake
 short_desc="Android platform tools (adb, fastboot and friends)"
 home_page="https://github.com/nmeum/android-tools"

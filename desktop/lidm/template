@@ -1,6 +1,6 @@
 pkg_name=lidm
 version=2.0.2
-revision=1
+revision=2
 build_style=gnu-makefile
 short_desc="Fully colorful, customizable, and lightweight TUI display manager"
 home_page="https://github.com/javalsai/lidm"
@@ -15,7 +15,7 @@ checksum="1f57ab4ee3996f7bb7ee8fa83d6daafe6ee571cd843a0d28ea9960139dd44d15"
 use_flags="man services seatd hidepasswd themes"
 
 depends="linux-pam
- $(use_if services "execline $(use_if seatd seatd)")"
+ $(use_if services "$(use_if seatd seatd)")"
 make_depends="linux-headers linux-pam"
 
 pre_build() {

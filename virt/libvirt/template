@@ -1,6 +1,6 @@
 pkg_name=libvirt
 version=12.9.0
-revision=1
+revision=2
 build_style=meson
 short_desc="Virtualization API for controlling virtualization engines"
 home_page="https://libvirt.org"

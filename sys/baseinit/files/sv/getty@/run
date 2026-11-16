@@ -1,2 +1,2 @@
-#!/bin/execlineb -S1
-getty 38400 ${1} linux
+#!/bin/sh
+exec getty 38400 "$1" linux

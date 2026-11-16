@@ -1,0 +1,35 @@
+# shipping this without a js engine because it
+# still seems to work fine, may be an issue in the future
+# fwiw, with a js engine, you're pretty much just executing
+# google/youtube code locally with your users perms, so questionable
+# regardless
+pkg_name=yt-dlp
+version=2026.10.26
+revision=1
+build_style=custom
+short_desc="Feature-rich command-line audio/video downloader"
+home_page="https://github.com/yt-dlp/yt-dlp"
+license="Unlicense"
+dist_files="https://github.com/yt-dlp/yt-dlp/releases/download/${version}/yt-dlp.tar.gz>yt-dlp-${version}.tar.gz"
+checksum="5eaa846b32aaf4eaea1578da20eb8a2b781b97a71dfc8c565fc4c0c178de07ce"
+
+no_strip=yes
+
+depends="python"
+make_depends="python"
+
+do_build() {
+    rm -f yt-dlp yt_dlp/extractor/lazy_extractors.py
+    PYTHONDONTWRITEBYTECODE=1 $make_cmd PYTHON=python3 lazy-extractors
+
+    # same as make yt-dlp, without needing zip
+    mkdir zip
+    cp -R yt_dlp zip/
+    cp yt_dlp/__main__.py zip/
+    python3 -m zipapp zip -c -p /usr/bin/python3 -o yt-dlp
+}
+
+do_install() {
+    bbin yt-dlp
+    blicense LICENSE
+}

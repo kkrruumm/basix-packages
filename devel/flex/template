@@ -1,12 +1,12 @@
 pkg_name=flex
-version=2.6.14
+version=2.6.16
 revision=1
 build_style=gnu-configure
 short_desc="Fast lexical analyser generator"
 home_page="https://github.com/westes/flex"
 license="BSD-2-Clause"
 dist_files="https://github.com/westes/flex/releases/download/v${version}/flex-${version}.tar.gz"
-checksum="0c9a60b35c48e4b2ec793bd9c3b1deade40abaabc5c299bcbe550a456aaf1d4e"
+checksum="4c4b6d8a5c5736f9b58d38d0fd28356120436374263aaa310f0e252c7daac93d"
 make_depends="m4"
 
 configure_args="ac_cv_func_malloc_0_nonnull=yes ac_cv_func_realloc_0_nonnull=yes"

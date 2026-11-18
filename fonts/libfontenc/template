@@ -1,12 +1,12 @@
 pkg_name=libfontenc
-version=1.1.9
+version=1.1.10
 revision=1
 build_style=gnu-configure
 short_desc="X11 font encoding library"
 home_page="https://gitlab.freedesktop.org/xorg/lib/libfontenc"
 license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/libfontenc-${version}.tar.xz"
-checksum="098188a7afd2804ec548d7cc4ff3190026377c0a5022eb5fe1566f88b516d653"
+checksum="ca490d26583ca4840523b5486b71d5e4fcf4a7e7394428e9c56cabdcedd5e158"
 depends="zlib"
 make_depends="font-util pkgconf util-macros xorgproto zlib"
 

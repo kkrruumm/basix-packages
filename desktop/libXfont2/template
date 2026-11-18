@@ -1,12 +1,12 @@
 pkg_name=libXfont2
-version=2.0.9
+version=2.0.10
 revision=1
 build_style=gnu-configure
 short_desc="X11 server side font handling library"
 home_page="https://gitlab.freedesktop.org/xorg/lib/libxfont"
 license="MIT"
 dist_files="https://www.x.org/releases/individual/lib/libXfont2-${version}.tar.xz"
-checksum="a7a36bd5d889da17170c48b7b7634044856811cd008dc4fa9facaa2a75c0923e"
+checksum="6d22657b4aa476f10b71d3e6cde3afc69501437d7f1f80473bb44a8d419c437a"
 depends="freetype libfontenc zlib"
 make_depends="freetype libfontenc pkgconf util-macros xorgproto xtrans zlib"
 

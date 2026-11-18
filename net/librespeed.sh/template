@@ -1,0 +1,16 @@
+pkg_name=librespeed.sh
+version=0.1
+revision=1
+build_style=custom
+short_desc="A simple speedtest.net-esque CLI for Librespeed in POSIX sh"
+home_page="https://github.com/kkrruumm/librespeed.sh"
+dist_files="https://github.com/kkrruumm/librespeed.sh/archive/refs/tags/${version}.tar.gz"
+checksum="04637824d5df98505caf479ec37b11be56244daecd96786267b892e834b8c8a3"
+
+depends="curl jq"
+
+do_build() { :; }
+
+do_install() {
+    bbin librespeed.sh
+}

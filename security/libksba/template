@@ -1,12 +1,12 @@
 pkg_name=libksba
-version=1.8.1
+version=1.9.0
 revision=1
 build_style=gnu-configure
 short_desc="X.509 and CMS parsing library for GnuPG"
 home_page="https://gnupg.org/software/libksba"
 license="LGPL-3.0-or-later"
 dist_files="https://gnupg.org/ftp/gcrypt/libksba/libksba-${version}.tar.bz2"
-checksum="ca932f15b0954faa21bbb61a6922817ac3d21bd9454bb934335be7dc37177ad7"
+checksum="77b943c3a9776892e5937e6e0e9ba71e05ca6e2d52ad6667344d9649085ef105"
 depends="libgpg-error"
 make_depends="libgpg-error pkgconf"
 

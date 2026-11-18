@@ -1,0 +1,26 @@
+pkg_name=vim-classic
+version=8.3.0
+revision=1
+build_style=gnu-configure
+short_desc="A fork of Vim 8.x for long-term maintenance, maintained entirely by humans"
+home_page="https://vim-classic.org/"
+license="Vim"
+dist_files="https://git.sr.ht/~sircmpwn/vim-classic/archive/v${version}.tar.gz"
+checksum="2c3b9ef5563868a7897583936068e4cfee14ec8641de7a1fb23f7653a8bcecf0"
+depends="ncurses"
+make_depends="ncurses"
+
+use_flags="-python"
+
+# no gui
+configure_args="
+    --with-features=huge
+    --enable-multibyte
+    --enable-gui=no
+    --disable-gtktest
+    --disable-netbeans
+    --disable-canberra
+    --disable-selinux
+    --disable-acl
+    --disable-nls
+    $(use_if python --enable-python3interp=dynamic --disable-python3interp)"

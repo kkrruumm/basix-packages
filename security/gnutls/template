@@ -1,12 +1,12 @@
 pkg_name=gnutls
-version=3.8.13
-revision=2
+version=3.8.14
+revision=1
 build_style=gnu-configure
 short_desc="TLS protocol implementation"
 home_page="https://www.gnutls.org"
 license="LGPL-2.1-or-later"
 dist_files="https://www.gnupg.org/ftp/gcrypt/gnutls/v${version%.*}/gnutls-${version}.tar.xz"
-checksum="817083bbd1af9caab9e30602ea01e4254200252289ca966770beff05fb26b2de"
+checksum="b762a331e48049a648c1bd272b60d1dbf47945af701de0bc3613ed77f4c98327"
 
 # probably just leave idn and p11kit off, those require p11-kit
 # which is like only useful for smartcards and hardware tokens

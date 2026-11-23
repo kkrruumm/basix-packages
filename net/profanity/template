@@ -1,12 +1,12 @@
 pkg_name=profanity
-version=0.19.0
-revision=2
+version=0.20.0
+revision=1
 build_style=meson
 short_desc="Console based XMPP client"
 home_page="https://profanity-im.github.io"
 license="GPL-3.0-or-later"
 dist_files="https://github.com/profanity-im/profanity/releases/download/${version}/profanity-${version}.tar.xz"
-checksum="79a5d9b88b89d2aa382591ea68d2cd959a6db21857f3a1eb7e76ea11afdce1c9"
+checksum="e184619e99a43824762e8fa2baf9b3eb0ca35d9c6ee17ea1343eaa15a1d46d95"
 
 # notify: desktop notifs through libnotify
 # pgp: XEP-0027 and OX (XEP-0373) via gpgme
@@ -17,23 +17,19 @@ checksum="79a5d9b88b89d2aa382591ea68d2cd959a6db21857f3a1eb7e76ea11afdce1c9"
 # gtk: tray icon and clipboard paste (/paste) via gtk3
 # pixbuf: scale avatars before uploading them via gdk-pixbuf
 # themes: install the bundled color themes
-use_flags="man doc themes otr omemo -notify -pgp -python -cplugins -gtk -pixbuf"
+use_flags="man doc themes otr omemo -notify -pgp -pixbuf"
 
 depends="curl glib libstrophe ncurses readline sqlite
  $(use_if notify libnotify)
  $(use_if pgp gpgme)
  $(use_if otr libotr)
  $(use_if omemo "libomemo-c libgcrypt")
- $(use_if python python)
- $(use_if gtk gtk3)
  $(use_if pixbuf gdk-pixbuf)"
 make_depends="curl glib libstrophe meson ncurses pkgconf readline sqlite
  $(use_if notify libnotify)
  $(use_if pgp gpgme)
  $(use_if otr libotr)
  $(use_if omemo "libomemo-c libgcrypt")
- $(use_if python python)
- $(use_if gtk gtk3)
  $(use_if pixbuf gdk-pixbuf)"
 
 use_depends="libstrophe:ssl curl:ssl"
@@ -46,11 +42,8 @@ configure_args="
     $(use_if omemo -Domemo=enabled -Domemo=disabled)
     -Domemo-backend=libomemo-c
     -Domemo-qrcode=disabled
-    -Dxscreensaver=disabled
     -Dspellcheck=disabled
-    $(use_if python -Dpython-plugins=enabled -Dpython-plugins=disabled)
-    $(use_if cplugins -Dc-plugins=enabled -Dc-plugins=disabled)
-    $(use_if gtk -Dicons-and-clipboard=enabled -Dicons-and-clipboard=disabled)
+    -Dtray=disabled
     $(use_if pixbuf -Dgdk-pixbuf=enabled -Dgdk-pixbuf=disabled)
     $(use_bool themes install_themes)"
 

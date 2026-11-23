@@ -21,9 +21,9 @@ prune() {
     done
 }
 
-_m=$root/var/db/bpm/installed/$1/manifest
+_m=$root/var/db/bpm/installed/$1/files
 [ -f "$_m" ] || exit 0
-_rels=$(sed -n 's|^/boot/vmlinuz-\(.*[^/]\)$|\1|p' "$_m")
+_rels=$(cut -f1 "$_m" | sed -n 's|^/boot/vmlinuz-\(.*[^/]\)$|\1|p')
 [ -n "$_rels" ] || exit 0
 
 [ -x "$root/usr/bin/tinyramfs" ] || exit 0

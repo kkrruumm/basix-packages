@@ -1,6 +1,6 @@
 pkg_name=tinyramfs
 version=0.3.0
-revision=3
+revision=4
 build_style=custom
 short_desc="Tiny initramfs generator"
 home_page="https://github.com/illiliti/tinyramfs"

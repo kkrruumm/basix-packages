@@ -1,11 +1,11 @@
 pkg_name=vulkan-headers
-version=1.4.368
+version=1.4.369
 revision=1
 build_style=cmake
 short_desc="Vulkan API header files and registry"
 home_page="https://github.com/KhronosGroup/Vulkan-Headers"
 license="Apache-2.0"
 dist_files="https://github.com/khronosgroup/vulkan-headers/archive/refs/tags/v${version}.tar.gz>vulkan-headers-${version}.tar.gz"
-checksum="3d826868a3e0752833a8b9e8446199d20ce510c914f540c075822202fd789f21"
+checksum="ac640c6790020be75fcd4b51b28b53510d833908dba461d4f9cbc6f0eb9d57c7"
 wrk_src="Vulkan-Headers-$version"
 make_depends="cmake"

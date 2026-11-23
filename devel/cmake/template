@@ -1,12 +1,12 @@
 pkg_name=cmake
-version=4.5.0
+version=4.5.1
 revision=1
 build_style=custom
 short_desc="Cross platform build system generator"
 home_page="https://cmake.org"
 license="BSD-3-Clause"
 dist_files="https://cmake.org/files/v4.5/cmake-${version}.tar.gz"
-checksum="70cd7bbc3731bb8e853c0bca5ead4ea1a4e1c3df32acd238a8ceebd45a242060"
+checksum="7e68ed7d5829c4230756435de1d1b8481ff91b2c8cee90b733dfddb42805e534"
 depends="bzip2 curl expat zlib"
 make_depends="bzip2 curl expat linux-headers zlib"
 

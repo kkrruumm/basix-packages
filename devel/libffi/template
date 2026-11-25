@@ -1,12 +1,12 @@
 pkg_name=libffi
-version=3.8.1
+version=3.8.2
 revision=1
 build_style=gnu-configure
 short_desc="Portable foreign function interface library"
 home_page="https://sourceware.org/libffi/"
 license="MIT"
 dist_files="https://github.com/libffi/libffi/releases/download/v${version}/libffi-${version}.tar.gz"
-checksum="5d43a4a3f4c0d31b993d07dbad151511a5aa6018e733ddf028c0764de407d89b"
+checksum="ad67025851efb2e0562337057d1f7160686fe724ec7cfe83b9bed51c041eb6d9"
 
 configure_args="
     --disable-exec-static-tramp

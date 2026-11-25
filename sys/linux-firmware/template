@@ -3,14 +3,14 @@
 # since there's no compile here, nbd
 # this fucking sucked, btw.
 pkg_name=linux-firmware
-version=20261019
+version=20261124
 revision=1
 build_style=custom
 short_desc="Firmware blobs for devices supported by the Linux kernel"
 home_page="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 license="GPL-2.0-only, GPL-2.0-or-later, MIT, custom:redistributable"
 dist_files="https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-${version}.tar.xz"
-checksum="952c61976bba21d86663aba960f5fe1f2269b3dc287799719025d5aa63185f69"
+checksum="f1725a684d2a62c573754a0dc2542a40b11ea4a022380f94270166e46c0a54fa"
 
 # these are vendor blobs
 no_strip=yes
@@ -71,7 +71,7 @@ _fw_paths() {
                      cmmb_*.inp tdmb_*.inp av7110 cpia2 go7007 ttusb-budget
                      as102_data*.hex cx18* v4l-* vicam dabusb s2250*.fw
                      f2255usb.bin tlg2300_firmware.bin lgs8g75.fw" ;;
-        sound) echo "cirrus sdca cs42l43.bin TAS2XXX*.bin TIAS*.bin TXNW*.bin
+        sound) echo "cirrus sdca awinic cs42l43.bin TAS2XXX*.bin TIAS*.bin TXNW*.bin
                      INT8866*.bin [0-9A-F][0-9A-F][0-9A-F][0-9A-F]-*.bin
                      ctefx*.bin ctspeq.bin emi26 emi62 ti/audio ti/pcm6240 tas2781 ess yamaha korg
                      emu sb16 turtlebeach dsp56k" ;;

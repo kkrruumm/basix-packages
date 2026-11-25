@@ -1,12 +1,12 @@
 pkg_name=zstd
-version=1.5.7
-revision=2
+version=1.6.0
+revision=1
 build_style=gnu-makefile
 short_desc="Fast real time compression algorithm"
 home_page="https://facebook.github.io/zstd"
 license="BSD-3-Clause OR GPL-2.0-only"
 dist_files="https://github.com/facebook/zstd/releases/download/v${version}/zstd-${version}.tar.gz"
-checksum="730dca31244abd219e995f03a55d95b2cfb4b3e16cda055a79fa6f30a4f0e1db8f"
+checksum="0251aabf5ba86cd431ee8e4112eaa36e029ac55b30f5074bda42ed8069e5a780"
 
 use_flags="-lz4 -zlib -lzma"
 
